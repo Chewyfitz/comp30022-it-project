@@ -1,0 +1,17 @@
+{
+  "name": "comp30022-it-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \" cd back-end && node server.js\" \"cd client && npm start\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^4.1.2",
+    "dotenv": "^8.1.0"
+  }
+}
