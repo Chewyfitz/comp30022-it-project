@@ -7,6 +7,9 @@ WORKDIR /master/back-end
 # wildcard used to ensure package.json and package-lock.json are both copied
 # where available
 COPY package*.json ./
+
+# uncomment this line for development environments
+COPY .env ./
 RUN npm install
 #for Production:
 # RUN npm ci --only=production
@@ -15,7 +18,7 @@ RUN npm install
 COPY . .
 
 # expose the port
-EXPOSE 8080
+EXPOSE 3001
 # (update this to use environment variable)
 # Run the server
 CMD ["node", "server.js"]
