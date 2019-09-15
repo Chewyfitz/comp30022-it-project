@@ -1,6 +1,6 @@
 build:
   docker:
-    react: client/Dockerfile
+    web: client/Dockerfile
     node: back-end/Dockerfile
     #core: Dockerfile
 #
