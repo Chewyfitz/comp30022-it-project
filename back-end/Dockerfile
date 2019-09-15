@@ -9,7 +9,7 @@ WORKDIR /master/back-end
 COPY package*.json ./
 
 # uncomment this line for development environments
-COPY .env ./
+#COPY .env ./
 RUN npm install
 #for Production:
 # RUN npm ci --only=production
