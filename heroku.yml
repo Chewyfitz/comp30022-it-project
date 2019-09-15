@@ -3,5 +3,3 @@ build:
     react: client/Dockerfile
     node: back-end/Dockerfile
     core: Dockerfile
-run:
-  web: bundle exec puma -C config.puma.rb
