@@ -2,4 +2,4 @@ build:
   docker:
     react: client/Dockerfile
     node: back-end/Dockerfile
-    core: Dockerfile
+    #core: Dockerfile
