@@ -15,11 +15,11 @@ RUN npm install
 COPY . .
 
 # Now do it again for the client
-COPY client/package*.json ./client
+COPY client/package*.json ./client/
 RUN ./client/npm install
 
 # and again for the back-end
-COPY back-end/package*.json ./back-end
+COPY back-end/package*.json ./back-end/
 RUN ./back-end/npm install
 
 CMD ['concurrently', 'cd back-end && node server.js', 'cd client && npm start']
