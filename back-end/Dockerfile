@@ -11,7 +11,7 @@ COPY package*.json ./
 # uncomment this line for development environments
 #COPY .env ./
 RUN npm install
-RUN printenv HEROKU_PRIVATE_IP
+RUN printenv 
 #for Production:
 # RUN npm ci --only=production
 
