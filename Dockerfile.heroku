@@ -15,12 +15,13 @@ RUN npm install
 COPY . .
 
 # Now do it again for the client
-# Heroku doesn't like this 
-COPY client/package*.json ./client/
-RUN ./client/npm install
+WORKDIR /master/client
+COPY client/package*.json ./
+RUN npm install
 
 # and again for the back-end
-COPY back-end/package*.json ./back-end/
-RUN ./back-end/npm install
+WORKDIR /master/back-end
+COPY back-end/package*.json ./
+RUN npm install
 
 CMD ['concurrently', 'cd back-end && node server.js', 'cd client && npm start']
