@@ -15,6 +15,7 @@ RUN npm install
 COPY . .
 
 # Now do it again for the client
+# Heroku doesn't like this 
 COPY client/package*.json ./client/
 RUN ./client/npm install
 
