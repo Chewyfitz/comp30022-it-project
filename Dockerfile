@@ -14,8 +14,12 @@ RUN npm install
 # bundle app source
 COPY . .
 
-# expose the port
-EXPOSE 8080
-# (update this to use environment variable)
-# Run the server
-CMD ["npm", "start"]
+# Now do it again for the client
+COPY client/package*.json ./client
+RUN ./client/npm install
+
+# and again for the back-end
+COPY back-end/package*.json ./back-end
+RUN ./back-end/npm install
+
+CMD ['concurrently', 'cd back-end && node server.js', 'cd client && npm start']

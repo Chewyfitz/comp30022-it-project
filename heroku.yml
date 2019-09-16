@@ -1,6 +1,12 @@
+# Local environment build script (Doesn't work on Heroku)
+#build:
+#  docker:
+#    web: client/Dockerfile
+#    node: back-end/Dockerfile
+#    #core: Dockerfile
+
 build:
   docker:
-    web: client/Dockerfile
-    node: back-end/Dockerfile
-    #core: Dockerfile
-#
+    web: Dockerfile.heroku
+    # This dockerfile is going to build all the stuff at once.
+    # lets hope it works...
