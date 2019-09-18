@@ -13,18 +13,19 @@ FROM node:10
 
 # bundle app source
 COPY . .
-ARG client=false
 # Now do it again for the client
 WORKDIR /master/client
 COPY client/package*.json ./
-COPY deploy_conditional.sh ./
-RUN chmod 777 ./deploy_conditional.sh
-RUN ./deploy_conditional.sh
+COPY client_deploy.sh ./
+RUN chmod 777 ./client_deploy.sh
+RUN ./client_deploy.sh
 
 # and again for the back-end
-#WORKDIR /master/back-end
-#COPY back-end/package*.json ./
-#RUN npm install
+WORKDIR /master/back-end
+COPY back-end/package*.json ./
+COPY back-end_deploy.sh ./
+RUN chmod 777 ./back-end_deploy.sh
+RUN ./back-end_deploy.sh
 
 #WORKDIR /master
 #CMD ['concurrently', 'cd back-end && node server.js', 'cd client && npm start']
