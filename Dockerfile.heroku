@@ -17,10 +17,7 @@ ARG client=false
 # Now do it again for the client
 WORKDIR /master/client
 COPY client/package*.json ./
-RUN if ["$client" = "true"]\
-    then npm install\ 
-    else echo 0\
-fi
+RUN ./deploy_conditional
 
 # and again for the back-end
 #WORKDIR /master/back-end
