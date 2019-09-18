@@ -1,13 +1,13 @@
 FROM node:10
 
 # Create App directory
-WORKDIR /master
+#WORKDIR /master
 
 # Install app dependenies
 # wildcard used to ensure package.json and package-lock.json are both copied
 # where available
-COPY package*.json ./
-RUN npm install
+#COPY package*.json ./
+#RUN npm install
 #for Production:
 # RUN npm ci --only=production
 
@@ -17,12 +17,16 @@ COPY . .
 # Now do it again for the client
 WORKDIR /master/client
 COPY client/package*.json ./
-RUN npm install
+RUN if ["$NODE_ENV" = "client"];\
+		then npm install;\
+		else;\
+		fi
 
 # and again for the back-end
-WORKDIR /master/back-end
-COPY back-end/package*.json ./
-RUN npm install
+#WORKDIR /master/back-end
+#COPY back-end/package*.json ./
+#RUN npm install
 
-WORKDIR /master
-CMD ['concurrently', 'cd back-end && node server.js', 'cd client && npm start']
+#WORKDIR /master
+#CMD ['concurrently', 'cd back-end && node server.js', 'cd client && npm start']
+CMD ['npm', 'start']
