@@ -13,11 +13,11 @@ FROM node:10
 
 # bundle app source
 COPY . .
-
+ARG client=false
 # Now do it again for the client
 WORKDIR /master/client
 COPY client/package*.json ./
-RUN if ["$NODE_ENV" = "client"]\
+RUN if ["$client" = "true"]\
     then npm install\ 
     else echo 0\
 fi
