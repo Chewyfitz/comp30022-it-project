@@ -1,3 +1,3 @@
-if ["$client" = "true"]
+if [ "$client" = "true" ]
     then npm install
 fi
