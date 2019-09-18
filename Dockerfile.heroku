@@ -11,7 +11,7 @@ FROM node:10
 #for Production:
 # RUN npm ci --only=production
 
-# bundle app source
+## bundle app source
 COPY . .
 # Now do it again for the client
 WORKDIR /master/client
