@@ -17,10 +17,7 @@ COPY . .
 # Now do it again for the client
 WORKDIR /master/client
 COPY client/package*.json ./
-RUN if ["$NODE_ENV" = "client"]\
-		then npm install\
-		else\
-		fi
+RUN if ["$NODE_ENV" = "client"] then npm install else fi
 
 # and again for the back-end
 #WORKDIR /master/back-end
