@@ -18,6 +18,7 @@ ARG client=false
 WORKDIR /master/client
 COPY client/package*.json ./
 COPY deploy_conditional.sh ./
+RUN chmod 777 ./deploy_conditional.sh
 RUN ./deploy_conditional.sh
 
 # and again for the back-end
