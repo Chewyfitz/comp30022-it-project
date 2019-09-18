@@ -17,7 +17,7 @@ ARG client=false
 # Now do it again for the client
 WORKDIR /master/client
 COPY client/package*.json ./
-COPY ./deploy_conditional ./
+COPY deploy_conditional ./
 RUN ./deploy_conditional
 
 # and again for the back-end
