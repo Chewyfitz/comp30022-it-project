@@ -27,6 +27,5 @@ COPY back-end_deploy.sh ./
 RUN chmod 777 ./back-end_deploy.sh
 RUN export client && ./back-end_deploy.sh
 
-#WORKDIR /master
-#CMD ['concurrently', 'cd back-end && node server.js', 'cd client && npm start']
-CMD ['npm', 'start']
+WORKDIR /master
+CMD ['concurrently', 'cd back-end && node server.js', 'cd client && npm start']
