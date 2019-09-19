@@ -10,3 +10,4 @@ build:
     web: Dockerfile
     # This dockerfile is going to build all the stuff at once.
     # lets hope it works...
+    #test
