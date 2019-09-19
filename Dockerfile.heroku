@@ -3,6 +3,9 @@ FROM node:10
 # Create App directory
 WORKDIR /master
 
+## bundle app source
+COPY . .
+
 # Install app dependenies
 # wildcard used to ensure package.json and package-lock.json are both copied
 # where available
@@ -11,8 +14,6 @@ RUN npm install
 ##for Production:
 # RUN npm ci --only=production
 
-## bundle app source
-COPY . .
 # Now do it again for the client
 WORKDIR /master/client
 COPY client/package*.json ./
