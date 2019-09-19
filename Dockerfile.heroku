@@ -14,6 +14,8 @@ RUN npm install
 ##for Production:
 # RUN npm ci --only=production
 
+CMD ['concurrently', 'cd back-end && node server.js', 'cd client && npm start']
+
 # Now do it again for the client
 WORKDIR /master/client
 COPY client/package*.json ./
@@ -28,5 +30,4 @@ COPY back-end_deploy.sh ./
 RUN chmod 777 ./back-end_deploy.sh
 RUN export client && ./back-end_deploy.sh
 
-WORKDIR /master
-CMD ['concurrently', 'cd back-end && node server.js', 'cd client && npm start']
+#WORKDIR /master
