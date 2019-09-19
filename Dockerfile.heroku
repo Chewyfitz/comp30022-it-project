@@ -9,7 +9,7 @@ COPY . .
 # Install app dependenies
 # wildcard used to ensure package.json and package-lock.json are both copied
 # where available
-COPY package*.json ./
+#COPY package*.json ./
 RUN npm install
 ##for Production:
 # RUN npm ci --only=production
