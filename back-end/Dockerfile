@@ -8,9 +8,10 @@ WORKDIR /master/back-end
 # where available
 COPY package*.json ./
 
-# uncomment this line for development environments
+# uncomment this line for local development environments
 #COPY .env ./
 RUN npm install
+#RUN printenv 
 #for Production:
 # RUN npm ci --only=production
 
