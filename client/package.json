@@ -14,7 +14,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "https://robbiesapiteam.herokuapp.com",
+  //"proxy": "https://robbiesapiteam.herokuapp.com",
   "eslintConfig": {
     "extends": "react-app"
   },

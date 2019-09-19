@@ -15,7 +15,7 @@ RUN npm install
 COPY . .
 
 # expose the port
-EXPOSE 3000
+#EXPOSE 3000
 # (update this to use environment variable)
 # Run the server
 CMD ["npm", "start"]
