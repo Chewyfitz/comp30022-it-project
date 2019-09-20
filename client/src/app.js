@@ -44,7 +44,7 @@ class App extends Component {
 	// get method: uses the backedn api to fetch data from the database.
 	getDataFromDB = () => {
 		// backend address -- update this if needed
-		fetch('http://localhost:3001/api/getData')
+		fetch('https://robbiesapiteam.herokuapp.com/api/getData')
 			.then((data) => data.json())
 			.then((res)  => this.setState({ data: res.data}));
 	};
@@ -57,7 +57,7 @@ class App extends Component {
 			++idToBeAdded;
 		}
 		
-		axios.post('http://localhost:3001/api/putData', {
+		axios.post('https://robbiesapiteam.herokuapp.com/api/putData', {
 			id: idToBeAdded,
 			message: message
 		});
@@ -72,7 +72,7 @@ class App extends Component {
 				objIdToDelete = dat._id;
 			}
 		});
-		axios.delete('http://localhost:3001/api/deleteData', {
+		axios.delete('https://robbiesapiteam.herokuapp.com/api/deleteData', {
 			data: {
 				id: objIdToDelete,
 			}
@@ -88,7 +88,7 @@ class App extends Component {
 				objIdToUpdate = dat._id;
 			}
 		});
-		axios.post('http://localhost:3001/api/updateData', {
+		axios.post('https://robbiesapiteam.herokuapp.com/api/updateData', {
 			id: objIdToUpdate,
 			update: { message: updateToApply }
 		});
