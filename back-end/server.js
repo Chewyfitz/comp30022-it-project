@@ -1,36 +1,22 @@
 // Base code taken from medium.com
 // url: medium.com/javascript-in-plain-english/full-stack-mongodb-react-node-js-express-js-in-one-simple-app-6cc8ed6de274  
 var firebase = require('firebase');
+const admin = require('firebase-admin');
+const functions = require('firebase-functions');
+
 const express = require('express');
 var cors = require ('cors');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
-const Data = require('./data');
 require('dotenv').config();
-
-const admin = require('firebase-admin');
-const functions = require('firebase-functions');
-
 const API_PORT = process.env.PORT || 3001;
 const app = express();
 app.use(cors());
 const router = express.Router();
 
-// Firebase databse connection
-const config = {
-	apiKey: process.env.APIKEY,
-	databaseURL: process.env.DATABASEURL,
-	projectId: process.env.PROJECTID,
-	storageBucket: process.env.STORAGEBUCKET,
-	messageSenderId: process.env.SENDERID,
-	appId: process.env.APPID,
-}
+const firebaseDB = require('./initFirebase');
+const Data = require('./data');
 
-admin.initializeApp(functions.config().firebase);
-var db_app = firebase.initializeApp(config);
-
-var database = firebase.database(db_app); 
-console.log("database opened");
 
 // Optional - logging in JSON format
 app.use(bodyParser.urlencoded({extended: false}));
@@ -83,9 +69,9 @@ router.post('/putData', (req, res) => {
 	});
 });
 
-// aooend '/api' for our http requests 
+// append '/api' for our http requests 
 app.use('/api', router);
 
 // launch our backend into a port
-app.listen(API_PORT, () => console.log('LISTENING ON PORT ${API_PORT}'));
+app.listen(API_PORT, () => console.log('LISTENING ON PORT '+API_PORT));
 
