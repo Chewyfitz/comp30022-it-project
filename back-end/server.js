@@ -47,7 +47,9 @@ router.get('/getData', (req, res) => {
 
 router.post('/upload', (req, res) => {
 	console.log("test");
-	console.log(req[0].name);
+	console.log(req);
+	console.log(req.data);
+	console.log(req.data[0].name);
 });
 
 // Update method - overwrite existing database data
