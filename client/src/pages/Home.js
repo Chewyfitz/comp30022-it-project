@@ -76,7 +76,7 @@ export default function Home() {
         this.fileInput.current.files[0].name
       }`
     );
-  }
+  };
   return (
     <React.Fragment>
       <CssBaseline />
