@@ -138,7 +138,7 @@ export default function Home() {
           Footer
         </Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Something here to give the footer a purpose! TEST
+          Something here to give the footer a purpose! T
         </Typography>
         <Copyright />
             <div className="upload">
