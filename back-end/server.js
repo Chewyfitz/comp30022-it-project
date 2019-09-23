@@ -23,53 +23,96 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(logger('dev'));
 
-// Get method
-router.get('/getData', (req, res) => {
-	Data.find((err, data) => {
-		if (err) return res.json({success: false, error: err});
-		return res.json({success: true, data:data});
-	});
+// ============================================================================
+// '/api/image' routes
+
+router.get('/image/:imageId/view', (req, res) => {
+	// Get a specific image's direct url
+	console.log("GET /image/:imageID/view");
+	console.log(req.params);
+	res.sendStatus(200);
 });
 
-// Update method - overwrite existing database data
-router.post('/updateData', (req, res) => {
-	const { id, update } = req.body;
-	Data.findByIdAndUpdate(id, update, (err) => {
-		if (err) return res.json({ success: false, error: err });
-		return res.json({ success:true });
-	});
+router.get('/image/:imageId', (req, res) => {
+	// Get an image - Reference, Name, DateTime, Description
+	console.log("GET /image/:imageID");
+	console.log(req.params);
+	res.sendStatus(200);
+	// res.end();
 });
 
-// Delete method - remove existing data from the database
-router.delete('/deleteData', (req, res) => {
-	const { id } = req.body;
-	Data.findByIDAndRemove(id, (err) => {
-		if (err) return res.send(err);
-		return res.json({ success: true });
-	});
+router.post('/image/', (req, res) =>{
+	// Add a new image - Likely will need upload or some kind of url
+	console.log("POST /image/");
+	console.log(req.params);
+	res.sendStatus(200);
 });
 
-// Create method - create new data in the database
-router.post('/putData', (req, res) => {
-	let data = new Data();
-	
-	const { id, message } = req.body;
-	
-	if ((!id && id !== 0) || !message) {
-		return res.json({
-			success: false,
-			error: 'INVALID INPUTS',
-		});
-	}
-	data.message = message;
-	data.id = id;
-	data.save((err) => {
-		if (err) return res.json ( { success: false, error: err });
-		return res.json({ success: true });
-	});
+router.delete('/image/', (req, res) => {
+	// Delete an image entry. If it has an uploaded image deal with that.
+	console.log("DELETE /image/");
+	console.log(req.params);
+	res.sendStatus(200);
 });
 
-// append '/api' for our http requests 
+// ============================================================================
+// '/api/album' routes 
+
+// '/api/album/:albumId'
+router.get   ('/album/:albumId?', (req, res) => {
+	console.log("GET /album/:albumID");
+	console.log(req.params);
+	res.sendStatus(200);
+});
+router.post  ('/album/', (req, res) => {
+	console.log("POST /album/:albumID");
+	console.log(req.params);
+	res.sendStatus(200);
+});
+router.put   ('/album/:albumId', (req, res) => {
+	console.log("PUT /album/:albumID");
+	console.log(req.params);
+	res.sendStatus(200);
+});
+router.patch ('/album/:albumId', (req, res) => {
+	console.log("PATCH /album/:albumID");
+	console.log(req.params);
+	res.sendStatus(200);
+});
+router.delete('/album/:albumId', (req, res) => {
+	console.log("DELETE /album/:albumID");
+	console.log(req.params);
+	res.sendStatus(200);
+});
+
+// '/api/album/:albumId/:pageId'
+router.get   ('/album/:albumId/:pageId', (req, res) => {
+	console.log("GET /album/:albumID/:pageId");
+	console.log(req.params);
+	res.sendStatus(200);
+});
+router.post  ('/album/:albumId/:pageId', (req, res) => {
+	console.log("POST /album/:albumID/:pageId");
+	console.log(req.params);
+	res.sendStatus(200);
+});
+router.put   ('/album/:albumId/:pageId', (req, res) => {
+	console.log("PUT /album/:albumID/:pageId");
+	console.log(req.params);
+	res.sendStatus(200);
+});
+router.patch ('/album/:albumId/:pageId', (req, res) => {
+	console.log("PATCH /album/:albumID/:pageId");
+	console.log(req.params);
+	res.sendStatus(200);
+});
+router.delete('/album/:albumId/:pageId', (req, res) => {
+	console.log("DELETE /album/:albumID/:pageId");
+	console.log(req.params);
+	res.sendStatus(200);
+});
+
+// prepend '/api' for our http requests 
 app.use('/api', router);
 
 // launch our backend into a port
