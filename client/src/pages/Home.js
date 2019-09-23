@@ -30,6 +30,7 @@ function Copyright() {
   );
 }
 
+
 const useStyles = makeStyles(theme => ({
   icon: {
     marginRight: theme.spacing(2),
@@ -68,12 +69,28 @@ const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 export default function Home() {
   const classes = useStyles();
 
+  handleSubmit(event) {
+    event.preventDefault();
+    alert(
+      `Selected file - ${
+        this.fileInput.current.files[0].name
+      }`
+    );
+  }
   return (
     <React.Fragment>
       <CssBaseline />
       
       <main>
         {/* Hero unit */}
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Upload file:
+          <input type="file" ref={this.fileInput} />
+        </label>
+        <br />
+        <button type="submit">Submit</button>
+      </form>
         <Container className={classes.cardGrid} maxWidth="95%">
           {/* End hero unit */}
           <Grid container spacing={1}>
@@ -113,3 +130,4 @@ export default function Home() {
     </React.Fragment>
   );
 }
+
