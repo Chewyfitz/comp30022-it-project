@@ -46,7 +46,7 @@ class FileInput extends React.Component {
       `
     );
     axios.post('https://rowan-api-test-enviro.herokuapp.com/api/upload', {
-			files;
+			files
 		});
   }
 
