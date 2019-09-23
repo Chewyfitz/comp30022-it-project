@@ -41,8 +41,12 @@ class FileInput extends React.Component {
     alert(
       `Selected file - ${
         this.fileInput.current.files[0].name
-      }`
+      }
+      `
     );
+    axios.post('https://rowan-api-test-enviro.herokuapp.com/api/upload', {
+			this.fileInput.current.files;
+		});
   }
 
   render() {
