@@ -45,7 +45,7 @@ router.get('/getData', (req, res) => {
 	});
 });
 
-router.get('/upload', (req, res) => {
+router.get('/api/upload', (req, res) => {
 	console.log("test");
 });
 
