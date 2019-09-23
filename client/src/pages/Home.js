@@ -83,14 +83,6 @@ export default function Home() {
       
       <main>
         {/* Hero unit */}
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Upload file:
-          <input type="file" ref={this.fileInput} />
-        </label>
-        <br />
-        <button type="submit">Submit</button>
-      </form>
         <Container className={classes.cardGrid} maxWidth="95%">
           {/* End hero unit */}
           <Grid container spacing={1}>
@@ -123,6 +115,14 @@ export default function Home() {
         </Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
           Something here to give the footer a purpose!
+            <form onSubmit={this.handleSubmit}>
+        <label>
+          Upload file:
+          <input type="file" ref={this.fileInput} />
+        </label>
+        <br />
+        <button type="submit">Submit</button>
+      </form>
         </Typography>
         <Copyright />
       </footer>
