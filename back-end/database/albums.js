@@ -14,7 +14,7 @@ function addAlbum(userID, albumName) {
     data[albumFields.template] = 'Default';
     data[albumFields.view] = 'Overview';
     console.log("written album");
-    general.addDataToDoc(data, albumsPath(userID), albumName);
+    general.addDataToDoc(data, general.albumsPath(userID), albumName);
 }
 
 
@@ -40,14 +40,13 @@ function updateAlbumView(userID, albumName, view=null){
         data[albumFields.view] = view;
     }
     console.log("updated user");
-    general.updateDataInDoc(data, albumsPath(userID), albumName);
+    general.updateDataInDoc(data, general.albumsPath(userID), albumName);
 }
 
 module.exports = {
     albumFields: albumFields,
-    albumsPath: function (userID) {albumsPath(userID);},
-    addAlbum: function (userID, albumName) {addAlbum(userID, albumName);},
-    updateAlbumName: function (userID, albumName, name = null) {updateAlbumName(userID, albumName, name);},
-    updateAlbumTemplate: function (userID, albumName, template = null) {updateAlbumTemplate(userID, albumName, template);},
-    updateAlbumView: function (userID, albumName, view = null) {updateAlbumView(userID, albumName, view);},
+    addAlbum: addAlbum,
+    updateAlbumName: updateAlbumName,
+    updateAlbumTemplate: updateAlbumTemplate,
+    updateAlbumView: updateAlbumView,
 };

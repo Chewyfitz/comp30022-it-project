@@ -11,11 +11,11 @@ const categories = require('./database/categoies');
 const tags = require('./database/tags');
 
 module.exports = {
-    addUser: function (userID, password) {users.addUser(userID, password);},
-    addAlbum: function (userID, albumName) {albums.addAlbum(userID, albumName);},
-    addPhoto: function (userID, photoReference, photoDateTime) {photos.addPhoto(userID, photoReference, photoDateTime);},
+    addUser: users.addUser,
+    addPhoto: photos.addPhoto,
+    addAlbum: albums.addAlbum,
 
-    updatePassword: function (userID, password) {user.updatePassword(userID, password);},
-    updateView: function (userID, albumName, view) {albums.updateView(userID, albumName, view);},
+    updateUserPassword: users.updateUserPassword,
+    updateAlbumView: albums.updateAlbumView,
 
 };

@@ -1,6 +1,6 @@
-var firebase = require("firebase/app");
+const firebase = require("firebase/app");
 require("firebase/firestore");
-require('dotenv').config()
+require('dotenv').config();
 
 const config = {
     apiKey: process.env.APIKEY,
@@ -9,12 +9,12 @@ const config = {
     storageBucket: process.env.STORAGEBUCKET,
     messageSenderId: process.env.SENDERID,
     appId: process.env.APPID,
-}
+};
 
 // Initialize Firebase
 firebase.initializeApp(config);
 
-var db = firebase.firestore();
+const db = firebase.firestore();
 
 const userCollection = 'Users';
 const photoCollection = 'Photos';
@@ -45,6 +45,7 @@ function albumPagesPath(userID, albumID) {
 //General use adder, adds the given data to the doc found/made in the path
 function addDataToDoc(data, path, doc=null) {
     let setDoc = null;
+    console.log(path);
     if(doc != null) {
         setDoc = db.collection(path)
             .doc(doc)
@@ -66,7 +67,17 @@ function updateDataInDoc(data, path, doc) {
     console.log(updateDoc);
 }
 
+/*
+function getDoc(path, doc) {
+    db.collection(path).doc(doc).get().then(res => printData(res), );
+}
 
+function printData(data){
+    console.log(data);
+}
+
+getDoc(usersPath(), 'Bob');
+*/
 module.exports = {
     db: db,
     userCollection: userCollection,
@@ -75,11 +86,13 @@ module.exports = {
     albumPositionCollection: albumPositionCollection,
     AlbumPageCollection: albumPageCollection,
     categoryCollection: categoryCollection,
-    userPath: function () {usersPath();},
-    photosPath: function (userID) {photosPath(userID);},
-    albumsPath: function (userID) {albumsPath(userID);},
-    albumPagesPath: function (userID, albumID) {albumPagesPath(userID, albumID);},
-    albumPositionsPath: function (userID, albumID) {albumPositionsPath(userID, albumID);},
-    addDataToDoc: function (data, path, doc=null) {addDataToDoc(data, path, doc);},
-    updateDataInDoc: function (data, path, doc) {updateDataInDoc(data, path, doc);},
+
+    usersPath: usersPath,
+    photosPath: photosPath,
+    albumsPath: albumsPath,
+    albumPagesPath: albumPagesPath,
+    albumPositionsPath: albumPositionsPath,
+    addDataToDoc: addDataToDoc,
+    updateDataInDoc: updateDataInDoc,
 };
+/**/

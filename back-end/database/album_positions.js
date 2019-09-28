@@ -41,7 +41,7 @@ function updateAlbumPositionPhoto(userID, albumsID, position, photo) {
 /* Exports to be used by other code*/
 module.exports = {
     albumPositionFields: albumPositionFields,
-    addAlbumPosition: function (userID, albumID, photo, caption = null) {addAlbumPosition(userID, albumID, photo, caption);},
-    updateAlbumPositionCaption: function (userID, albumID, position, caption) {updateCaption(userID, albumID, position, caption);},
-    updateAlbumPositionPhoto: function (userID, albumID, position, photo) {updateAlbumPositionPhoto(userID, albumID, position, photo);},
+    addAlbumPosition: addAlbumPosition,
+    updateAlbumPositionCaption: updateAlbumPositionCaption,
+    updateAlbumPositionPhoto: updateAlbumPositionPhoto,
 };

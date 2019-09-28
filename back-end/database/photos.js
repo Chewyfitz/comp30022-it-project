@@ -17,7 +17,7 @@ function addPhoto(userID, photoReference, photoDateTime) {
         Photo_Description: "",
     };
     console.log("written photo");
-    general.addDataToDoc(data, photosPath(userID));
+    general.addDataToDoc(data, general.photosPath(userID));
 }
 
 /**/
@@ -42,9 +42,8 @@ function updatePhotoReference(userID, photoID, reference){
 
 module.exports = {
     photoFields: photoFields,
-    photosPath: function () {photosPath();},
-    addPhoto: function (userID, photoReference, photoDateTime) {addPhoto(userID, photoReference, photoDateTime);},
-    updateDateTime: function (userID, photoID, dateTime) {updatePhotoDateTime(userID, photoID, dateTime);},
-    updatePhotoDescription: function (userID, photoID, description) {updatePhotoDescription(userID, photoID, description)},
-    updatePhotoReference: function (userID, photoID, reference) {updatePhotoReference(userID, photoID, reference);},
+    addPhoto:addPhoto,
+    updateDateTime: updatePhotoDateTime,
+    updatePhotoDescription: updatePhotoDescription,
+    updatePhotoReference: updatePhotoReference,
 };
