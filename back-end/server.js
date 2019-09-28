@@ -1,27 +1,38 @@
-// Base code taken from medium.com
-// url: medium.com/javascript-in-plain-english/full-stack-mongodb-react-node-js-express-js-in-one-simple-app-6cc8ed6de274  
-var firebase = require('firebase');
-const admin = require('firebase-admin');
-const functions = require('firebase-functions');
+// server.js Aidan Fitzpatrick (835833)
+/*
+*	A node.js server to serve an api on http://[url]:process.env.PORT/api/
+*	This is the main routing file, and is used in conjunction with database 
+*	interactors written by Patrick to send data to a Firebase "FireStore" 
+*	database.
+*	If you want to use this server in your own environment you can define
+*	environment variables, or alternatively create a file titled '.env' in the
+*	server's root directory with the firebase access configuration variables
+*	defined.
+*/
 
-const express = require('express');
-var cors = require ('cors');
+// Base code taken from medium.com
+// url: medium.com/javascript-in-plain-english/full-stack-mongodb-react-node-js-express-js-in-one-simple-app-6cc8ed6de274
+// though at this point I'm confident it is distinct enough that I can consider it to be my own work.
+
+// ** Components used for logging - not currently used
+// var cors = require ('cors');
+// const logger = require('morgan');
+// app.use(cors());
+
 const bodyParser = require('body-parser');
-const logger = require('morgan');
+const express = require('express');
 require('dotenv').config();
 const API_PORT = process.env.PORT || 3001;
 const app = express();
-app.use(cors());
 const router = express.Router();
 
-const firebaseDB = require('./initFirebase');
-const Data = require('./data');
-
-
-// Optional - logging in JSON format
-app.use(bodyParser.urlencoded({extended: false}));
+const database = require('./database.js');
 app.use(bodyParser.json());
-app.use(logger('dev'));
+
+
+// ** To be added at a later date
+// app.use(bodyParser.urlencoded({extended: false}));
+// app.use(logger('dev'));
 
 // ============================================================================
 // '/api/image' routes
@@ -60,26 +71,33 @@ router.delete('/image/', (req, res) => {
 
 // '/api/album/:albumId'
 router.get   ('/album/:albumId?', (req, res) => {
+	// Get an album with a specified ID
 	console.log("GET /album/:albumID");
 	console.log(req.params);
+	console.log(req.query);
 	res.sendStatus(200);
 });
 router.post  ('/album/', (req, res) => {
+	// Create a new album, and return its ID
 	console.log("POST /album/:albumID");
 	console.log(req.params);
+	console.log(req.query);
 	res.sendStatus(200);
 });
 router.put   ('/album/:albumId', (req, res) => {
+	// Update an album (May be removed in preference to PATCH)
 	console.log("PUT /album/:albumID");
 	console.log(req.params);
 	res.sendStatus(200);
 });
 router.patch ('/album/:albumId', (req, res) => {
+	// Update an album
 	console.log("PATCH /album/:albumID");
 	console.log(req.params);
 	res.sendStatus(200);
 });
 router.delete('/album/:albumId', (req, res) => {
+	// Delete an album
 	console.log("DELETE /album/:albumID");
 	console.log(req.params);
 	res.sendStatus(200);
@@ -87,26 +105,31 @@ router.delete('/album/:albumId', (req, res) => {
 
 // '/api/album/:albumId/:pageId'
 router.get   ('/album/:albumId/:pageId', (req, res) => {
+	// Get a page of an album
 	console.log("GET /album/:albumID/:pageId");
 	console.log(req.params);
 	res.sendStatus(200);
 });
 router.post  ('/album/:albumId/:pageId', (req, res) => {
+	// Create a new album page
 	console.log("POST /album/:albumID/:pageId");
 	console.log(req.params);
 	res.sendStatus(200);
 });
 router.put   ('/album/:albumId/:pageId', (req, res) => {
+	// Update an album page (might be useful eg. for copy/paste)
 	console.log("PUT /album/:albumID/:pageId");
 	console.log(req.params);
 	res.sendStatus(200);
 });
 router.patch ('/album/:albumId/:pageId', (req, res) => {
+	// Update an album page (just a small part)
 	console.log("PATCH /album/:albumID/:pageId");
 	console.log(req.params);
 	res.sendStatus(200);
 });
 router.delete('/album/:albumId/:pageId', (req, res) => {
+	// Delete an album page
 	console.log("DELETE /album/:albumID/:pageId");
 	console.log(req.params);
 	res.sendStatus(200);
