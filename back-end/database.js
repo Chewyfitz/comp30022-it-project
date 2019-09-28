@@ -14,6 +14,8 @@ module.exports = {
     addUser: function (userID, password) {users.addUser(userID, password);},
     addAlbum: function (userID, albumName) {albums.addAlbum(userID, albumName);},
     addPhoto: function (userID, photoReference, photoDateTime) {photos.addPhoto(userID, photoReference, photoDateTime);},
+
     updatePassword: function (userID, password) {user.updatePassword(userID, password);},
     updateView: function (userID, albumName, view) {albums.updateView(userID, albumName, view);},
-}
+
+};

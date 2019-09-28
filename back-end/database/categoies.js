@@ -1,11 +1,6 @@
-/*Name of the collections the database stores*/
-const categoryCollection = 'Categories';
+const general = require("./general_database");
 
-function addCategory(userID, category) {
-
-}
-
-module.exports = {
-    categoryCollection: categoryCollection,
-    addCategory: function (userID, category) {addCategory(userID, category);},
-}
+categoryFields = {
+    name: "Category Name",
+    photos: "Category Photos",
+};

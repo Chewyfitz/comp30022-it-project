@@ -1,17 +1,47 @@
-/*Name of the collections the database stores*/
-const albumPositionCollection = 'Album Positions';
+/**
+ *
+ * NEED BETTER NAMING CONVENTION ALL ROUND I THINK
+ *
+ * */
 
-function addAlbumPosition(userID, albumName, position) {
 
+
+const general = require('./general_database');
+
+/*Fields that are stored in the collection*/
+const albumPositionFields = {
+    caption: "Photo caption for Album",
+    photo: "Photo Reference",
+};
+
+function addAlbumPosition(userID, albumID, photo, caption=null) {
+    let data = {};
+    let position = 0; // need to find next position
+    let photoReference = photo; //need to find the reference to the photo doc
+    data[albumPositionFields.photo] = photoReference;
+    data[albumPositionFields.caption] = caption;
+    general.addDataToDoc(data, general.albumPositionsPath(userID, albumID), position);
 }
 
-function addPhotoToAlbumPosition (userID, photoReference, albumName, albumPosition){
 
+function updateAlbumPositionCaption(userID, albumID, position, caption=null) {
+    let data = {};
+    data[albumPositionFields.caption] = caption;
+    general.updateDataInDoc(data, general.albumPositionsPath(userID, albumsID), position);
+}
+
+function updateAlbumPositionPhoto(userID, albumsID, position, photo) {
+    let data = {};
+    let photoReference = photo; // need to find photo reference
+    data[albumPositionFields.photo] = photoReference;
+    general.updateDataInDoc(data, general.albumPositionsPath(userID, albumsID), position);
 }
 
 
+/* Exports to be used by other code*/
 module.exports = {
-    albumPositionCollection: albumPositionCollection,
-    addAlbumPosition: function (userID, albumName, position) {addAlbumPosition(userID, albumName, position);},
-    addPhotoToAlbumPosition: function (userID, photoReference, albumName, albumPosition) {addPhotoToAlbumPosition(userID, photoReference, albumName, albumPosition);},
-}
+    albumPositionFields: albumPositionFields,
+    addAlbumPosition: function (userID, albumID, photo, caption = null) {addAlbumPosition(userID, albumID, photo, caption);},
+    updateAlbumPositionCaption: function (userID, albumID, position, caption) {updateCaption(userID, albumID, position, caption);},
+    updateAlbumPositionPhoto: function (userID, albumID, position, photo) {updateAlbumPositionPhoto(userID, albumID, position, photo);},
+};
