@@ -31,8 +31,8 @@ app.use(bodyParser.json());
 const MainRouter = express.Router();
 
 // Route Handlers
-MainRouter.use('/image', require('./routes/image').router);
-MainRouter.use('/album', require('./routes/album').router);
+MainRouter.use('/image', require('./routes/image'));
+MainRouter.use('/album', require('./routes/album'));
 
 // prepend '/api' for our http requests 
 app.use('/api', MainRouter);

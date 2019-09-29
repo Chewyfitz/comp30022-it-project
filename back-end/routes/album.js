@@ -98,6 +98,4 @@ router.delete('/:albumId/:pageId', (req, res) => {
 	res.sendStatus(200);
 });
 
-module.exports = {
-	router: router
-};
+module.exports = router;
