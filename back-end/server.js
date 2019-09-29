@@ -18,6 +18,8 @@
 // var cors = require ('cors');
 // const logger = require('morgan');
 // app.use(cors());
+// app.use(bodyParser.urlencoded({extended: false}));
+// app.use(logger('dev'));
 
 const bodyParser = require('body-parser');
 const express = require('express');
@@ -29,11 +31,6 @@ const router = express.Router();
 const database = require('./database.js');
 app.use(bodyParser.json());
 
-
-// ** To be added at a later date
-// app.use(bodyParser.urlencoded({extended: false}));
-// app.use(logger('dev'));
-
 // ============================================================================
 // '/api/image' routes
 
@@ -41,14 +38,24 @@ router.get('/image/:imageId/view', (req, res) => {
 	// Get a specific image's direct url
 	console.log("GET /image/:imageID/view");
 	console.log(req.params);
-	res.sendStatus(200);
+	// Might be a good idea to change this to getPhotoReference later on
+	database.getPhotoData('test_user', req.params.imageId).then((image) => {
+		console.log(image.reference);
+		res.send(image.reference);
+	})
+	// res.sendStatus(200);
 });
 
 router.get('/image/:imageId', (req, res) => {
 	// Get an image - Reference, Name, DateTime, Description
 	console.log("GET /image/:imageID");
 	console.log(req.params);
-	res.sendStatus(200);
+	database.getPhotoData('test_user', req.params.imageId).then((image) => {
+		console.log(image);
+		res.send(image);
+	});
+	// res.send();
+	// res.sendStatus(200);
 	// res.end();
 });
 
@@ -56,6 +63,7 @@ router.post('/image/', (req, res) =>{
 	// Add a new image - Likely will need upload or some kind of url
 	console.log("POST /image/");
 	console.log(req.params);
+	console.log(req.query);
 	res.sendStatus(200);
 });
 
@@ -74,7 +82,30 @@ router.get   ('/album/:albumId?', (req, res) => {
 	// Get an album with a specified ID
 	console.log("GET /album/:albumID");
 	console.log(req.params);
-	console.log(req.query);
+
+	// get 'un'-album if no id specified
+	if (!req.params.albumId) albumId = 'un';
+	// console.log(req.query);
+	database.getAlbumData('test_user', 'un').then((album) => {
+		// TODO: Work out what to send here?
+
+		console.log(album);
+		console.log(album.photos[0]._key);
+		console.log(album.photos[0].exists);
+
+		/*
+		album.photos[0].get().then(doc => {
+			console.log(doc);
+			if (!doc.exists) {
+				console.log('No such document!');
+			} else {
+				console.log('Document data:', doc.data());
+			}
+		}).catch(err => {
+			console.log('Error getting document', err);
+		});
+		*/
+	});
 	res.sendStatus(200);
 });
 router.post  ('/album/', (req, res) => {
