@@ -1,4 +1,3 @@
-const bodyParser = require('body-parser');
 const express = require('express');
 const router = express.Router();
 const database = require('../database.js');
@@ -11,31 +10,24 @@ router.get   ('/:albumId?', (req, res) => {
 	// Get an album with a specified ID
 	console.log("GET /album/:albumId");
 	console.log(req.params);
+	console.log(req.query);
+	// console.log(req.headers.authorization);
 
 	// get 'un'-album if no id specified
-	if (!req.params.albumId) albumId = 'un';
-	// console.log(req.query);
-	database.getAlbumData('test_user', 'un').then((album) => {
-		// TODO: Work out what to send here?
+	!req.params.albumId ? albumId = 'un' : albumId = req.params.albumId;
 
-		console.log(album);
-		console.log(album.photos[0]._key);
-		console.log(album.photos[0].exists);
+	database.getAlbumData('test_user', albumId).then((album) => {
+		// For now we just return the IDs of all the photos.
+		return album.photos.map(photo => photo.id);
 
-		/*
-		album.photos[0].get().then(doc => {
-			console.log(doc);
-			if (!doc.exists) {
-				console.log('No such document!');
-			} else {
-				console.log('Document data:', doc.data());
-			}
-		}).catch(err => {
-			console.log('Error getting document', err);
-		});
-		*/
+	}).then(photos => {
+		console.log(photos);
+		res.send({photos});
+	}).catch(() => {
+		res.sendStatus(404);
+		console.log('Not Found');
 	});
-	res.sendStatus(200);
+	// res.sendStatus(200);
 });
 router.post  ('/', (req, res) => {
 	// Create a new album, and return its ID
