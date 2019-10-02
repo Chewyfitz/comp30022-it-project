@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const database = require('../database.js');
+const util = require('../util/image');
 
 // ============================================================================
 // '/api/image' routes
@@ -9,25 +10,23 @@ router.get('/:imageId/view', (req, res) => {
 	// Get a specific image's direct url
 	console.log("GET /image/:imageID/view");
 	console.log(req.params);
-	// Might be a good idea to change this to getPhotoReference later on
-	database.getPhotoData('test_user', req.params.imageId).then((image) => {
-		console.log(image.reference);
-		res.send(image.reference);
-	})
-	// res.sendStatus(200);
+
+	// TODO: Add catch for possible errors
+	// call the util/image.js function that deals with this route
+	util.getImageRefById('test_user', req.params.imageId).then((imageRef) => {
+		res.send(imageRef);
+	});
 });
 
 router.get('/:imageId', (req, res) => {
 	// Get an image - Reference, Name, DateTime, Description
 	console.log("GET /image/:imageID");
 	console.log(req.params);
-	database.getPhotoData('test_user', req.params.imageId).then((image) => {
-		console.log(image);
-		res.send(image);
+	// TODO: Add catch for possible errors
+	// call the util/image.js function that deals with this route
+	util.getImageById('test_user', req.params.imageId).then((imageData) => {
+		res.send(imageData);
 	});
-	// res.send();
-	// res.sendStatus(200);
-	// res.end();
 });
 
 router.post('/', (req, res) =>{

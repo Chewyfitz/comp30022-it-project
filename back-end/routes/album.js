@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const database = require('../database.js');
+const util = require('../util/album');
 
 // ============================================================================
 // '/api/album' routes 
@@ -9,24 +10,20 @@ const database = require('../database.js');
 router.get   ('/:albumId?', (req, res) => {
 	// Get an album with a specified ID
 	console.log("GET /album/:albumId");
-	console.log(req.params);
-	console.log(req.query);
+	console.log("params: "+req.params);
+	console.log("query: "+req.query);
 	// console.log(req.headers.authorization);
 
-	// get 'un'-album if no id specified
-	!req.params.albumId ? albumId = 'un' : albumId = req.params.albumId;
+	util.getAlbumById('test_user', req.params.albumId).then((album) =>{
+		res.send(album);
+	});
 
-	database.getAlbumData('test_user', albumId).then((album) => {
-		// For now we just return the IDs of all the photos.
-		return album.photos.map(photo => photo.id);
-
-	}).then(photos => {
-		console.log(photos);
-		res.send({photos});
-	}).catch(() => {
+	// TODO: Fix album not found exceptions
+	// Catch Notfound
+	/*.catch(() => {
 		res.sendStatus(404);
 		console.log('Not Found');
-	});
+	});*/
 	// res.sendStatus(200);
 });
 router.post  ('/', (req, res) => {
