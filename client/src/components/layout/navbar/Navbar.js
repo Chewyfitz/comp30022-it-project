@@ -13,16 +13,16 @@ const Navbar = () => {
     return(
         
         //"navbar-expand-lg for extended components on navbar
-        <nav className="navbar navbar-expand-lg navbar-light" style={{backgroundColor:'#e3f2fd'}}>
+        <nav className="navbar navbar-expand-lg navbar-light" style={{backgroundColor:'#7488A3'}}>
         <div class="container-fluid">
             {/* Main navbar
                 Link to='/' = click to go to home page             
             */}
-            <a className="navbar-brand navbar-center-cust" href="#">Albumify</a>
-           
-            <button type="button" class="btn  nbtn-default navbar-btn">Go Home</button>
-              
-            <button type="button" class="btn btn-default navbar-btn">Search Photos</button>
+            <a className="navbar-brand navbar-center-cust text-light" href="#">Albumify</a>
+            <button type="button" class="btn btn-outline-light">Go Home</button>
+            
+            <button type="button" class="btn btn-outline-light">Search Photos</button>
+            
             
             {/* Sub navbar */}            
             {/* <div class="row">
