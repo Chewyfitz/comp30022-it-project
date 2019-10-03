@@ -18,11 +18,7 @@ const Navbar = () => {
                 Link to='/' = click to go to home page             
             */}
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainbuttons">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="navbar-collapse collapse w-100" id="#mainbuttons">
+            <div class="navbar-collapse collapse w-100 order-1 order-md-0 mainbuttons">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
                         <button type="button" class="btn btn-outline-light">Go Home</button>
@@ -30,18 +26,23 @@ const Navbar = () => {
                 </ul>
             </div>
 
-            <div class="mx-auto">
+            <div class="mx-auto order-0">
                 <a class="navbar-brand mx-auto" href="#">Albumify</a>
-
             </div>
 
-            <div class="navbar-collapse collapse w-100" id="#mainbuttons">
+            <div class="navbar-collapse collapse w-100 order-3 mainbuttons">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
                         <button type="button" class="btn btn-outline-light">Search Photos</button>
                     </li>
                 </ul>
             </div>
+
+            {/* toggler button, appears when screen is smaller */}
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".mainbuttons">
+                <span class="navbar-toggler-icon"></span>
+            </button>            
+
         </nav>      
 
     )
