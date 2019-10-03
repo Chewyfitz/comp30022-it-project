@@ -13,9 +13,16 @@ async function getImageRefById(user, imageId){
     return photoData.reference;
 }
 
-// TODO: Implement Uploads
-async function uploadPhotoToUser(user, image){
-    console.log("Err: Incomplete Function uploadPhotoToUser");
+/**
+ * Add a new photo to a given user.
+ * This might need extra processing, deal with that when required. 
+ * @param {String} user - the username of the owner of the image
+ * @param {String} image - url/reference to the image that's being added
+ * @param {String} photoDateTime - datetime as string
+ */
+async function addPhotoToUser(user, image, photoDateTime = null){
+    success = database.addPhoto(user, image, photoDateTime);
+    return success;
 }
 
 // TODO: Implement Deletions
@@ -26,6 +33,6 @@ async function deletePhotoById(user, image){
 module.exports = {
     getImageById,
     getImageRefById,
-    uploadPhotoToUser,
+    addPhotoToUser,
     deletePhotoById
 }

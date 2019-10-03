@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const database = require('../database.js');
 const util = require('../util/image');
 
 // ============================================================================
@@ -29,12 +28,23 @@ router.get('/:imageId', (req, res) => {
 	});
 });
 
+/**
+ * Currently only allows URL-based "upload"
+ * will add actual image upload... when I can figure out how
+ */
 router.post('/', (req, res) =>{
 	// Add a new image - Likely will need upload or some kind of url
 	console.log("POST /image/");
+	// TODO: Add user auth check
 	console.log(req.params);
 	console.log(req.query);
-	res.sendStatus(200);
+	if(req.query.user && req.query.image){
+		util.addPhotoToUser(req.query.user, req.query.image).then(responseStatus => {
+			responseStatus?res.sendStatus(200) : res.sendStatus(500);
+		});
+	} else{
+		res.sendStatus(400);
+	}
 });
 
 router.delete('/', (req, res) => {
