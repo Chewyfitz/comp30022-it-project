@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 
 //COMPONENTS
 import Navbar from './components/layout/navbar/Navbar'
+import SubNavbar from './components/layout/navbar/SubNavbar'
 
 
 class App extends Component {
@@ -13,6 +14,7 @@ class App extends Component {
       <BrowserRouter>
         <div className="App">
           <Navbar />
+          <SubNavbar />
         </div>
       </BrowserRouter>
     );
