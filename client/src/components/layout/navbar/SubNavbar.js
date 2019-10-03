@@ -18,14 +18,23 @@ const SubNavbar = () => {
                 </button>
                 <div class="collapse navbar-collapse text-center" id="extrabuttons">
                     <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <button type="button" class="btn btn-default navbar-btn dropdown-toggle subnavbar-text" id="dropdownMenuButton" data-toggle="dropdown">
+                                Add to Album
+                            </button>
+
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </li>
+
                         <li class="nav-item">
-                            <button type="button" class="btn nbtn-default navbar-btn subnavbar-text">Add to Album</button>
+                            <button type="button" class="btn btn-default navbar-btn subnavbar-text">Upload Photos</button>
                         </li>
                         <li class="nav-item">
-                            <button type="button" class="btn nbtn-default navbar-btn subnavbar-text">Upload Photos</button>
-                        </li>
-                        <li class="nav-item">
-                            <button type="button" class="btn nbtn-default navbar-btn subnavbar-text">Delete Photos</button>
+                            <button type="button" class="btn btn-default navbar-btn subnavbar-text">Delete Photos</button>
                         </li>
                     </ul>
                 </div>
@@ -35,25 +44,3 @@ const SubNavbar = () => {
 }
  
 export default SubNavbar; 
-
-            {/*Sub navbar*/}
-{/* 
-            <button class="navbar-toggler mr-2" type="button" data-toggle="collapse" data-target="#extrabuttons">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="navbar-nav w-100 justify-content-center" id="extrabuttons">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <button type="button" class="btn nbtn-default navbar-btn">Add to Album</button>
-                    </li>
-                    <li class="nav-item">
-                        <button type="button" class="btn nbtn-default navbar-btn">Upload Photos</button>
-                    </li>
-                    <li class="nav-item">
-                        <button type="button" class="btn nbtn-default navbar-btn">Delete Photos</button>
-                    </li>
-                </ul>
-            </div>
-        </nav> */}
-

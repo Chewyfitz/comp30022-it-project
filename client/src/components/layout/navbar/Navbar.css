@@ -24,10 +24,10 @@
 }
 
 .subnavbar-text {
-    color: #7488A3;
+    color: #7488A3 !important;
 }
 
 .subnavbar-text:hover {
-    color: #F4F6F8;
+    color: #F4F6F8 !important;
     background-color:#7488A3
 }
