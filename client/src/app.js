@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom'
 import Navbar from './components/layout/navbar/Navbar'
 import SubNavbar from './components/layout/navbar/SubNavbar'
 import Sidebar from './components/layout/navbar/Sidebar'
+import PhotoList from './components/layout/photolist/PhotoList';
 
 import "./App.css";
 
@@ -18,9 +19,11 @@ class App extends Component {
         <div className="App">
           <Sidebar pageWrapId={"page-wrap"} outerContainerId={"App"}/>
             
-          <div className="navbar-margins" id="page-wrap">
+          <div id="page-wrap">
             <Navbar />
             <SubNavbar />
+            <PhotoList />
+
           </div> 
             
         </div>
