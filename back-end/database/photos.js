@@ -17,7 +17,7 @@ const photoFields = {
  * @param {String} userID - The username of the owner of the photo
  * @param {String} photoReference - The reference to the photo that's being
  *                                  added to the database
- * @param {String} [photoDateTime=null] - The DateTime of when the photo was
+ * @param {String} [photoDateTime=undefined] - The DateTime of when the photo was
  *                                        taken
  *
  * @return {Boolean} - True only if the new photo was successfully added to the
@@ -42,7 +42,7 @@ function addPhoto(userID, photoReference, photoDateTime=null) {
  * @param {String} userID - The username of the new user who owns the photo
  * @param {String} photoID - The key of the document in the Photos Collection
  *                           that we are updating the DateTime in
- * @param {String} [dateTime=null] - The DateTime of when the photo was
+ * @param {String} [dateTime=undefined] - The DateTime of when the photo was
  *                                        taken
  *
  * @return {Boolean} - True only if the photo's DateTime was successfully
@@ -54,8 +54,8 @@ function updatePhotoDateTime(userID, photoID, dateTime){
     //Add the data that will be updated
     data[photoFields.dateTime] = dateTime;
     //Attempt to update the Document and return its success
-    let success = general.updateDataInDoc(data, general.photosPath(userID), photoID);
-    return success;
+    let docID = general.updateDataInDoc(data, general.photosPath(userID), photoID);
+    return docID;
 }
 
 /**
@@ -75,7 +75,7 @@ function updatePhotoDescription(userID, photoID, description){
     //If there is a password, then add it to the data that will be updated
     data[photoFields.description] = description;
     //Attempt to update the Document and return its success
-    let success = general.updateDataInDoc(data, photosPath(userID), photoID);
+    let success = general.updateDataInDoc(data, general.photosPath(userID), photoID);
     return success;
 }
 
@@ -96,7 +96,7 @@ function updatePhotoReference(userID, photoID, reference){
     //If there is a password, then add it to the data that will be updated
     data[photoFields.reference] = reference;
     //Attempt to update the Document and return its success
-    let success = general.updateDataInDoc(data, photosPath(userID), photoID);
+    let success = general.updateDataInDoc(data, general.photosPath(userID), photoID);
     return success;
 }
 
@@ -111,7 +111,7 @@ function updatePhotoReference(userID, photoID, reference){
  * @return {firebase.firestore.DocumentData} - If the Data was successfully
  *                                             retrieved it will return the
  *                                             Data, otherwise it will return
- *                                             null
+ *                                             undefined
  * */
 async function getPhotoData(userID, photoID){
     //Attempt to retrieve the Data for the the Photo and return it
@@ -129,11 +129,11 @@ async function getPhotoData(userID, photoID){
  * @return {firebase.firestore.Timestamp} - If the DateTime was successfully
  *                                         retrieved it will return the
  *                                         DateTime, otherwise it will return
- *                                         null\
+ *                                         undefined\
  * */
 function getPhotoDateTime(userID, photoID){
     //Initialisation
-    let dateTime = null;
+    let dateTime = undefined;
     //Attempt to retrieve the Data for the User
     let data = getPhotoData(userID, photoID);
     try {
@@ -156,11 +156,11 @@ function getPhotoDateTime(userID, photoID){
  *
  * @return {String} - If the description was successfully retrieved it will
  *                    return the description as a String, otherwise it will
- *                    return null
+ *                    return undefined
  * */
 function getPhotoDescription(userID, photoID){
     //Initialisation
-    let description = null;
+    let description = undefined;
     //Attempt to retrieve the Data for the User
     let data = getPhotoData(userID, photoID);
     try {
@@ -182,10 +182,10 @@ function getPhotoDescription(userID, photoID){
  *                           that we are getting the photo reference from
  *
  * @return {String} - If the reference was successfully retrieved it will return
- *                    it as a string, otherwise it will return null*/
+ *                    it as a string, otherwise it will return undefined*/
 function getPhotoReference(userID, photoID){
     //Initialisation
-    let ref = null;
+    let ref = undefined;
     //Attempt to retrieve the Data for the User
     let data = getPhotoData(userID, photoID);
     try {

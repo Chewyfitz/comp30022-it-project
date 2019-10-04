@@ -2,6 +2,7 @@
  * Collection*/
 
 const general = require('./general_database');
+const query = require('./query');
 
 /*Used to reference fields that are stored in the Documents that belong to the
 Albums (Sub)Collection*/
@@ -30,8 +31,8 @@ function addAlbum(userID, name) {
     data[albumFields.template] = 0;
     data[albumFields.view] = 'Overview';
     //Attempt to Create the Document and return its success
-    let success = general.addDataToDoc(data, general.albumsPath(userID), name);
-    return success;
+    let docID = general.addDataToDoc(data, general.albumsPath(userID), name);
+    return docID;
 }
 
 /**
@@ -40,16 +41,16 @@ function addAlbum(userID, name) {
  * @param {String} userID - The username of the new user who owns the album
  * @param {String} albumID - The key of the document in the Albums Collection
  *                           that we are updating the name in
- * @param {String} [name=null] - The new name of the album
+ * @param {String} [name=undefined] - The new name of the album
  *
  * @return {Boolean} - True only if the albums name was successfully
  *                     updated in the database
  * */
-function updateAlbumName(userID, albumID, name=null) {
+function updateAlbumName(userID, albumID, name=undefined) {
     //Initialisation
     let data = {};
     //If there is a name, then add it to the data that will be updated
-    if(name != null){
+    if(name){
         data[albumFields.name] = name;
     }
     //Attempt to update the Document and return its success
@@ -63,7 +64,7 @@ function updateAlbumName(userID, albumID, name=null) {
  * @param {String} userID - The username of the new user who owns the album
  * @param {String} albumID - The key of the document in the Albums Collection
  *                           that we are updating the name in
- * @param {String} [template=null] - The new template of the album
+ * @param {String} [template=undefined] - The new template of the album
  *
  * @return {Boolean} - True only if the albums template was successfully
  *                     updated in the database
@@ -72,7 +73,7 @@ function updateAlbumTemplate(userID, albumID, template=0) {
     //Initialisation
     let data = {};
     //If there is a template, then add it to the data that will be updated
-    if(template != null){
+    if(template){
         data[albumFields.template] = template;
     }
     //Attempt to update the Document and return its success
@@ -86,16 +87,16 @@ function updateAlbumTemplate(userID, albumID, template=0) {
  * @param {String} userID - The username of the new user who owns the album
  * @param {String} albumID - The key of the document in the Albums Collection
  *                           that we are updating the name in
- * @param {String} [view=null] - The new name of the album
+ * @param {String} [view=undefined] - The new name of the album
  *
  * @return {Boolean} - True only if the albums view was successfully
  *                     updated in the database
  * */
-function updateAlbumView(userID, albumID, view=null){
+function updateAlbumView(userID, albumID, view=undefined){
     //Initialisation
     let data = {};
     //If there is a view, then add it to the data that will be updated
-    if(view != null){
+    if(view){
         data[albumFields.view] = view;
     }
     //Attempt to update the Document and return its success
@@ -113,7 +114,7 @@ function updateAlbumView(userID, albumID, view=null){
  * @return {firebase.firestore.DocumentData} - If the Data was successfully
  *                                             retrieved it will return the
  *                                             Data, otherwise it will return
- *                                             null
+ *                                             undefined
  * */
 async function getAlbumData(userID, albumID) {
     //Attempt to retrieve the Data for the the album and return it
@@ -129,10 +130,10 @@ async function getAlbumData(userID, albumID) {
  *                           that we are getting the name from
  *
  * @return {String} - If the name was successfully retrieved it will return the
- *                    name as a String, otherwise it will return null
+ *                    name as a String, otherwise it will return undefined
  * */
 function getAlbumName (userID, albumID){
-    let name = null;
+    let name = undefined;
     let data = getAlbumData(userID, albumID);
     try {
         //Try to retrieve the value from the data
@@ -153,10 +154,10 @@ function getAlbumName (userID, albumID){
  *                           that we are getting the template from
  *
  * @return {int} - If the template was successfully retrieved it will return
- *                    the template as an int, otherwise it will return null
+ *                    the template as an int, otherwise it will return undefined
  * */
 function getAlbumTemplate (userID, albumID){
-    let template = null;
+    let template = undefined;
     let data = getAlbumData(userID, albumID);
     try {
         //Try to retrieve the value from the data
@@ -177,10 +178,10 @@ function getAlbumTemplate (userID, albumID){
  *                           that we are getting the view from
  *
  * @return {String} - If the name was successfully retrieved it will return the
- *                    view as a String, otherwise it will return null
+ *                    view as a String, otherwise it will return undefined
  * */
 function getAlbumView (userID, albumID){
-    let view = null;
+    let view = undefined;
     let data = getAlbumData(userID, albumID);
     try {
         //Try to retrieve the value from the data
@@ -193,11 +194,29 @@ function getAlbumView (userID, albumID){
     return view;
 }
 
+/**
+ * Gets all the names of the albums owned by a user
+ *
+ * @param {String} userID - The username of the new user who owns the album
+ *
+ * @return {Object} - basically a dictionary with the album ID as the key and
+ *                    the album name as the value.
+ * */
+async function getAllAlbumNames(userID) {
+    let names = {};
+    let allData = await query.getAllDocsInCollection(general.albumsPath(userID));
+    await allData.forEach(value => {
+        names[value.id] = value.data()[albumFields.name];
+    });
+    return names;
+}
+
 /**Exports the functions and values that are intended to be used by
  * database.js*/
 module.exports = {
     albumFields: albumFields,
     addAlbum: addAlbum,
+    getAllAlbumNames: getAllAlbumNames,
     getAlbumData: getAlbumData,
     getAlbumName: getAlbumName,
     getAlbumTemplate: getAlbumTemplate,

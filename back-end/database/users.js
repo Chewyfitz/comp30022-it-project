@@ -17,16 +17,17 @@ const userFields = {
  * @param {String} password - The password the User will use to log in CAUTION:
  *                            SHOULD BE HASHED FIRST
  *
- * @return {Boolean} - True only if the new user was successfully added to the
- *                     database*/
+ * @return {Boolean} - Key to the new Users Document only if the new user was
+ *                     successfully added to the database, otherwise undefined
+ * */
 function addUser(userID, password) {
     //Initialisation
     let data = {};
     //Add the appropriate data to be stored in the database
     data[userFields.password] = password;
     //Attempt to Create the Document and return its success
-    let success = general.addDataToDoc(data, general.usersPath(), userID);
-    return success
+    let docID = general.addDataToDoc(data, general.usersPath(), userID);
+    return docID
 }
 
 /**
@@ -43,7 +44,7 @@ function updateUserPassword(userID, password=null){
     //Initialisation
     let data = {};
     //If there is a password, then add it to the data that will be updated
-    if(password != null){
+    if(password){
         data[userFields.password] = password;
     }
     //Attempt to update the Document and return its success
