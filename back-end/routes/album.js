@@ -1,7 +1,6 @@
-const bodyParser = require('body-parser');
 const express = require('express');
 const router = express.Router();
-const database = require('../database.js');
+const util = require('../util/album');
 
 // ============================================================================
 // '/api/album' routes 
@@ -10,32 +9,21 @@ const database = require('../database.js');
 router.get   ('/:albumId?', (req, res) => {
 	// Get an album with a specified ID
 	console.log("GET /album/:albumId");
-	console.log(req.params);
+	console.log("params: "+req.params);
+	console.log("query: "+req.query);
+	// console.log(req.headers.authorization);
 
-	// get 'un'-album if no id specified
-	if (!req.params.albumId) albumId = 'un';
-	// console.log(req.query);
-	database.getAlbumData('test_user', 'un').then((album) => {
-		// TODO: Work out what to send here?
-
-		console.log(album);
-		console.log(album.photos[0]._key);
-		console.log(album.photos[0].exists);
-
-		/*
-		album.photos[0].get().then(doc => {
-			console.log(doc);
-			if (!doc.exists) {
-				console.log('No such document!');
-			} else {
-				console.log('Document data:', doc.data());
-			}
-		}).catch(err => {
-			console.log('Error getting document', err);
-		});
-		*/
+	util.getAlbumById('test_user', req.params.albumId).then((album) =>{
+		res.send(album);
 	});
-	res.sendStatus(200);
+
+	// TODO: Fix album not found exceptions
+	// Catch Notfound
+	/*.catch(() => {
+		res.sendStatus(404);
+		console.log('Not Found');
+	});*/
+	// res.sendStatus(200);
 });
 router.post  ('/', (req, res) => {
 	// Create a new album, and return its ID
