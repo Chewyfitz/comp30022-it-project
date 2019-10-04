@@ -15,7 +15,7 @@ class App extends Component {
   render() {
     return (
 
-      <div className="RootElement">
+      <div className="RootElement main-format">
         <div className="App">
           <Sidebar pageWrapId={"page-wrap"} outerContainerId={"App"}/>
             

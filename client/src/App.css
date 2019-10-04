@@ -1,5 +1,10 @@
 /* The rest copied directly from react-burger-menu docs */
 
+/*global format*/
+.main-format{
+  background: #F4F6F8;
+}
+
 /* Position and sizing of burger button */
 .bm-burger-button {
   position: fixed;
@@ -10,12 +15,20 @@
   transform: rotate(90deg);
 }
 
+/*button formatting*/
 .icon-text {
   color: #F4F6F8 !important;
   background-color:#4C734E !important;
   width: 140px;
   height: 40px;
   font-weight: bold;
+}
+
+/*text in sidebar formatting*/
+.menu-text {
+  color: #F4F6F8 !important;
+  padding: 10px;
+
 }
 
 /* Color/shape of burger icon bars */

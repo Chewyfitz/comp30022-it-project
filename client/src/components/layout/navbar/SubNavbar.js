@@ -4,6 +4,8 @@
 import React from 'react'
 import "./Navbar.css"
 
+import NavDropdown from './NavDropdown';
+
 //COMPONENTs
 
 
@@ -24,9 +26,7 @@ const SubNavbar = () => {
                             </button>
 
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
+                                <NavDropdown />
                             </div>
                         </li>
 
