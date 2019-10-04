@@ -1,19 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import SignUp from './pages/SignUp.js';
-import { BrowserRouter as Router, 
-	Route,
-	Link,
-	Redirect,
-	withRouter } from "react-router-dom";
-import Home from './pages/Home.js';
-import SideBar from './components/layout/Sidebar.js';
-import { createStore } from 'redux'
-import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import Album from './pages/Album.js';
+import './index.css';
+import App from './app';
+import * as serviceWorker from './serviceWorker';
+import 'bootstrap/dist/css/bootstrap.css';
 
-const drawerWidth = 240
+
+//renders app for you, gets app puts into html to get actually printed
+ReactDOM.render(<App />, document.getElementById('root'));
 
 function SideOpen(state = 'True', action) {
   switch (action.type) {

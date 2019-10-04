@@ -1,0 +1,81 @@
+/* The rest copied directly from react-burger-menu docs */
+
+/*global format*/
+.main-format{
+  background: #F4F6F8;
+}
+
+/* Position and sizing of burger button */
+.bm-burger-button {
+  position: fixed;
+  width: 140px;
+  height: 40px;
+  left: -53px;
+  top: 200px;
+  transform: rotate(90deg);
+}
+
+/*button formatting*/
+.icon-text {
+  color: #F4F6F8 !important;
+  background-color:#4C734E !important;
+  width: 140px;
+  height: 40px;
+  font-weight: bold;
+}
+
+/*text in sidebar formatting*/
+.menu-text {
+  color: #F4F6F8 !important;
+  padding: 10px;
+
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+background: #717381;
+
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+height: 50px;
+width: 24px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+background: #F4F6F8;
+}
+
+/* General sidebar styles */
+.bm-menu {
+background: #717381;
+padding: 2.5em 1.5em 0;
+font-size: 1.15em;
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+fill: #717381;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+color: #E2D5C8;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+background: #717381;
+}
+
+.bm-css-icon-close div, .mk-css-icon-menu div {
+  display: none;
+}
+.bm-dashboard-trigger .mk-css-icon-menu {
+ background-image: url(https://previews.123rf.com/images/hedgehogvector/hedgehogvector1803/hedgehogvector180300023/97040738-burger-line-simple-icon-.jpg);
+ background-repeat: no-repeat;
+ background-size: contain;
+}
+
