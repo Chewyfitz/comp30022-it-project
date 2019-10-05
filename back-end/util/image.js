@@ -10,7 +10,7 @@ const { Storage } = require('@google-cloud/storage');
 // config is the result of some extra code to parse a JSON environment variable
 var config = require('../config/gcsConfig');
 
-const gcs = new Storage(config);
+const gcs = new Storage(config());
 
 // ============================================================================
 // Functions
@@ -79,6 +79,7 @@ async function uploadPhotos(files){
         console.log(err);
     });
     // If the stream finishes, we can return a URI
+    var string = []
     stream.on('finish', async () => {
         return file.makePublic().then( async () => {
             // If there are more images we'll deal with those before we return
@@ -86,18 +87,22 @@ async function uploadPhotos(files){
                 console.log("extra photo");
                 // Remove the head of the list
                 files = files.slice(1);
-                // call createPhoto recursively
-                extras = await createPhoto(files);
+                // call uploadPhotos recursively
+                extras = await uploadPhotos(files);
             } else {
                 extras = []
             }
             // Concatenate any extra images and return the list
-            return [`https://storage.googleapis.com/${bucket.name}/${gcsname}`].concat(extras);
-        });
-    }).catch( err => {
-        console.error("ERROR: ", err);
-    });
+            string = [`https://storage.googleapis.com/${bucket.name}/${gcsname}`].concat(extras);
+            console.log(string);
+            return string;
+        }).catch( err => {
+            console.error("ERROR: ", err);
+        });;
+    })
     stream.end(files[0].buffer);
+    // TODO: Return the value properly
+    return string;
 }
 
 module.exports = {

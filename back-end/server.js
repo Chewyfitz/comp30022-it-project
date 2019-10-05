@@ -21,11 +21,13 @@
 // app.use(bodyParser.urlencoded({extended: false}));
 // app.use(logger('dev'));
 
-const bodyParser = require('body-parser');
 const express = require('express');
 require('dotenv').config();
 const API_PORT = process.env.PORT || 3001;
 const app = express();
+
+// Middleware
+const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 const MainRouter = express.Router();

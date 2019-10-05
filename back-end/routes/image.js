@@ -39,15 +39,11 @@ router.get('/:imageId', (req, res) => {
 	});
 });
 
-/**
- * Currently only allows URL-based "upload"
- * will add actual image upload... when I can figure out how
- */
-router.post('/', cors(), upload.array('file'), (req, res) =>{
+router.post('/', cors(), upload.array('file'), (req, res) => {
 	// Add a new image - Likely will need upload or some kind of url
 	console.log("POST /image/");
-	// TODO: Add user auth check
-  console.log(req.file);
+  // TODO: Add user auth check
+  console.log(req.files);
 	console.log(req.params);
 	console.log(req.query);
 	if(req.query.user && req.query.image){
@@ -63,6 +59,7 @@ router.post('/', cors(), upload.array('file'), (req, res) =>{
     // Upload the sent files
     util.uploadPhotos(req.files).then(refs => {
       // Add the uploaded file URIs to the user so we don't lose them.
+      console.log(refs);
       util.addPhotosToUser(req.query.user, refs).then(responseStatus => {
         responseStatus ? res.sendStatus(200) : res.sendStatus(500);
       });
