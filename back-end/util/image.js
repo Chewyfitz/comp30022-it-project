@@ -48,7 +48,9 @@ async function addPhotosToUser(user, images){
     // Iterate through each image and add it individually
     images.foreach(image => {
         // Return a success status for each image attempt
-        successes.push(await addPhotoToUser(user, image));
+        imageref = addPhotoToUser(user, image).then(imageref => {
+            successes.push(imageref);
+        });
     });
     return successes;
 }

@@ -61,11 +61,12 @@ router.post('/', cors(), upload.array('file'), (req, res) =>{
 		});
   } else if(req.query.user && req.files){
     // Upload the sent files
-    refs = await util.uploadPhotos(req.files);
-    // Add the uploaded file URIs to the user so we don't lose them.
-    util.addPhotosToUser(req.query.user, refs).then(responseStatus => {
-      responseStatus ? res.sendStatus(200) : res.sendStatus(500);
-    })
+    util.uploadPhotos(req.files).then(refs => {
+      // Add the uploaded file URIs to the user so we don't lose them.
+      util.addPhotosToUser(req.query.user, refs).then(responseStatus => {
+        responseStatus ? res.sendStatus(200) : res.sendStatus(500);
+      });
+    });
   } else {
     // Something weird happened
 		res.sendStatus(400);
