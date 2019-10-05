@@ -3,6 +3,17 @@ const router = express.Router();
 const util = require('../util/image');
 
 // ============================================================================
+// Middleware
+
+// Cors enables cross-origin resource sharing
+const cors = require('cors');
+
+// Multer enables reading form data from a HTTP request
+var multer = require('multer');
+var storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+// ============================================================================
 // '/api/image' routes
 
 router.get('/:imageId/view', (req, res) => {
@@ -32,17 +43,31 @@ router.get('/:imageId', (req, res) => {
  * Currently only allows URL-based "upload"
  * will add actual image upload... when I can figure out how
  */
-router.post('/', (req, res) =>{
+router.post('/', cors(), upload.array('file'), (req, res) =>{
 	// Add a new image - Likely will need upload or some kind of url
 	console.log("POST /image/");
 	// TODO: Add user auth check
+  console.log(req.file);
 	console.log(req.params);
 	console.log(req.query);
 	if(req.query.user && req.query.image){
+    // Add the URL to the user.
 		util.addPhotoToUser(req.query.user, req.query.image).then(responseStatus => {
-			responseStatus?res.sendStatus(200) : res.sendStatus(500);
+      // If you've never seen this format before, it's just an if/then/else in 
+      // a different form (that I think looks clean).
+      // Read it similarly to a normal english sentence: 
+      // [is] responseStatus? res.sendStatus(200)[.] : [else] res.sendStatus(500)
+			responseStatus ? res.sendStatus(200) : res.sendStatus(500);
 		});
-	} else{
+  } else if(req.query.user && req.files){
+    // Upload the sent files
+    refs = await util.uploadPhotos(req.files);
+    // Add the uploaded file URIs to the user so we don't lose them.
+    util.addPhotosToUser(req.query.user, refs).then(responseStatus => {
+      responseStatus ? res.sendStatus(200) : res.sendStatus(500);
+    })
+  } else {
+    // Something weird happened
 		res.sendStatus(400);
 	}
 });
