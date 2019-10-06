@@ -45,13 +45,16 @@ async function addPhotoToUser(user, image, photoDateTime = null){
 // TODO: change successes to document IDs
 async function addPhotosToUser(user, images){
     var successes = []
+    console.log("addPhotosToUser: "+images);
     // Iterate through each image and add it individually
-    images.foreach(image => {
-        // Return a success status for each image attempt
-        imageref = addPhotoToUser(user, image).then(imageref => {
+    for(i in images){
+        console.log(`image: ${images[i]}`);
+        await addPhotoToUser(user, images[i]).then(imageref => {
+            // return an id for each image input attempt
             successes.push(imageref);
-        });
-    });
+        })
+    }
+
     return successes;
 }
 
@@ -63,46 +66,41 @@ async function deletePhotoById(user, image){
 // Thanks to Rowan for figuring out how all this works!
 async function uploadPhotos(files){
     // Set the information for the uploaded file
-    var bucket = gcs.bucket('gs://'+process.env.PROJECTID+'.appspot.com');
-    // filename -- include username?
-    const gcsname = `${Date.now()}-${files[0].originalname}`
-    const file = bucket.file(gcsname); // Prepare the file
-    const stream = file.createWriteStream({ // Set the stream config
-        metadata: {
-            contentType: files[0].mimetype
-        },
-        resumable: false
-    });
-    // If the upload stream errors, log it.
-    stream.on('error', err => {
-        files[0].cloudStorageError = err;
-        console.log(err);
-    });
-    // If the stream finishes, we can return a URI
-    var string = []
-    stream.on('finish', async () => {
-        return file.makePublic().then( async () => {
-            // If there are more images we'll deal with those before we return
-            if(files.length > 1){
-                console.log("extra photo");
-                // Remove the head of the list
-                files = files.slice(1);
-                // call uploadPhotos recursively
-                extras = await uploadPhotos(files);
-            } else {
-                extras = []
-            }
-            // Concatenate any extra images and return the list
-            string = [`https://storage.googleapis.com/${bucket.name}/${gcsname}`].concat(extras);
-            console.log(string);
-            return string;
-        }).catch( err => {
-            console.error("ERROR: ", err);
-        });;
-    })
-    stream.end(files[0].buffer);
-    // TODO: Return the value properly
-    return string;
+    var bucket = gcs.bucket(`gs://${process.env.PROJECTID}.appspot.com`);
+    var strings = [];
+    for(i in files){
+        // filename -- include username?
+        const gcsname = `${Date.now()}-${files[i].originalname}`;
+        const file = bucket.file(gcsname); // prepare the file
+        const stream = file.createWriteStream({ // Set the stream config
+            metadata: {
+                contentType: files[i].mimetype
+            },
+            resumable: false
+        });
+        // Log any errors in the upload stream
+        stream.on('error', err => {
+            // Not sure what this does
+            files[i].cloudStorageError = err;
+            console.error(err);
+        });
+
+        // add the reference for the file to the list
+        const uri = `https://storage.googleapis.com/${bucket.name}/${gcsname}`
+        strings[i] = uri;
+        console.log(`URI ${i}: ${uri}`);
+
+        // make the file public when the stream finishes
+        stream.on('finish', async () => {
+            file.makePublic();
+        });
+
+        // end the stream
+        stream.end(files[i].buffer);
+    }
+
+    // Return the list of URIs
+    return strings;
 }
 
 module.exports = {

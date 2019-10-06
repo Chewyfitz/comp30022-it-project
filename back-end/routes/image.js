@@ -40,12 +40,11 @@ router.get('/:imageId', (req, res) => {
 });
 
 router.post('/', cors(), upload.array('file'), (req, res) => {
+	// variables of interest here are req.files, req.params, and req.query
+
 	// Add a new image - Likely will need upload or some kind of url
 	console.log("POST /image/");
-  // TODO: Add user auth check
-  console.log(req.files);
-	console.log(req.params);
-	console.log(req.query);
+	// TODO: Add user auth check
 	if(req.query.user && req.query.image){
     // Add the URL to the user.
 		util.addPhotoToUser(req.query.user, req.query.image).then(responseStatus => {
@@ -59,10 +58,10 @@ router.post('/', cors(), upload.array('file'), (req, res) => {
     // Upload the sent files
     util.uploadPhotos(req.files).then(refs => {
       // Add the uploaded file URIs to the user so we don't lose them.
-      console.log(refs);
       util.addPhotosToUser(req.query.user, refs).then(responseStatus => {
         responseStatus ? res.sendStatus(200) : res.sendStatus(500);
-      });
+	  });
+	  // TODO: Add the IDs to the un-album.
     });
   } else {
     // Something weird happened
