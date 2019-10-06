@@ -1,6 +1,5 @@
-.page-format{
-    
-
+.album-format{
+   
 }
 
 .page-left{
@@ -9,7 +8,7 @@
     border-right-color: rgb(61, 94, 62) !important;
     border:1px solid #4C734E;
     background-image: linear-gradient(to right, rgba(226, 213, 200, 0), rgba(226, 213, 200, .7), rgba(76, 115, 78, 0.1), rgba(76, 115, 78, 0.2), rgba(118, 145, 106, 0.5),  rgba(76, 115, 78, 0.7));
-    background-color: rgba(226, 213, 200, 0.80);
+    background-color: rgba(240, 227, 215, 0.85);
     width: 35% !important;
     height:75%;
     border-radius:4px;
@@ -23,7 +22,7 @@
     border-left-color: rgb(61, 94, 62) !important;
     border:1px solid #4C734E;
     background-image: linear-gradient(to left, rgba(226, 213, 200, 0), rgba(226, 213, 200, .7), rgba(76, 115, 78, 0.1), rgba(76, 115, 78, 0.2), rgba(118, 145, 106, 0.5),  rgba(76, 115, 78, 0.7));
-    background-color: rgba(226, 213, 200, 0.80);
+    background-color: rgba(240, 227, 215, 0.85);
     width: 35% !important;
     height:75%;
     border-radius:4px;
@@ -51,4 +50,19 @@
     position: absolute;
     left: 40% !important;
     top: 90% !important;
+}
+
+.image_picker .responsive .thumbnail{
+    border:1px solid #4C734E;
+    border-radius:4px;
+    padding:5px;
+    width:150px !important;
+    height:120px !important;
+    opacity:1;
+    margin-right:5px;
+    margin-left:5px;
+    margin-top:-5px;
+    position: relative;
+    right: 10 !important;
+    z-index: 2;
 }

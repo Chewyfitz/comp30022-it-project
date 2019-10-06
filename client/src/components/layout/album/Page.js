@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './Page.css'
+import ImagePicker from 'react-image-picker'
 
 //import images from local
 import img1 from '../photolist/temp_images/1.png'
@@ -16,20 +17,76 @@ import img11 from '../photolist/temp_images/11.png'
 import img12 from '../photolist/temp_images/12.png'
 import img13 from '../photolist/temp_images/13.png'
 //import axios from 'axios'
-const imageList = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13]
+const imageList = [img1, img2, img3, img4, img5, img6]
+const imageList2 = [img7, img8, img9, img10, img11, img12]
 
 
 class Page extends Component {
 
   render() {
     return (
-      <div className='page-format container'>
-
+      <div className='album-format container'>
+      
         <div className='page-left container'>
+        <ImagePicker images={imageList.map((image, i) => ({src: image, value: i}))} />
+          
+          {/* <div class="row">
+            <div class="col-sm">
+              
+            </div>
+            <div class="col-sm">
+              One of three columns
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-sm">
+              One of three columns
+            </div>
+            <div class="col-sm">
+              One of three columns
+            </div>
+          </div>
 
+          <div class="row">
+            <div class="col-sm">
+              One of three columns
+            </div>
+            <div class="col-sm">
+              One of three columns
+            </div>
+          </div>*/}
         </div>
 
         <div className='page-right container'>
+        <ImagePicker images={imageList2.map((image, i) => ({src: image, value: i}))} />
+          {/* <div class="row">
+            <div class="col-sm">
+              One of three columns
+            </div>
+            <div class="col-sm">
+              One of three columns
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm">
+              One of three columns
+            </div>
+            <div class="col-sm">
+              One of three columns
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm">
+              One of three columns
+            </div>
+            <div class="col-sm">
+              One of three columns
+            </div> 
+            
+          </div>*/}
 
         </div>
 
