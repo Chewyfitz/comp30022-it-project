@@ -25,14 +25,17 @@ class PhotoList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-          image: null
+          image: null,
+          arrayImage: []
         }
         this.onPick = this.onPick.bind(this)
     }
      
     onPick(image) {
-        this.setState({image})
-        console.log({image});
+        console.count('onChange');
+        console.log("Image", image);
+        this.setState({ arrayImage : image });
+        
         //todo: connect to backend: 
         //axios.post("./api/image",{})
     }
@@ -41,6 +44,7 @@ class PhotoList extends Component {
         return (
           <div>
             <ImagePicker 
+              multiple={true}
               images={imageList.map((image, i) => ({src: image, value: i}))}
               onPick={this.onPick}
             />

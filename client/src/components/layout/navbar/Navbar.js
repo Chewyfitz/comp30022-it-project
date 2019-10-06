@@ -3,11 +3,8 @@
 //TO DO put all stuff in navbar
 import React from 'react'
 import "./Navbar.css"
- 
 
 //COMPONENTs
-import SignedInLinks from '../SignedInLinks'
-import SignedOutLinks from '../SignedOutLinks'
 
 const Navbar = (a) => {
 
