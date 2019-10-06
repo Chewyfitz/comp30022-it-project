@@ -13,13 +13,13 @@ export default props => {
     // Pass on our props
     
     <Menu {...props} customBurgerIcon={ <div> <button type="button" className="btn icon-text">Albums</button> </div>}>
-      <a className="menu-item menu-text" href="/"> Album 1 </a>
+      <a className="menu-item menu-text" href="/album"> Album 1 </a>
 
-      <a className="menu-item menu-text" href="/burgers"> Album 2 </a>
+      <a className="menu-item menu-text" href="/album"> Album 2 </a>
 
-      <a className="menu-item menu-text" href="/pizzas"> Album 3 </a>
+      <a className="menu-item menu-text" href="/album"> Album 3 </a>
 
-      <a className="menu-item menu-text" href="/desserts"> Album 4 </a>
+      <a className="menu-item menu-text" href="/album"> Album 4 </a>
     </Menu>
   );
 };

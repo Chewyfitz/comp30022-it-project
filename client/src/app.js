@@ -1,39 +1,34 @@
 import React, { Component } from 'react';
 
 //TOOLS
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
-//COMPONENTS
-import Navbar from './components/layout/navbar/Navbar'
-import SubNavbar from './components/layout/navbar/SubNavbar'
-import Sidebar from './components/layout/navbar/Sidebar'
-import PhotoList from './components/layout/photolist/PhotoList';
+//PAGES
+import MainPage from './pages/MainPage'
+import SearchPage from './pages/SearchPage'
+import AlbumPreview from './pages/AlbumPreview'
 
 import "./App.css";
 
 class App extends Component {
+
   render() {
     return (
+      <BrowserRouter>
+        <div className="App main-format">
 
-      <div className="RootElement main-format">
-        <div className="App">
-          <Sidebar pageWrapId={"page-wrap"} outerContainerId={"App"}/>
-            
-          <div id="page-wrap">
-            <Navbar />
-            <SubNavbar />
-            <PhotoList />
+          <Switch>
+            <Route exact path='/' component={MainPage} />
+            <Route exact path='/search' component={SearchPage} />
+            <Route exact path='/album' component={AlbumPreview} />
+          </Switch>       
 
-          </div> 
-            
         </div>
-      </div>
+      </BrowserRouter>
 
     );
   }
 }
-//first component: which class we want to render to DOM
-//second component: where we want to render it
-//ReactDOM.render(<App />, document.getElementById('root'))
+
 
 export default App;
