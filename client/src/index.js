@@ -5,6 +5,12 @@ import App from './app';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
 
+// testing
+import UploadButton from './components/layout/UploadButton';
+
+ReactDOM.render(<UploadButton />, document.getElementById('root'));
+
+/*
 
 //renders app for you, gets app puts into html to get actually printed
 ReactDOM.render(<App />, document.getElementById('root'));
