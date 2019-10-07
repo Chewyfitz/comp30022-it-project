@@ -45,6 +45,8 @@ router.post('/', cors(), upload.array('file'), (req, res) => {
 	// Add a new image - Likely will need upload or some kind of url
 	console.log("POST /image/");
 	// TODO: Add user auth check
+	console.log(req.files);
+	console.log(req.user);
 	if(req.query.user && req.query.image){
     // Add the URL to the user.
 		util.addPhotoToUser(req.query.user, req.query.image).then(responseStatus => {
@@ -55,6 +57,7 @@ router.post('/', cors(), upload.array('file'), (req, res) => {
 			responseStatus ? res.sendStatus(200) : res.sendStatus(500);
 		});
   } else if(req.query.user && req.files){
+	  console.log('test');
     // Upload the sent files
     util.uploadPhotos(req.files).then(refs => {
       // Add the uploaded file URIs to the user so we don't lose them.
