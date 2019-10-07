@@ -117,4 +117,4 @@ function router() {
 
 //ReactDOM.render(<
 //ReactDOM.render(<Album />, document.getElementById('root'));
-ReactDOM.render(router(), document.getElementById('root'));*/
+ReactDOM.render(router(), document.getElementById('root'));
