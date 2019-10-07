@@ -1,3 +1,7 @@
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import axios from 'axios';
+
 class UploadButton extends React.Component {
     constructor(props) {
       super(props);
