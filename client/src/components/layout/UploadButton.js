@@ -39,3 +39,5 @@ class UploadButton extends React.Component {
 	    );
   }
 }
+
+export default UploadButton;
