@@ -28,8 +28,8 @@ class UploadButton extends React.Component {
   render() {
     return (
 	    <div>
-	    	<input type="file" name="files" onChange={this.onChangeHandler} multiple/>
- 	    	<button type="button" class="btn btn-success btn-block" onClick={this.onClickHandler} accept="image/png, image/jpeg">Upload</button>
+	    	<input type="file" name="files" onChange={this.onChangeHandler} accept="image/*" multiple/>
+ 	    	<button type="button" class="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button>
 	    </div>
 	    );
   }
