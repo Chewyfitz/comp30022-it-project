@@ -24,7 +24,6 @@ class NavDropdown extends React.Component {
     console.log("Val", value);
     this.setState({ arrayValue: value });
   }
-
   selectOption(value) {
     console.log("Vals", value);
     this.setState({ value });
@@ -77,7 +76,6 @@ class NavDropdown extends React.Component {
             );
         }}
       />
-    
     );
   }
 }

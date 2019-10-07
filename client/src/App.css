@@ -34,7 +34,6 @@
 /* Color/shape of burger icon bars */
 .bm-burger-bars {
 background: #4f505a;
-
 }
 
 /* Position and sizing of clickable cross button */
@@ -78,7 +77,6 @@ background: #4f505a;
  background-repeat: no-repeat;
  background-size: contain;
 }
-
 
 #background {
   width: 100%; 

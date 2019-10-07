@@ -5,7 +5,6 @@ import React from 'react'
 import "./Navbar.css"
 
 //COMPONENTs
-
 const Navbar = (a) => {
 
     const {pageName}=a;
@@ -41,7 +40,6 @@ const Navbar = (a) => {
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target=".mainbuttons">
                 <span className="navbar-toggler-icon"></span>
             </button>            
-
         </nav> 
     )     
 }

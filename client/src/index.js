@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 //first component: which class we want to render to DOM
 //second component: where we want to render it
+
 //renders app for you, gets app puts into html to get actually printed
 ReactDOM.render(<App />, document.getElementById('root'));
 
