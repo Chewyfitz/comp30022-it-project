@@ -1,4 +1,4 @@
-.image_picker{
+/* .image_picker{
     width:100%;
     padding-left: 4em;
     padding-top: 2.5em
@@ -39,7 +39,7 @@
 }
 
 .image_picker .selected{
-    outline: 100px solid rgba(226, 213, 200, 0.5) !important;
+    outline: 100px solid rgba(255, 0, 0, 0.5) !important;
     outline-offset: -100px;
     overflow: hidden;
     position: relative;
@@ -54,7 +54,7 @@
 }
 
 .image_picker .selected .checked .icon{
-    background:url(./images/check.png);
+    background:url(../photolist/images/check.png);
     background-size:cover;
     height:75px;
     width:75px;
@@ -63,4 +63,4 @@
 
 .image_picker .clear{
     clear:both
-}
+} */

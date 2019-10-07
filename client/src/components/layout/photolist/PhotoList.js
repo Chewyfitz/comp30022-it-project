@@ -35,6 +35,7 @@ class PhotoList extends Component {
         console.count('onChange');
         console.log("Image", image);
         this.setState({ arrayImage : image });
+        //this.setState({image});
         
         //todo: connect to backend: 
         //axios.post("./api/image",{})
@@ -42,7 +43,8 @@ class PhotoList extends Component {
      
     render() {
         return (
-          <div>
+          <div className=''>
+            
             <ImagePicker 
               multiple={true}
               images={imageList.map((image, i) => ({src: image, value: i}))}

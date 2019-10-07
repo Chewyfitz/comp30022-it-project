@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './Page.css'
 import ImagePicker from 'react-image-picker'
+import './PagePhotos.css'
 
 //import images from local
 import img1 from '../photolist/temp_images/1.png'
@@ -59,7 +60,8 @@ class Page extends Component {
         </div>
 
         <div className='page-right container'>
-        <ImagePicker images={imageList2.map((image, i) => ({src: image, value: i}))} />
+        {/* <ImagePicker images={imageList2.map((image, i) => ({src: image, value: i}))} /> */}
+          
           {/* <div class="row">
             <div class="col-sm">
               One of three columns
