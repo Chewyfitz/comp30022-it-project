@@ -6,6 +6,7 @@
             left: 0;
             top: 10;
             text-align: center;
+            z-index: 99;
         }
 }
 
@@ -30,4 +31,8 @@
 .subnavbar-text:hover {
     color: #F4F6F8 !important;
     background-color:#7488A3
+}
+
+.collapse-colour {
+    background-color: #7488A3 !important;
 }

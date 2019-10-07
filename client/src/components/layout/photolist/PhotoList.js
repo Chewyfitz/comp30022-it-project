@@ -16,7 +16,7 @@ import img10 from './temp_images/10.png'
 import img11 from './temp_images/11.png'
 import img12 from './temp_images/12.png'
 import img13 from './temp_images/13.png'
-
+//import axios from 'axios'
 const imageList = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13]
 
 
@@ -25,19 +25,28 @@ class PhotoList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-          image: null
+          image: null,
+          arrayImage: []
         }
         this.onPick = this.onPick.bind(this)
     }
      
     onPick(image) {
-        this.setState({image})
+        console.count('onChange');
+        console.log("Image", image);
+        this.setState({ arrayImage : image });
+        //this.setState({image});
+        
+        //todo: connect to backend: 
+        //axios.post("./api/image",{})
     }
      
     render() {
         return (
-          <div>
+          <div className='.main.image_picker'>
+            
             <ImagePicker 
+              multiple={true}
               images={imageList.map((image, i) => ({src: image, value: i}))}
               onPick={this.onPick}
             />
