@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './Page.css'
-import ImagePicker from 'react-image-picker'
+//import ImagePicker from 'react-image-picker'
 import './PagePhotos.css'
 
 //import images from local
@@ -29,7 +29,7 @@ class Page extends Component {
       <div className='album-format container'>
       
         <div className='page-left container'>
-        <ImagePicker images={imageList.map((image, i) => ({src: image, value: i}))} />
+        {/* <ImagePicker images={imageList.map((image, i) => ({src: image, value: i}))} /> */}
           
           {/* <div class="row">
             <div class="col-sm">

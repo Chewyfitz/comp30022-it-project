@@ -43,7 +43,7 @@ class PhotoList extends Component {
      
     render() {
         return (
-          <div className=''>
+          <div className='.main.image_picker'>
             
             <ImagePicker 
               multiple={true}

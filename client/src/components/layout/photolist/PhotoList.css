@@ -1,4 +1,4 @@
-.image_picker{
+.main.image_picker{
     width:100%;
     padding-left: 4em;
     padding-top: 2.5em
@@ -19,7 +19,6 @@
     width:150px;
     opacity:1;
     margin:0;
-    z-index: 5;
 }
 
 .image_picker .responsive .thumbnail:hover{
@@ -58,7 +57,7 @@
     background-size:cover;
     height:75px;
     width:75px;
-    z-index: 99;
+    z-index: 10;
 }
 
 .image_picker .clear{

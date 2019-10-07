@@ -1,6 +1,6 @@
-.album-format{
+/* .album-format{
    
-}
+} */
 
 .page-left{
     box-shadow: 5px 5px rgba(116, 136, 163, 0.7);
@@ -57,7 +57,7 @@
     left: 40% !important;
     top: 90% !important;
 }
-
+/* 
 .image_picker .responsive .thumbnail{
     border:1px solid #4C734E;
     border-radius:4px;
@@ -71,4 +71,4 @@
     position: relative;
     right: 10 !important;
     z-index: 2;
-}
+} */
