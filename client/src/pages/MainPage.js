@@ -5,6 +5,7 @@ import Navbar from '../components/layout/navbar/Navbar'
 import SubNavbar from '../components/layout/navbar/SubNavbar'
 import PhotoList from '../components/layout/photolist/PhotoList'
 import Sidebar from '../components/layout/navbar/Sidebar'
+import PhotoUpload from '../components/layout/navbar/PhotoUpload'
 
 import "../App.css";
 
@@ -17,6 +18,7 @@ class MainPage extends Component {
                 <Navbar pageName={"Main Page"}/>
                 <SubNavbar />
                 <PhotoList />
+                <PhotoUpload />
             </div>
         </div>
     );

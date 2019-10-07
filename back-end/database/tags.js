@@ -1,5 +1,0 @@
-
-
-tagFields = {
-    photo: "Photo Reference",
-}
