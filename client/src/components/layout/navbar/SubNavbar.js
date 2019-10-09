@@ -33,6 +33,9 @@ const SubNavbar = () => { //functional component, equal to arrow function
                         </li>
                         <li className="nav-item">
                             <button type="button" className="btn btn-default navbar-btn subnavbar-text">Delete Photos</button>
+                        </li>
+                    </ul>
+                </div>
             <div class="mx-auto d-sm-flex d-block flex-sm-nowrap">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#extrabuttons">
                     <span class="navbar-toggler-icon"></span>
@@ -58,7 +61,8 @@ const SubNavbar = () => { //functional component, equal to arrow function
                     </ul>
                 </div>
             </div>
-        </nav>
+        </div>
+    </nav>
     )
 }
  
