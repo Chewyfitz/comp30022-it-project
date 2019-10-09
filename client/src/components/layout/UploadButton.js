@@ -20,7 +20,7 @@ class UploadButton extends React.Component {
        for(var x = 0; x<this.state.selectedFile.length; x++) {
            data.append('file', this.state.selectedFile[x])
        }
-        axios.post(`${process.env.API_URL}/api/image?user=${'test_user'}`, data, { })
+        axios.post(`${process.env.REACT_APP_API_URL}/api/image?user=${'test_user'}`, data, { })
         .then(res => { // then print response status
           console.log(res.statusText)
         })
