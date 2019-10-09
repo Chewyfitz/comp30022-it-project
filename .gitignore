@@ -3,3 +3,4 @@ client/node_modules/
 node_modules/
 back-end/.env
 back-end/npm-debug.log
+back-end/config/gcsToken.json
