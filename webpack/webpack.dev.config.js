@@ -1,46 +1,14 @@
-//this script bundles all code into 1 js file
-//referenced from: https://codeburst.io/setting-up-a-react-project-from-scratch-d62f38ab6d97
+const webpack = require('webpack'); // remember to require this, because we DefinePlugin is a webpack plugin
 
-/*
-* setup babel-loader for loading js/jsx files and 
-* used less-loader for loading less files.
-* In order to user less-loader we also have to install 
-* style-loader and css-loader which will directly append 
-* CSS to the index.html
-*/
-
-var webpack = require('webpack');
-var path = require('path');
-
-var parentDir = path.join(__dirname, '../') //maybe need to change this??
-
-// bundle source files
-module.exports = {
-	entry: [
-		path.join(parentDir, 'index.js')
-	],
-	module: {
-		loaders: [
-            {
-			test: /\.(js|jsx)$/,
-				exclude: /node_modules/,
-				loader: 'babel-loader'
-            },
-            {
-				test: /\.less$/,
-				loaders: ["style-loader", "css-loader", "less-loader"]
-			}
-		]
-    },
-    // tell webpack config where to output our bundle.js file
-    output: {
-        path: parentDir + '/dist', 
-        filename: 'bundle.js'
-    },
-    // providing the options for dev server
-    devServer: {
-        contentBase: parentDir,
-        historyApiFallback: true
-    }
-}
-
+// return a function from the config file
+// the `env` variable will be a simple Object: { API_URL: 'http://localhost:8000' }
+// it will contain all the environment variables (that we set in package.json) as key/value pairs
+module.exports = (env) => {
+  // this object is our actual webpack config
+  return {
+    plugins: [
+      // add the plugin to your plugins array
+      new webpack.DefinePlugin({ `process.env.API_URL`: JSON.stringify(${env.API_URL}) })
+    ]
+  };
+};
