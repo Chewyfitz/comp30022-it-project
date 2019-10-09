@@ -17,13 +17,17 @@ class UploadButton extends React.Component {
     }
     onClickHandler = () => {
        const data = new FormData() 
-       for(var x = 0; x<this.state.selectedFile.length; x++) {
-           data.append('file', this.state.selectedFile[x])
+       try {
+	       for(var x = 0; x<this.state.selectedFile.length; x++) {
+		   data.append('file', this.state.selectedFile[x])
+	       }
+		axios.post(`${process.env.API_URL}/api/image?user=${'test_user'}`, data, { })
+		.then(res => { // then print response status
+		  console.log(res.statusText)
+		})
+       } catch(err){
+	       console.log(err);
        }
-        axios.post(`${process.env.API_URL}/api/image?user=${'test_user'}`, data, { })
-        .then(res => { // then print response status
-          console.log(res.statusText)
-        })
     }
   render() {
     return (
