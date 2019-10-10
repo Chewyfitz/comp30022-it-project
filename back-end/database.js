@@ -207,4 +207,7 @@ module.exports = {
 
     getAllAlbumPhotos: getAllAlbumPhotos,
     getSomeAlbumPhotos: getSomeAlbumPhotos,
+
+    deleteCollection: general.deleteCollection,
+    deleteDoc: general.deleteDoc,
 };

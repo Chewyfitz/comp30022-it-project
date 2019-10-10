@@ -137,34 +137,83 @@ async function addDataToDoc(data, path, doc=undefined) {
 }
 
 /**
- * General use updater, currently updates the document with the given data,
- * NOTE: I think that if either the document or a specified field does not exist
- * then one will be created and then updated accordingly.
+ * Deletes the Documents in a Collection. !CAUTION! !!DOES NOT DELETE
+ * SUBCOLLECTIONS NOR SUBDOCUMENTS!!
  *
- * @param {Object} data - Basically a dictionary of key-value pairs where the
- *                        key represents the field represents the value will be
- *                        updated in the Document
- * @param {String} path - The path to the Collection the Document to be updated
- *                        is in.
- * @param {String} doc - The key of the Document that will be update
- *
- * @return {Boolean} - True only if the document was updated successfully
- * */
-async function updateDataInDoc(data, path, doc) {
-    //Initialisation
+ * @param {String} path - The path to the Collection to delete
+ * @returns {Boolean} - True only if all the document were successfully deleted
+ *                      false if even one document in the collection failed to
+ *                      delete. (All documents must be deleted to delete a
+ *                      collection)
+ */
+async function deleteCollection(path) {
     let success = false;
-    //Stores the promise to update the document and store the data in it
-    let updateDoc = db.collection(path)
-        .doc(doc)
-        .update(data)
-        //If the Promise is successfully resolved, assign success to true
-        .then(value => {
-            success = true;
-        });
-    //Wait for the promise to be resolved/rejected
-    await updateDoc;
-    //Success will now have its final value, return it.
+    let promises = [];
+    let collectionSnapshot = await db.collection(path).get();
+    collectionSnapshot.forEach(documentSnapshot => {
+        promises.push(documentSnapshot.doc.delete());
+    });
+    await Promise.all(promises).then(value => {
+        success = true;
+    });
     return success;
+}
+
+/**
+ * !CAUTION! !!DOES NOT DELETE SUBCOLLECTIONS NOR SUBDOCUMENTS!! Deletes the
+ * document from the path
+ *
+ * @param {String} path - The path to the Collection the Document will be
+ *                        created in
+ * @param {String} doc -  The key of the Document
+ * @returns {Boolean} - True only if the document was successfully deleted
+ */
+async function deleteDoc(path, doc) {
+    let success = false;
+    let promise = db.collection(path).doc(doc).delete().then(value => {
+        success = true;
+    });
+    await promise;
+    return success;
+}
+
+/** !!NOT YET IMPLEMENTED!!
+ * !CAUTION! COULD POTENTIALLY RESULT IN A LARGE STACK. Deletes a Collection and
+ * all its Documents and SubCollections in a depth-first manner.
+ *
+ * @param {String} path - The path to the Collection the Document will be
+ *                        created in
+ * @returns {Boolean} - True only if the document and all its descendants were
+ *                      successfully deleted
+ */
+async function recDeleteAllFomCollection(path) {
+    let success = false;
+    let docDeletionSuccesses = [];
+    let collectionSnapshot = await db.collection(path).get();
+    collectionSnapshot.forEach(documentSnapshot => {
+        //TODO Finish implementing recDeleteAllFromDoc
+        docDeletionSuccesses.push(recDeleteAllFromDoc(path, documentSnapshot.id));
+    });
+    success = docDeletionSuccesses.includes(false);
+    return success;
+}
+
+
+
+/** !!NOT YET IMPLEMENTED!!
+ * !CAUTION! COULD POTENTIALLY RESULT IN A LARGE STACK. Deletes a document and
+ * all its SubCollections and SubDocument in a depth-first manner.
+ *
+ * @param {String} path - The path to the Collection the Document will be
+ *                        created in
+ * @param {String} doc -  The key of the Document
+ * @returns {Boolean} - True only if the document and all its descendants were
+ *                      successfully deleted
+ */
+async function recDeleteAllFromDoc(path, doc) {
+    //TODO get list of all collections a documet has...
+    //TODO call redDeleteAllFromCollection on each collection
+    return deleteDoc(path, doc);
 }
 
 /**
@@ -232,6 +281,37 @@ async function getDataInDoc(path, doc) {
     return data;
 }
 
+/**
+ * General use updater, currently updates the document with the given data,
+ * NOTE: I think that if either the document or a specified field does not exist
+ * then one will be created and then updated accordingly.
+ *
+ * @param {Object} data - Basically a dictionary of key-value pairs where the
+ *                        key represents the field represents the value will be
+ *                        updated in the Document
+ * @param {String} path - The path to the Collection the Document to be updated
+ *                        is in.
+ * @param {String} doc - The key of the Document that will be update
+ *
+ * @return {Boolean} - True only if the document was updated successfully
+ * */
+async function updateDataInDoc(data, path, doc) {
+    //Initialisation
+    let success = false;
+    //Stores the promise to update the document and store the data in it
+    let updateDoc = db.collection(path)
+        .doc(doc)
+        .update(data)
+        //If the Promise is successfully resolved, assign success to true
+        .then(value => {
+            success = true;
+        });
+    //Wait for the promise to be resolved/rejected
+    await updateDoc;
+    //Success will now have its final value, return it.
+    return success;
+}
+
 /**Exports the functions and values that are intended to be used by the other
  * database js files*/
 module.exports = {
@@ -255,4 +335,6 @@ module.exports = {
     updateDataInDoc: updateDataInDoc,
     getDataInDoc: getDataInDoc,
     getDocRef: getDocRef,
+    deleteDoc,
+    deleteCollection,
 };
