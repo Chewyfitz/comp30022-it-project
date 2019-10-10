@@ -5,17 +5,17 @@ const app = require('../server');
 chai.use(chaiHttp);
 
 const imageId_exists = 'BdOTCk3lhxp8bwkZqGiF';
+const url_empty = '';
 
-// image tests
+// image integration tests
 describe("/api/image/", function () {
     describe("POST", function () {
         it("returns success if a URL is added successfully");
         it("returns success if a file is uploaded successfully");
         it("returns 400 BAD REQUEST if ?user={userId} is not specified");
-        var url = '';
         it("returns 400 BAD REQUEST if ?image={URL} is not specified and an image is not supplied", (done) => {
             chai.request(app)
-                .post(`/api/image/?image=${url}`)
+                .post(`/api/image/?image=${url_empty}`)
                 .end((err, res) => {
                     chai.expect(res).to.have.status(400);
                     done();
