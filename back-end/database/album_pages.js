@@ -17,9 +17,9 @@ const albumPageFields = {
  *
  * @param {String} userID - The username of the owner of the album
  * @param {String} albumID - The key of the document for the album
- * @param {int} pageNumber - The key of the document in the AlbumPages
+ * @param {Number} pageNumber - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
  *                           Collection that we are creating
- * @param {int} template - The template specific to this album page
+ * @param {Number} template - SHOULD BE NON NEGATIVE INT! The template specific to this album page
  *
  * @return {Boolean} - True only if the new album page was successfully added to
  *                     the database
@@ -48,9 +48,9 @@ async function addAlbumPage(userID, albumID, pageNumber, template) {
  *
  * @param {String} userID - The username of the owner of the album
  * @param {String} albumID - The key of the document for the album
- * @param {int} pageNumber - The key of the document in the AlbumPages
+ * @param {Number} pageNumber - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
  *                           Collection that we are updating the template of
- * @param {int} template - The template specific to this album page
+ * @param {Number} template - SHOULD BE NON NEGATIVE INT! The template specific to this album page
  *
  * @return {Boolean} - True only if the album page was successfully updated in
  *                     the database
@@ -78,7 +78,7 @@ async function updateAlbumPageTemplate(userID, albumID, pageNumber, template) {
  * @param {String} userID - The username of the new user who owns the album
  * @param {String} albumID - The key of the document in the Albums Collection
  *                           that we are getting the data from
- * @param {int} pageNumber - The key of the document in the AlbumPages
+ * @param {Number} pageNumber - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
  *                           Collection that we are getting the data of
  *
  * @return {firebase.firestore.DocumentData} - If the Data was successfully
@@ -98,10 +98,10 @@ async function getAlbumPageData(userID, albumID, pageNumber) {
  * @param {String} userID - The username of the new user who owns the album
  * @param {String} albumID - The key of the document in the Albums Collection
  *                           that we are getting the template from
- * @param {int} pageNumber - The key of the document in the AlbumPages
+ * @param {Number} pageNumber - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
  *                           Collection that we are getting the template of
  *
- * @return {int} - If the template was successfully retrieved it will return the
+ * @return {Number} - WILL BE A NON NEGATIVE INT! If the template was successfully retrieved it will return the
  *                 template, otherwise it will return undefined
  * */
 function getAlbumPageTemplate(userID, albumID, pageNumber) {

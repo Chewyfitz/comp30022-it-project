@@ -42,7 +42,7 @@ async function addAlbumPosition(userID, albumID, photoID, caption=null) {
  *
  * @param {String} userID - The username of the owner of the album
  * @param {String} albumID - The key of the document for the album
- * @param {int} position - The key of the document in the AlbumPositions
+ * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPositions
  *                           Collection that we are updating the caption of
  * @param {String} caption - The new value of caption
  *
@@ -66,7 +66,7 @@ async function updateAlbumPositionCaption(userID, albumID, position, caption=und
  *
  * @param {String} userID - The username of the owner of the album
  * @param {String} albumID - The key of the document for the album
- * @param {int} position - The key of the document in the AlbumPositions
+ * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPositions
  *                          Collection that we are updating the caption of
  * @param {firebase.firestore.DocumentReference} photoDocRef - The new reference to
  *                                                          the photo
@@ -91,7 +91,7 @@ function updateAlbumPositionPhoto(userID, albumsID, position, photoDocRef) {
  * @param {String} userID - The username of the new user who owns the album
  * @param {String} albumID - The key of the document in the Albums Collection
  *                           that we are getting the data from
- * @param {int} position - The key of the document in the AlbumPages
+ * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
  *                           Collection that we are getting the data of
  *
  * @return {firebase.firestore.DocumentData} - If the Data was successfully
@@ -111,7 +111,7 @@ async function getAlbumPositionData(userID, albumID, position) {
  * @param {String} userID - The username of the new user who owns the album
  * @param {String} albumID - The key of the document in the Albums Collection
  *                           that we are getting the data from
- * @param {int} position - The key of the document in the AlbumPages
+ * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
  *                           Collection that we are getting the data of
  *
  * @return {string} - If the caption was successfully retrieved it will return
@@ -140,7 +140,7 @@ async function getAlbumPositionCaption(userID, albumID, position) {
  * @param {String} userID - The username of the new user who owns the album
  * @param {String} albumID - The key of the document in the Albums Collection
  *                           that we are getting the data from
- * @param {int} position - The key of the document in the AlbumPages
+ * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
  *                           Collection that we are getting the data of
  *
  * @return {firebase.firestore.DocumentReference} - If the photo document

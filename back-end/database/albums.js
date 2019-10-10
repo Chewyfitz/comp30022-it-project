@@ -153,7 +153,7 @@ function getAlbumName (userID, albumID){
  * @param {String} albumID - The key of the document in the Albums Collection
  *                           that we are getting the template from
  *
- * @return {int} - If the template was successfully retrieved it will return
+ * @return {Number} - WILL BE A NON NEGATIVE INT! If the template was successfully retrieved it will return
  *                    the template as an int, otherwise it will return undefined
  * */
 function getAlbumTemplate (userID, albumID){

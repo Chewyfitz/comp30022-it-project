@@ -1,6 +1,7 @@
 /**This file is responsible for all single document operations in the Photos
  * Collection*/
 const general = require('./general_database');
+const query = require('./query');
 
 /*Used to reference fields that are stored in the Documents that belong to the
 Photos (Sub)Collection*/
@@ -199,6 +200,25 @@ function getPhotoReference(userID, photoID){
     return ref;
 }
 
+/**
+ * Gets all the data of the photos owned by a user
+ *
+ * @param {String} userID - The username of the new user who owns the photos
+ *
+ * @return {Object} - basically a dictionary with the Photos Key as the key and
+ *                    the photo data (as another dictionary like object as the
+ *                    value.
+ * */
+async function getAllPhotoData(userID) {
+    let data = {};
+    let allData = await query.getAllDocsInCollection(general.photosPath(userID));
+    await allData.forEach(value => {
+        data[value.id] = value.data();
+    });
+    //TODO format the data?
+    return data;
+}
+
 
 /**Exports the functions and values that are intended to be used by
  * database.js*/
@@ -212,4 +232,5 @@ module.exports = {
     updatePhotoDateTime: updatePhotoDateTime,
     updatePhotoDescription: updatePhotoDescription,
     updatePhotoReference: updatePhotoReference,
+    getAllPhotoData,
 };
