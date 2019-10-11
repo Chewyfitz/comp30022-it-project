@@ -30,7 +30,8 @@ describe("/api/album/", function () {
                     chai.expect(res.body).to.have.property('Album Template');
                     chai.expect(res.body).to.have.property('Album View');
                     chai.expect(res.body).to.have.property('photos');
-                })
+                    done();
+                });
         });
     });
     describe("DELETE", function () {
