@@ -6,15 +6,17 @@ const app = require('../server');
 chai.use(chaiHttp);
 
 // variables
-const user = 'test_user';
-const albumId   = 'test_album';
-const albumId_1 = '12345';
-const albumName   = 'test_album';
-const albumName_1 = 't3st_4lbum';
-const template   = 0;
-const template_1 = 1;
-const view   = 'preview';
-const view_1 = 'page';
+const user              = 'test_user';      // A valid user
+const validAlbumId      = 'test_album';     // A valid album ID
+const invalidAlbumId    = '12345';          // an invalid album ID
+const albumName         = 'test_album';     // A valid album name
+const albumName_1       = 't3st_4lbum';     // A second valid album name
+const albumPage         = 0;                // A valid album page
+const albumPage_1       = 25565;            // an invalid album page
+const template          = 0;                // A valid template
+const template_1        = 1;                // A second valid template
+const view              = 'preview';        // A valid view
+const view_1            = 'page';           // A second valid view
 
 // album integration tests
 describe("/api/album/", function () {
@@ -51,7 +53,7 @@ describe("/api/album/", function () {
     describe("PUT", function () {
         it("returns 200 OK if all album properties are updated successfully", (done) => {
             chai.request(app)
-                .put(`/api/album/${albumId}`)
+                .put(`/api/album/${validAlbumId}`)
                 .query({albumName: albumName, template: template, view: view})
                 .end( (err, res) => {
                     chai.expect(res).to.have.status(200);
@@ -63,7 +65,7 @@ describe("/api/album/", function () {
     describe("PATCH", function () {
         it("returns 200 OK if a single album property is updated successfully", (done) => {
             chai.request(app)
-                .patch(`/api/album/${albumId}`)
+                .patch(`/api/album/${validAlbumId}`)
                 .query({albumName: albumName_1})
                 .end( (err, res) => {
                     chai.expect(res).to.have.status(200);
@@ -72,7 +74,7 @@ describe("/api/album/", function () {
         });
         it("returns 200 OK if two album properties are updated successfully", (done) => {
             chai.request(app)
-                .patch(`/api/album/${albumId}`)
+                .patch(`/api/album/${validAlbumId}`)
                 .query({template: template_1, view: view_1})
                 .end( (err, res) => {
                     chai.expect(res).to.have.status(200);
@@ -81,7 +83,7 @@ describe("/api/album/", function () {
         });
         it("returns 200 OK if three album properties are updated successfully", (done) => {
             chai.request(app)
-                .patch(`/api/album/${albumId}`)
+                .patch(`/api/album/${validAlbumId}`)
                 .query({albumName: albumName, template: template, view: view})
                 .end( (err, res) => {
                     chai.expect(res).to.have.status(200);
@@ -90,7 +92,7 @@ describe("/api/album/", function () {
         });
         it("returns 404 NOT FOUND if an update is attempted on a nonexistent album", (done) => {
             chai.request(app)
-                .patch(`/api/album/${albumId_1}`)
+                .patch(`/api/album/${invalidAlbumId}`)
                 .query({albumName: albumName, template: template, view: view})
                 .end( (err, res) => {
                     chai.expect(res).to.have.status(404);
@@ -111,8 +113,23 @@ describe("/api/album/{albumId}/", function () {
     });
     // Read
     describe("GET", function () {
-        it("returns an album page object for a known album page");
-        it("returns 404 NOT FOUND for an album page that is out of range");
+        it("returns an album page object for a known album page", (done) =>{
+            chai.request(app)
+                .get(`/api/album/${validAlbumId}/${albumPage}`)
+                .end((err, res) => {
+                    chai.expect(res).to.have.status(200);
+                    chai.expect(res).to.not.be.empty;
+                    done();
+                });
+        });
+        it("returns 404 NOT FOUND for an album page that is out of range", (done) =>{
+            chai.request(app)
+                .get(`/api/album/${validAlbumId}/${albumPage_1}`)
+                .end((err, res) => {
+                    chai.expect(res).to.have.status(404);
+                    done();
+                });
+        });
     });
     // Update
     describe("PATCH", function () {
