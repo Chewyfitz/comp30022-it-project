@@ -6,11 +6,20 @@ chai.use(chaiHttp);
 
 const imageId_exists = 'BdOTCk3lhxp8bwkZqGiF';
 const url_empty = '';
+const url_nonempty = 'https://i.imgur.com/y2BjmpE.jpg';
 
 // image integration tests
 describe("/api/image/", function () {
+    // Create
     describe("POST", function () {
-        it("returns 201 CREATED if a URL is added successfully");
+        it("returns 201 CREATED if a URL is added successfully", (done) => {
+            chai.request(app)
+                .post(`/api/image/?image=${url_nonempty}`)
+                .end((err, res) => {
+                    chai.expect(res).to.have.status(201);
+                    done();
+                });
+        });
         it("returns 201 CREATED if a file is uploaded successfully");
         it("returns 400 BAD REQUEST if ?user={userId} is not specified");
         it("returns 400 BAD REQUEST if ?image={URL} is not specified and an image is not supplied", (done) => {
@@ -21,8 +30,8 @@ describe("/api/image/", function () {
                     done();
                 });
         });
-        it("returns 400 BAD REQUEST if an image is not supplied and ?image={url} is not specified");
     });
+    // Read
     describe("GET", function () {
         it("returns an image URL for an /{imageId}/view that exists", (done) => {
             chai.request(app)
@@ -49,6 +58,8 @@ describe("/api/image/", function () {
         });
         it("returns 404 for an image that does not exist");
     });
+    // Update
+    // Delete
     describe("DELETE", function() {
         it("returns 200 OK for a successfully deleted image");
         it("returns 404 NOT FOUND for an invalid image id");
