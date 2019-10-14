@@ -10,13 +10,13 @@ chai.use(chaiHttp);
 // album integration tests
 describe("/api/album/", function () {
     describe("POST", function () {
-        it("returns success if an album is created successfully");
+        it("returns 201 CREATED if an album is created successfully");
     });
     describe("PUT", function () {
-        it("returns success if an album is updated successfully");
+        it("returns 200 OK if an album is updated successfully");
     });
     describe("PATCH", function () {
-        it("returns success if an album property is updated successfully");
+        it("returns 200 OK if an album property is updated successfully");
     });
     describe("GET", function () {
         it("returns 404 NOT FOUND for an album that does not exist")
@@ -35,24 +35,25 @@ describe("/api/album/", function () {
         });
     });
     describe("DELETE", function () {
-        it("returns success if an album is successfully deleted");
+        it("returns 200 OK if an album is successfully deleted");
     });
 });
 // album page tests
 describe("/api/album/{albumId}/", function () {
     describe("POST", function () {
-        it("returns success if an album page is created successfully");
+        it("returns 201 CREATED if an album page is created successfully");
     });
     describe("PUT", function () {
-        it("returns success if an album page is updated successfully");
+        it("returns 200 OK if an album page is updated successfully");
     });
     describe("PATCH", function () {
-        it("returns success if an album page property is updated successfully");
+        it("returns 200 OK if an album page property is updated successfully");
     });
     describe("GET", function () {
+        it("returns 404 NOT FOUND for an album page that is out of range");
         it("returns an album page object for a known album page");
     });
     describe("DELETE", function () {
-        it("returns sucess if an album page is deleted successfully");
+        it("returns 200 OK if an album page is deleted successfully");
     });
 });

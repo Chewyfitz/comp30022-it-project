@@ -10,8 +10,8 @@ const url_empty = '';
 // image integration tests
 describe("/api/image/", function () {
     describe("POST", function () {
-        it("returns success if a URL is added successfully");
-        it("returns success if a file is uploaded successfully");
+        it("returns 201 CREATED if a URL is added successfully");
+        it("returns 201 CREATED if a file is uploaded successfully");
         it("returns 400 BAD REQUEST if ?user={userId} is not specified");
         it("returns 400 BAD REQUEST if ?image={URL} is not specified and an image is not supplied", (done) => {
             chai.request(app)
