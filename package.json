@@ -12,6 +12,9 @@
   "license": "ISC",
   "dependencies": {
     "concurrently": "^4.1.2",
-    "dotenv": "^8.1.0"
+    "create-react-app": "^3.1.2",
+    "dotenv": "^8.1.0",
+    "eslint-loader": "^3.0.2",
+    "react-scripts": "^3.0.1"
   }
 }
