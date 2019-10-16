@@ -3,6 +3,7 @@
 
 /**Needed requirements to communicate with the database*/
 const firebase = require("firebase/app");
+const admin = require("firebase-admin");
 require("firebase/firestore");
 require('dotenv').config();
 
@@ -19,6 +20,11 @@ const config = {
 /**Initialise the database api and store the reference to it*/
 firebase.initializeApp(config);
 const db = firebase.firestore();
+const serviceAccount = require("serviceAccountKey.json");
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://test-project-60e2a.firebaseio.com"
+});
 
 /**Declaration of all the Collection names that are in the database*/
 const userCollection = 'Users';
@@ -137,8 +143,9 @@ async function addDataToDoc(data, path, doc=undefined) {
 }
 
 /**
- * Deletes the Documents in a Collection. !CAUTION! !!DOES NOT DELETE
- * SUBCOLLECTIONS NOR SUBDOCUMENTS!!
+ * Deletes the Documents in a Collection.
+ * !CAUTION!
+ * !!DOES NOT DELETE REFERENCES TO THE DOCUMENT!!
  *
  * @param {String} path - The path to the Collection to delete
  * @returns {Boolean} - True only if all the document were successfully deleted
@@ -147,21 +154,13 @@ async function addDataToDoc(data, path, doc=undefined) {
  *                      collection)
  */
 async function deleteCollection(path) {
-    let success = false;
-    let promises = [];
-    let collectionSnapshot = await db.collection(path).get();
-    collectionSnapshot.forEach(documentSnapshot => {
-        promises.push(documentSnapshot.doc.delete());
-    });
-    await Promise.all(promises).then(value => {
-        success = true;
-    });
-    return success;
+    return recDeleteAllFomCollection(admin.firestore().collection(path));
 }
 
 /**
- * !CAUTION! !!DOES NOT DELETE SUBCOLLECTIONS NOR SUBDOCUMENTS!! Deletes the
- * document from the path
+ * !CAUTION!
+ * !!DOES NOT DELETE REFERENCES TO THE DOCUMENT!!
+ * Deletes the document from the path
  *
  * @param {String} path - The path to the Collection the Document will be
  *                        created in
@@ -169,65 +168,63 @@ async function deleteCollection(path) {
  * @returns {Boolean} - True only if the document was successfully deleted
  */
 async function deleteDoc(path, doc) {
-    let success = false;
-    let promise = db.collection(path).doc(doc).delete().then(value => {
-        success = true;
-    });
-    await promise;
-    return success;
-}
-
-/** !!NOT YET IMPLEMENTED!!
- * !CAUTION! COULD POTENTIALLY RESULT IN A LARGE STACK. Deletes a Collection and
- * all its Documents and SubCollections in a depth-first manner.
- *
- * @param {String} path - The path to the Collection the Document will be
- *                        created in
- * @returns {Boolean} - True only if the document and all its descendants were
- *                      successfully deleted
- */
-async function recDeleteAllFomCollection(path) {
-    let success = false;
-    let docDeletionSuccesses = [];
-    let collectionSnapshot = await db.collection(path).get();
-    collectionSnapshot.forEach(documentSnapshot => {
-        //TODO Finish implementing recDeleteAllFromDoc
-        docDeletionSuccesses.push(recDeleteAllFromDoc(path, documentSnapshot.id));
-    });
-    success = docDeletionSuccesses.includes(false);
-    return success;
-}
-
-
-
-/** !!NOT YET IMPLEMENTED!!
- * !CAUTION! COULD POTENTIALLY RESULT IN A LARGE STACK. Deletes a document and
- * all its SubCollections and SubDocument in a depth-first manner.
- *
- * @param {String} path - The path to the Collection the Document will be
- *                        created in
- * @param {String} doc -  The key of the Document
- * @returns {Boolean} - True only if the document and all its descendants were
- *                      successfully deleted
- */
-async function recDeleteAllFromDoc(path, doc) {
-    //TODO get list of all collections a documet has...
-    //TODO call redDeleteAllFromCollection on each collection
-    return deleteDoc(path, doc);
+    return recDeleteAllFromDoc(admin.firestore().collection(path).doc(doc));
 }
 
 /**
- * Retrieves a reference to a Document. NOTE: This is not to be confused with
- * a path
+ * !CAUTION!
+ * !COULD POTENTIALLY RESULT IN A LARGE STACK!
+ * !!DOES NOT DELETE REFERENCES TO THE DOCUMENT!!
+ * Deletes a Collection and all its Documents and SubCollections in a
+ * depth-first manner.
  *
- * @param {String} path - The path to the Collection that the Document is in
- * @param {String} doc - The key of the Document
+ * @param {admin.firestore.CollectionReference} reference - The reference to the
+ *                                                        Document that is being
+ *                                                    deleted from the database
+ *                        created in
+ * @returns {Boolean} - True only if the document and all its descendants were
+ *                      successfully deleted
+ */
+async function recDeleteAllFomCollection(reference) {
+    let success = false;
+    let docDeletionSuccesses = [];
+    let documents = await reference.listDocuments();
+    documents.forEach(document => {
+        //TODO Finish implementing recDeleteAllFromDoc
+        docDeletionSuccesses.push(recDeleteAllFromDoc(document));
+    });
+    await Promise.all(docDeletionSuccesses);
+    success = !docDeletionSuccesses.includes(false);
+    return success;
+}
+
+/**
+ * !CAUTION!
+ * !COULD POTENTIALLY RESULT IN A LARGE STACK!
+ * !!DOES NOT DELETE REFERENCES TO THE DOCUMENT!!
+ * Deletes a document and all its SubCollections and SubDocument in a
+ * depth-first manner.
  *
- * @return {firebase.firestore.DocumentReference} - A firebase reference to the
- *                                                  document
- * */
-function getDocRef(path, doc){
-    return db.collection(path).doc(doc);
+ * @param {admin.firestore.DocumentReference} reference - The reference to the
+ *                                                        Document that is being
+ *                                                    deleted from the database
+ *                        created in
+ * @returns {Boolean} - True only if the document and all its descendants were
+ *                      successfully deleted
+ */
+async function recDeleteAllFromDoc(reference) {
+    let subCollections;
+    let collectionDelSuccesses = [];
+    let success = false;
+    //TODO get list of all collections a documet has...
+    subCollections = await reference.listCollections();
+    subCollections.forEach(collection => {
+        collectionDelSuccesses.push(recDeleteAllFomCollection(collection));
+    });
+    collectionDelSuccesses.push(reference.delete());
+    await Promise.all(collectionDelSuccesses);
+    success = !collectionDelSuccesses.includes(false);
+    return success;
 }
 
 /**
@@ -245,15 +242,6 @@ async function getDoc(path, doc) {
     return document;
 }
 
-//just an example of how to get the key of a document from its documentsnapshot
-async function getDocID(path, doc) {
-    let id = undefined
-    let document = await db.collection(path).doc(doc).get().then(value => {
-        id = value.id;
-    });
-    return id;
-}
-
 /**
  * Retrieves the data from a Document in the database
  *
@@ -269,16 +257,30 @@ async function getDataInDoc(path, doc) {
     let data = {};
     //Stores the promise to retrieve a document
     let document = await db.collection(path).doc(doc).get()
-        //If the Promise is successfully resolved, retrieve the data from it
+    //If the Promise is successfully resolved, retrieve the data from it
         .then(value => {
-        if(value.exists) {
-            data = value.data();
-        }
-    });
+            if(value.exists) {
+                data = value.data();
+            }
+        });
     //Wait for the promise to be resolved/rejected
     await document;
     //Return the data if the document existed otherwise an empty opbject
     return data;
+}
+
+/**
+ * Retrieves a reference to a Document. NOTE: This is not to be confused with
+ * a path
+ *
+ * @param {String} path - The path to the Collection that the Document is in
+ * @param {String} doc - The key of the Document
+ *
+ * @return {firebase.firestore.DocumentReference} - A firebase reference to the
+ *                                                  document
+ * */
+function getDocRef(path, doc){
+    return db.collection(path).doc(doc);
 }
 
 /**
@@ -316,25 +318,28 @@ async function updateDataInDoc(data, path, doc) {
  * database js files*/
 module.exports = {
     //Database API reference (needed?)
-    db: db,
+    db,
     //Database Collection names
-    userCollection: userCollection,
-    photoCollection: photoCollection,
-    albumCollection: albumCollection,
-    albumPositionCollection: albumPositionCollection,
-    AlbumPageCollection: albumPageCollection,
-    categoryCollection: categoryCollection,
+    userCollection,
+    photoCollection,
+    albumCollection,
+    albumPositionCollection,
+    albumPageCollection,
+    categoryCollection,
     //Functions to generate paths to (Sub)Collections
-    usersPath: usersPath,
-    photosPath: photosPath,
-    albumsPath: albumsPath,
-    albumPagesPath: albumPagesPath,
-    albumPositionsPath: albumPositionsPath,
+    usersPath,
+    photosPath,
+    albumsPath,
+    albumPagesPath,
+    albumPositionsPath,
     //Functions to interact with the database
-    addDataToDoc: addDataToDoc,
-    updateDataInDoc: updateDataInDoc,
-    getDataInDoc: getDataInDoc,
-    getDocRef: getDocRef,
+    addDataToDoc,
     deleteDoc,
     deleteCollection,
+    getDataInDoc,
+    getDoc,
+    getDocRef,
+    recDeleteAllFomCollection,
+    recDeleteAllFromDoc,
+    updateDataInDoc,
 };

@@ -36,6 +36,106 @@ async function addAlbumPosition(userID, albumID, photoID, caption=null) {
     return docID
 }
 
+/**!NOT YET IMPLEMENTED!
+ * !CAUTION!
+ * !!DOES NOT DELETE REFERENCES TO THE ALBUM PAGE!!
+ * !!!ONLY DELETES THE LAST PAGE!!!
+ * Deletes the Album Position and its associated data.
+ *
+ * @param {String} userID - The username of the user who owns the Album
+ * @param {String} albumID - The ID of the album
+ * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
+ *                           Collection that we are getting the data of
+ *
+ * @return {Boolean} - True only if the Album Position was successfully deleted
+ *                     from the database
+ * */
+async function deleteAlbumPosition(userID, albumID, position) {
+    //TODO Carefully consider the logic used to delete and move this data
+    return false;
+}
+
+/**
+ * Gets the stored caption of an album position in an album owned by a user
+ *
+ * @param {String} userID - The username of the new user who owns the album
+ * @param {String} albumID - The key of the document in the Albums Collection
+ *                           that we are getting the data from
+ * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
+ *                           Collection that we are getting the data of
+ *
+ * @return {string} - If the caption was successfully retrieved it will return
+ * the caption as a String, otherwise it will return undefined
+ * */
+async function getAlbumPositionCaption(userID, albumID, position) {
+    //Initialisation
+    let caption = undefined;
+    let data = getAlbumPositionData(userID, albumID, position);
+    try {
+        //Try to retrieve the value from the data
+        caption = data[albumPositionFields.caption];
+    } catch (e) {
+        console.log("Error in AlbumPositions.js.getAlbumPageCaption, - " +
+            "probably trying to get the caption of an album position that " +
+            "doesn't exist");
+        console.log(e);
+    }
+    return caption;
+}
+
+/**
+ * Gets the stored data of an album position in an album owned by a user
+ *
+ * @param {String} userID - The username of the new user who owns the album
+ * @param {String} albumID - The key of the document in the Albums Collection
+ *                           that we are getting the data from
+ * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
+ *                           Collection that we are getting the data of
+ *
+ * @return {firebase.firestore.DocumentData} - If the Data was successfully
+ *                                             retrieved it will return the
+ *                                             Data, otherwise it will return
+ *                                             undefined
+ * */
+async function getAlbumPositionData(userID, albumID, position) {
+    //Attempt to retrieve the Data for the the album position and return it
+    let data = await general.getDataInDoc(general.albumPositionsPath(userID, albumID), position);
+    return data;
+}
+
+/**
+ * Gets the stored photo document reference of an album position in an album
+ * owned by a user
+ *
+ * @param {String} userID - The username of the new user who owns the album
+ * @param {String} albumID - The key of the document in the Albums Collection
+ *                           that we are getting the data from
+ * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
+ *                           Collection that we are getting the data of
+ *
+ * @return {firebase.firestore.DocumentReference} - If the photo document
+ *                                               reference was successfully
+ *                                            retrieved it will return the photo
+ *                                         reference as a
+ *                                      firebase.firestore.DocumentReference,
+ *                                   otherwise it will return undefined
+ * */
+async function getAlbumPositionPhotoDocRef(userID, albumID, position) {
+    //Initialisation
+    let caption = undefined;
+    let data = getAlbumPositionData(userID, albumID, position);
+    try {
+        //Try to retrieve the value from the data
+        caption = data[albumPositionFields.caption];
+    } catch (e) {
+        console.log("Error in AlbumPositions.js.getAlbumPageCaption, - " +
+            "probably trying to get the caption of an album position that " +
+            "doesn't exist");
+        console.log(e);
+    }
+    return caption;
+}
+
 /**
  * Updates the stored caption for an album position of an album that is owned by
  * a user in the database
@@ -85,95 +185,16 @@ function updateAlbumPositionPhoto(userID, albumsID, position, photoDocRef) {
     return success;
 }
 
-/**
- * Gets the stored data of an album position in an album owned by a user
- *
- * @param {String} userID - The username of the new user who owns the album
- * @param {String} albumID - The key of the document in the Albums Collection
- *                           that we are getting the data from
- * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
- *                           Collection that we are getting the data of
- *
- * @return {firebase.firestore.DocumentData} - If the Data was successfully
- *                                             retrieved it will return the
- *                                             Data, otherwise it will return
- *                                             undefined
- * */
-async function getAlbumPositionData(userID, albumID, position) {
-    //Attempt to retrieve the Data for the the album position and return it
-    let data = await general.getDataInDoc(general.albumPositionsPath(userID, albumID), position);
-    return data;
-}
-
-/**
- * Gets the stored caption of an album position in an album owned by a user
- *
- * @param {String} userID - The username of the new user who owns the album
- * @param {String} albumID - The key of the document in the Albums Collection
- *                           that we are getting the data from
- * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
- *                           Collection that we are getting the data of
- *
- * @return {string} - If the caption was successfully retrieved it will return
- * the caption as a String, otherwise it will return undefined
- * */
-async function getAlbumPositionCaption(userID, albumID, position) {
-    //Initialisation
-    let caption = undefined;
-    let data = getAlbumPositionData(userID, albumID, position);
-    try {
-        //Try to retrieve the value from the data
-        caption = data[albumPositionFields.caption];
-    } catch (e) {
-        console.log("Error in AlbumPositions.js.getAlbumPageCaption, - " +
-            "probably trying to get the caption of an album position that " +
-            "doesn't exist");
-        console.log(e);
-    }
-    return caption;
-}
-
-/**
- * Gets the stored photo document reference of an album position in an album
- * owned by a user
- *
- * @param {String} userID - The username of the new user who owns the album
- * @param {String} albumID - The key of the document in the Albums Collection
- *                           that we are getting the data from
- * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
- *                           Collection that we are getting the data of
- *
- * @return {firebase.firestore.DocumentReference} - If the photo document
- *                                               reference was successfully
- *                                            retrieved it will return the photo
- *                                         reference as a
- *                                      firebase.firestore.DocumentReference,
- *                                   otherwise it will return undefined
- * */
-async function getAlbumPositionPhotoDocRef(userID, albumID, position) {
-    //Initialisation
-    let caption = undefined;
-    let data = getAlbumPositionData(userID, albumID, position);
-    try {
-        //Try to retrieve the value from the data
-        caption = data[albumPositionFields.caption];
-    } catch (e) {
-        console.log("Error in AlbumPositions.js.getAlbumPageCaption, - " +
-            "probably trying to get the caption of an album position that " +
-            "doesn't exist");
-        console.log(e);
-    }
-    return caption;
-}
 
 /**Exports the functions and values that are intended to be used by
  * database.js*/
 module.exports = {
-    albumPositionFields: albumPositionFields,
-    addAlbumPosition: addAlbumPosition,
-    getAlbumPositionData: getAlbumPositionData,
-    getAlbumPositionCaption: getAlbumPositionCaption,
-    getAlbumPositionPhotoDocRef: getAlbumPositionPhotoDocRef,
-    updateAlbumPositionCaption: updateAlbumPositionCaption,
-    updateAlbumPositionPhoto: updateAlbumPositionPhoto,
+    albumPositionFields,
+    addAlbumPosition,
+    deleteAlbumPosition,
+    getAlbumPositionCaption,
+    getAlbumPositionData,
+    getAlbumPositionPhotoDocRef,
+    updateAlbumPositionCaption,
+    updateAlbumPositionPhoto,
 };
