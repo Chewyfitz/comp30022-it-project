@@ -66,11 +66,22 @@ class NavDropdown extends React.Component {
                   key={item[valueKey]} // required
                   onClick={() => selectValue(item)}
               >
-                <input type="checkbox" className="button-format" checked={isSelected} readOnly />
+                {/* <input type="checkbox" className=" button-format" checked={isSelected} readOnly />
 
                 <span style={{fontWeight: isSelected ? "bold" : "normal", fontSize: '16px'}}>
                   {item[labelKey]}
-                </span>
+                </span> */}
+
+                <form>
+                  <div className="custom-control custom-checkbox">
+                    <input type="checkbox" className="custom-control-input" checked={isSelected} name="checkthis" readOnly/>
+                    <label className="custom-control-label" >
+                      <span style={{fontWeight: isSelected ? "bold" : "normal", fontSize: '16px'}}>
+                        {item[labelKey]}
+                      </span>
+                    </label>
+                  </div>
+                </form>
 
               </li>
             );

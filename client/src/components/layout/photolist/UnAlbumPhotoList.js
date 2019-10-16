@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ImagePicker from 'react-image-picker'
-import './PhotoList.css'
+import './UnAlbumPhotoList.css'
 
 //import images from local
 import img1 from './temp_images/1.png'
@@ -20,7 +20,7 @@ import img13 from './temp_images/13.png'
 const imageList = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13]
 
 
-class PhotoList extends Component {
+class UnAlbumPhotoList extends Component {
     
     constructor(props) {
         super(props)
@@ -43,7 +43,7 @@ class PhotoList extends Component {
      
     render() {
         return (
-          <div className='.main.image_picker'>
+          <div className='main image_picker'>
             
             <ImagePicker 
               multiple={true}
@@ -54,4 +54,4 @@ class PhotoList extends Component {
        )
     }
 }
-export default PhotoList; 
+export default UnAlbumPhotoList; 

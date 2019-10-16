@@ -36,6 +36,18 @@
     left: 50% !important;
 }
 
+
+
+.image-album-container{
+    border:1px solid #4C734E;
+    border-radius:4px;
+    padding:5px;
+    width:50 !important;
+    opacity:1;
+    margin:0;
+}
+
+
 .pagination-button{
     background-color: #7488A3 !important;
     color: #F4F6F8 !important;
