@@ -4,19 +4,33 @@ require('firebase/auth');
 
 const val = 0;
 
-function checkToken(token){
-    return await firebase.auth().checkToken(token);
+async function checkToken(token){
+    success = await firebase.auth().checkToken(token);
+    return success;
 }
 
 async function getUserInfo(token, userId){
     if(checkToken(token)){
-        return await firebase.auth().getUserInfo(userId);
+        userinfo = await firebase.auth().getUserInfo(userId);
+        return userinfo;
     } else {
         throw new Error("Invalid token");
     }
 }
 
+async function send_password_reset_email(email){
+    success = await firebase.auth().sendPasswordResetEmail(email);
+    return success;
+}
+
+async function reset_password(code, newPassword){
+    success = await firebase.auth().confirmPasswordReset(code, newPassword);
+    return success;
+}
+
 module.exports = {
     checkToken,
     getUserInfo,
+    reset_password,
+    send_password_reset_email,
 }

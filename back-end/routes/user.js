@@ -58,12 +58,32 @@ router.post('/email/verify', (req, res) => {
 router.put('/password', (req, res) => {
 	// Set a user's password. Requires re-entry of the password
 	res.sendStatus(500);
-})
+});
 
-router.post('/password/:verify', (req, res) => {
+router.post('/password', (req, res) => {
 	// Send a password reset email
-	console.log(req.params.verify);
-	res.sendStatus(500);
-})
+	if(req.query.email){
+		util.send_password_reset_email(req.query.email).then(() => {
+			res.sendStatus(200);
+		}).catch( (err) => {
+			res.send(err.toString());
+		});
+	} else {
+		res.sendStatus(400);
+	}
+});
+
+router.post('/password/:code', (req, res) => {
+	// Send a password reset email
+	if(req.params.code && req.query.password){
+		util.reset_password(req.params.code, req.query.password).then(() => {
+			res.sendStatus(200);
+		}).catch( (err) => {
+			res.send(err.toString());
+		});
+	} else {
+		res.sendStatus(403);
+	}
+});
 
 module.exports = router;
