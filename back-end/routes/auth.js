@@ -14,6 +14,7 @@ router.post(['/register', '/signup'], (req, res, next) => {
         res.status(500);
         res.send((err).toString());
     });
+    // Now set up some user-based objects, such as default albums, etc.
 });
 
 router.post('/login', (req, res, next) => {

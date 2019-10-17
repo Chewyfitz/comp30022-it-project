@@ -2,14 +2,31 @@ const express = require('express');
 const router = express.Router();
 const util = require('../util/user');
 
+// slight coupling here, but this is very much a utility function and might be
+// split off into a separate file later
+const decode = require('../util/auth').decode();
+
 // ============================================================================
 // '/api/user' routes
 
 // userId optional
 // TODO: don't return when Auth is not provided
 router.get('/:userId?', (req, res) => {
-	// Get user details
-	res.sendStatus(500);
+	if(!req.headers.authorization){
+		res.sendStatus(403);
+	} else {
+		// Decode authorization
+		[login, password] = decode(req.headers.authorization);
+
+		// Get user details
+		util.getUserInfo(login, password, req.params.userId).then((user) => {
+			res.send(user);
+		}).catch((error) => {
+			res.send(error.toString());
+		});
+
+		res.sendStatus(500);
+	}
 });
 
 router.patch('/', (req, res) =>{
