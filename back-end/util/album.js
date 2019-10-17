@@ -40,6 +40,10 @@ async function getAlbumById(user, albumId){
     return album;
 }
 
+async function getAllAlbumNames(user){
+    database.getAllAlbumNames(user);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //                                   UPDATE                                   //
 ////////////////////////////////////////////////////////////////////////////////
@@ -73,6 +77,7 @@ module.exports = {
     createAlbum,
     // READ
     getAlbumById,
+    getAllAlbumNames,
     // UPDATE
     updateAlbumAttributes,
     // DELETE
