@@ -14,7 +14,7 @@ class MainPage extends Component {
         <div className="mainpage">
             <Sidebar pageWrapId={"page-wrap"} outerContainerId={"App"}/> 
             <div id="page-wrap">
-                <Navbar pageName={"Main Page"}/>
+                <Navbar pageName={"Album Overview"}/>
                 <SubNavbar />
                 <AlbumPhotoList />
             </div>

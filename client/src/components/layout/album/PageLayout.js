@@ -27,37 +27,47 @@ const PageLayout = (a) => {
 
     return (
         <div>
-            <div class="row">
-                <div class="col-md-6 image-album-container">
-                    <img src={img1}/>
+            <div class="row text-center text-lg-left image-layout-container">
+
+                <div class="col-lg-3 col-md-4 col-6 ">
+                    <a href='/photo' class="d-block mb-4 h-100 ">
+                        <img class="img-fluid img-thumbnail image-album-container" src={img1} alt=""/>
+                    </a>
                 </div>
-                <div class="col-md-6">
-                    <h3>Heading 2</h3>
-                    <p>This is an example for grid with three equal columns</p>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <a href='/photo' class="d-block mb-4 h-100 image-thumbnail-container">
+                        <img class="img-fluid img-thumbnail image-album-container" src={img1} alt=""/>
+                    </a>
                 </div>
             </div>  
             
-            <div class="row">
-                <div class="col-md-6">
-                    <h3>Heading 1</h3>
-                    <p>This is an example for grid with three equal columns</p>
+            <div class="row text-center text-lg-left image-layout-container">
+
+                <div class="col-lg-3 col-md-4 col-6">
+                    <a href='/photo' class="d-block mb-4 h-100">
+                        <img class="img-fluid img-thumbnail image-album-container" src={img1} alt=""/>
+                    </a>
                 </div>
-                <div class="col-md-6">
-                    <h3>Heading 2</h3>
-                    <p>This is an example for grid with three equal columns</p>
-                </div>
-            </div> 
-            <div class="row">
-                <div class="col-md-6">
-                    <h3>Heading 1</h3>
-                    <p>This is an example for grid with three equal columns</p>
-                </div>
-                <div class="col-md-6">
-                    <h3>Heading 2</h3>
-                    <p>This is an example for grid with three equal columns</p>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <a href='/photo' class="d-block mb-4 h-100 image-thumbnail-container">
+                            <img class="img-fluid img-thumbnail image-album-container" src={img1} alt=""/>
+                    </a>
                 </div>
             </div> 
 
+            <div class="row text-center text-lg-left image-layout-container">
+
+                <div class="col-lg-3 col-md-4 col-6">
+                    <a href='/photo' class="d-block mb-4 h-100">
+                        <img class="img-fluid img-thumbnail image-album-container" src={img1} alt=""/>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <a href='/photo' class="d-block mb-4 h-100 image-thumbnail-container">
+                            <img class="img-fluid img-thumbnail image-album-container" src={img1} alt=""/>
+                    </a>
+                </div>
+            </div>  
         </div>    
     )
   }

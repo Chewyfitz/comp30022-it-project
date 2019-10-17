@@ -1,6 +1,6 @@
-/* .album-format{
-   
-} */
+.album-format{
+    top:100px !important;
+}
 
 .page-left{
     box-shadow: 5px 5px rgba(116, 136, 163, 0.7);
@@ -36,15 +36,33 @@
     left: 50% !important;
 }
 
+.image-layout-container{
+    padding-bottom: 50px !important;
+    padding-left: 50px !important;
+    padding-top: 50px !important;
+}
 
+.image-thumbnail-container{
+    padding-left: 100px !important;
+}
 
 .image-album-container{
+    position: absolute;
+    margin:0 6px;
+    float:left;
+    opacity:1;
+    padding-bottom: 10px;
+    width: 50 !important;
+    
     border:1px solid #4C734E;
     border-radius:4px;
-    padding:5px;
-    width:50 !important;
     opacity:1;
     margin:0;
+}
+
+.image-album-container:hover{
+    cursor:pointer;
+    box-shadow:0 0 2px 1px #4C734E
 }
 
 

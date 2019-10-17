@@ -3,6 +3,7 @@ import { render } from "react-dom";
 import Picky from "react-picky";
 import "./NavDropdown.css";
 
+
 const bigList = [];
 
 
@@ -28,6 +29,19 @@ class NavDropdown extends React.Component {
     console.log("Vals", value);
     this.setState({ value });
   }
+
+  // pushPhoto(value){
+  //   axios.post('/user', {
+  //     firstName: 'Fred',
+  //     lastName: 'Flintstone'
+  //   })
+  //   .then(function (response) {
+  //     console.log(response);
+  //   })
+  //   .catch(function (error) {
+  //     console.log(error);
+  //   });
+  // }
   
   render() {
     return (
