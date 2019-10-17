@@ -9,7 +9,7 @@ import axios from 'axios';
 class Login extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { username: '',
+		this.state = { email: '',
 					  psword: '', 
 					  redirect: false,
 					  failedLogin: false};
@@ -23,14 +23,19 @@ class Login extends Component {
 		event.preventDefault();
 		// if valid username/password, send it to back end and store the login token to indicate we're logged in
 		if(this.state.username!='' && this.state.psword!==''){
-			const data = new FormData();
-			data.append('username', this.state.username);
-			data.append('password', this.state.psword);
-			axios.get(`https://robbiesapiteam.herokuapp.com/api/user/user=${this.state.username}`, data, { })
+			// this format is required to send params on get requests, strangely enough
+			axios({method: "get",
+			url: 'https://robbiesapiteam.herokuapp.com/api/user/',
+			//url: 'https://itprojecttestapi.herokuapp.com/api/user/', 
+			params: {email: this.state.email,
+					 psword: this.state.psword}
+			})
 			.then(res => { // then print response status
 				console.log(res.statusText);
+				console.log(res.data);
 				try {
-					localStorage.setItem('loginToken', res.data);
+					localStorage.setItem('loginToken', res.data.loginToken);
+					localStorage.setItem('uid', res.data.uid);
 					this.setState({
 						redirect: true
 					})
@@ -47,15 +52,15 @@ class Login extends Component {
 	//works exactly the same as for logging in, but sends request to the account creation route instead
 	AccountCreateSubmitHandler = (event) => {
 		event.preventDefault();
-		if(this.state.username!='' && this.state.psword!==''){
-			const data = new FormData();
-			data.append('username', this.state.username);
-			data.append('password', this.state.psword);
-			axios.post('https://robbiesapiteam.herokuapp.com/api/user/', data, { })
+		if(this.state.email!='' && this.state.psword!=''){
+			axios.post('https://robbiesapiteam.herokuapp.com/api/user/', null, {params: {email: this.state.email,
+			//axios.post('https://itprojecttestapi.herokuapp.com/api/user/', null, {params: {email: this.state.email,
+																						 psword: this.state.psword} })
 			.then(res => { // then print response status
 				console.log(res.statusText);
 				try {
 					localStorage.setItem('loginToken', res.data);
+					localStorage.setItem('uid', res.data.uid);
 					this.setState({
 						redirect: true
 					})
@@ -68,8 +73,8 @@ class Login extends Component {
 			this.setState({failedLogin: true});
 		}
 	}
-	UsernameChangeHandler = (event) => {
-		this.setState({username: event.target.value});
+	EmailChangeHandler = (event) => {
+		this.setState({email: event.target.value});
 	}
 	PasswordChangeHandler = (event) => {
 		this.setState({psword: event.target.value});
@@ -82,8 +87,8 @@ class Login extends Component {
 						
 						<div class="form-group row d-flex justify-content-center">
 							<div class="col-xl-6">
-								<label for="formGroupExampleInput">Username</label>
-								<input type="text" class="form-control" id="username" placeholder="Username" onChange={this.UsernameChangeHandler}/>
+								<label for="formGroupExampleInput">Email</label>
+								<input type="text" class="form-control" id="email" placeholder="Email" onChange={this.EmailChangeHandler}/>
 							</div>
 						</div>
 						<div class="form-group row d-flex justify-content-center">
