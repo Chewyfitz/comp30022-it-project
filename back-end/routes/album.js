@@ -97,9 +97,14 @@ router.delete('/:albumId', (req, res) => {
 
 router.post  ('/:albumId/:pageId', (req, res) => {
 	// Create a new album page
-	console.log("POST /album/:albumID/:pageId");
-	console.log(req.params);
-	res.sendStatus(200);
+	if( req.params.albumId && req.params.pageId 
+		&& req.query.template){
+
+		pageUtil.createAlbumPage('test_user', req.params.albumId, req.params.pageId, req.query.template);
+		res.sendStatus(201);
+	} else {
+		res.sendStatus(400);
+	}
 });
 
 // Read
@@ -107,24 +112,33 @@ router.post  ('/:albumId/:pageId', (req, res) => {
 // '/api/album/:albumId/:pageId'
 router.get   ('/:albumId/:pageId', (req, res) => {
 	// Get a page of an album
-	console.log("GET /album/:albumID/:pageId");
-	console.log(req.params);
-	res.sendStatus(200);
+	if( req.params.albumId && req.params.pageId ){
+		template = pageUtil.getAlbumPageTemplate('test_user', req.params.albumId, req.params.pageId);
+		res.send(template);
+	} else {
+		res.sendStatus(400);
+	}
 });
 
 // Update
 
 router.put   ('/:albumId/:pageId', (req, res) => {
 	// Update an album page (might be useful eg. for copy/paste)
-	console.log("PUT /album/:albumID/:pageId");
-	console.log(req.params);
-	res.sendStatus(200);
+	if( req.params.albumId && req.params.pageId & req.query.template ){
+		template = pageUtil.updateAlbumPageAttributes('test_user', req.params.albumId, req.params.pageId, req.query.template);
+		res.send(template);
+	} else {
+		res.sendStatus(400);
+	}
 });
 router.patch ('/:albumId/:pageId', (req, res) => {
-	// Update an album page (just a small part)
-	console.log("PATCH /album/:albumID/:pageId");
-	console.log(req.params);
-	res.sendStatus(200);
+	// Update an album page (might be useful eg. for copy/paste)
+	if( req.params.albumId && req.params.pageId & req.query.template ){
+		pageUtil.updateAlbumPageAttributes('test_user', req.params.albumId, req.params.pageId, req.query.template);
+		res.sendStatus(204);
+	} else {
+		res.sendStatus(400);
+	}
 });
 
 // Delete

@@ -4,22 +4,24 @@ const database = require('../database.js');
 //                                   CREATE                                   //
 ////////////////////////////////////////////////////////////////////////////////
 
-async function createAlbumPage(user, album, name){
-    database.addAlbumPage(user, album, )
+async function createAlbumPage(user, album, number, template){
+    database.addAlbumPage(user, album, number, template);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                    READ                                    //
 ////////////////////////////////////////////////////////////////////////////////
 
-async function getAlbumPageById(user, albumId){
+async function getAlbumPageTemplate(user, album, page){
+    database.getAlbumPageData(user, album, page);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                   UPDATE                                   //
 ////////////////////////////////////////////////////////////////////////////////
 
-async function updateAlbumPageAttributes(user, album, attributes){
+async function updateAlbumPageAttributes(user, album, page, template){
+    database.updateAlbumPageTemplate(user, album, page, template);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -31,7 +33,7 @@ module.exports = {
     // CREATE
     createAlbumPage,
     // READ
-    getAlbumPageById,
+    getAlbumPageTemplate,
     // UPDATE
     updateAlbumPageAttributes,
     // DELETE
