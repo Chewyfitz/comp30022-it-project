@@ -28,12 +28,18 @@ const API_PORT = process.env.PORT || 3001;
 const app = express();
 app.use(bodyParser.json());
 
-
 const MainRouter = express.Router();
 
 // Route Handlers
 MainRouter.use('/image', require('./routes/image'));
 MainRouter.use('/album', require('./routes/album'));
+MainRouter.use('/user', require('./routes/user'));
+
+// Not yet Implemented:
+/* MainRouter.use('/register', require('./routes/signup')); */
+// Not sure if /login or /auth would be better (one might be more useful/general)
+/* MainRouter.use('/login', require('./routes/login')); */
+/* MainRouter.use('/auth', require('./routes/auth')); */
 
 // prepend '/api' for our http requests 
 app.use('/api', MainRouter);

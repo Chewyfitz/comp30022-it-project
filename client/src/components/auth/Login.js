@@ -25,8 +25,8 @@ class Login extends Component {
 		if(this.state.username!='' && this.state.psword!==''){
 			// this format is required to send params on get requests, strangely enough
 			axios({method: "get",
-			url: 'https://robbiesapiteam.herokuapp.com/api/user/',
-			//url: 'https://itprojecttestapi.herokuapp.com/api/user/', 
+			//url: 'https://robbiesapiteam.herokuapp.com/api/user/',
+			url: 'https://itprojecttestapi.herokuapp.com/api/user/', 
 			params: {email: this.state.email,
 					 psword: this.state.psword}
 			})
