@@ -17,24 +17,27 @@ const upload = multer({ storage });
 // '/api/image' routes
 
 router.get('/:imageId/view', (req, res) => {
+	var user = req.query.user;
+
 	// Get a specific image's direct url
 	console.log("GET /image/:imageID/view");
 	console.log(req.params);
 
 	// TODO: Add catch for possible errors
 	// call the util/image.js function that deals with this route
-	util.getImageRefById('test_user', req.params.imageId).then((imageRef) => {
+	util.getImageRefById(user, req.params.imageId).then((imageRef) => {
 		res.send(imageRef);
 	});
 });
 
 router.get('/:imageId', (req, res) => {
+	var user = req.query.user;
 	// Get an image - Reference, Name, DateTime, Description
 	console.log("GET /image/:imageID");
 	console.log(req.params);
 	// TODO: Add catch for possible errors
 	// call the util/image.js function that deals with this route
-	util.getImageById('test_user', req.params.imageId).then((imageData) => {
+	util.getImageById(user, req.params.imageId).then((imageData) => {
 		res.send(imageData);
 	});
 });
