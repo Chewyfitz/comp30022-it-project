@@ -6,30 +6,48 @@ const util = require('../util/user');
 // ============================================================================
 // '/api/user' routes
 
+// userId optional
+// TODO: don't return when Auth is not provided
 router.get('/:userId?', (req, res) => {
-	// Get an image - Reference, Name, DateTime, Description
-	console.log("GET /user/:userId");
-    console.log(req.params);
-    console.log(req.query);
-	// TODO: Add catch for possible errors
-	// call the util/image.js function that deals with this route
-	res.sendStatus(200);
+	// Get user details
+	res.sendStatus(500);
 });
 
-router.post('/', (req, res) =>{
-	// Add a new image - Likely will need upload or some kind of url
-	console.log("POST /image/");
-	console.log(req.params);
-	console.log(req.query);
-	res.sendStatus(200);
+router.patch('/', (req, res) =>{
+	// Update some user details
+	res.sendStatus(500);
 });
 
 router.delete('/', (req, res) => {
-	// Delete an image entry. If it has an uploaded image deal with that.
-	console.log("DELETE /image/");
-    console.log(req.params);
-    console.log(req.query);
-	res.sendStatus(200);
+	// Delete a user. Requires extra authentication
+	res.sendStatus(500);
 });
+
+// ============================================================================
+// '/api/user/email' routes
+
+router.patch('/email', (req, res) => {
+	// Update email address
+	res.sendStatus(500);
+});
+
+router.post('/email/verify', (req, res) => {
+	// Send verification email
+	res.sendStatus(500);
+});
+
+// ============================================================================
+// '/api/user/password' routes
+
+router.put('/password', (req, res) => {
+	// Set a user's password. Requires re-entry of the password
+	res.sendStatus(500);
+})
+
+router.post('/password/:verify', (req, res) => {
+	// Send a password reset email
+	console.log(verify);
+	res.sendStatus(500);
+})
 
 module.exports = router;
