@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const database = require('../database.js');
 const util = require('../util/user');
 
 // ============================================================================
@@ -46,7 +45,7 @@ router.put('/password', (req, res) => {
 
 router.post('/password/:verify', (req, res) => {
 	// Send a password reset email
-	console.log(verify);
+	console.log(req.params.verify);
 	res.sendStatus(500);
 })
 

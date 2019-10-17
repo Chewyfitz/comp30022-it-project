@@ -2,10 +2,24 @@ const database = require('../database.js');
 const firebase = require('firebase');
 require('firebase/auth');
 
-async function register(email, password){
+async function firebaseRegister(email, password){
     user = await firebase.auth().createUserWithEmailAndPassword(email, password);
-
     return user;
+}
+
+async function register(req){
+    if(req.headers.authorization){
+        // get the login (email) and password from the auth header
+        [login, password] = decode(req.headers.authorization);
+
+        // Try to sign the user in with their details
+        return firebaseRegister(login, password)
+    } else if (req.params.email && req.params.psword) {
+        // Try to sign the user in with param email and password
+        return firebaseRegister(req.params.email, req.params.psword);
+    } else {
+        throw new Error("Username and Password not provided!");
+    }
 }
 
 function decode(authString){
@@ -14,9 +28,24 @@ function decode(authString){
     return [login, password];
 }
 
-async function signIn(email, password){
+async function firebaseSignIn(email, password){
     user = await firebase.auth().signInWithEmailAndPassword(email, password)
     return user;
+}
+
+async function signIn(req){
+    if(req.headers.authorization){
+        // get the login (email) and password from the auth header
+        [login, password] = decode(req.headers.authorization);
+
+        // Try to sign the user in with their details
+        return firebaseSignIn(login, password)
+    } else if (req.params.email && req.params.psword) {
+        // Try to sign the user in with param email and password
+        return firebaseSignIn(req.params.email, req.params.psword);
+    } else {
+        throw new Error("Username and Password not provided!");
+    }
 }
 
 const val = 0;

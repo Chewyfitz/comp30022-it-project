@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const database = require('../database.js');
 const util = require('../util/auth');
 
 
@@ -8,36 +7,30 @@ const util = require('../util/auth');
 // authentication / a login token
 router.post(['/register', '/signup'], (req, res, next) => {
     // Create a user - auth optional
-    util.register().then((user) => {
+    util.register(req).then((user) => {
         res.status(201);
         res.send(user);
-	}).catch(err => {
+	}).catch((err) => {
         res.status(500);
-        res.send(err);
+        res.send((err).toString());
     });
 });
 
 router.post('/login', (req, res, next) => {
-    // Log a user in - auth optional
-
-    // get the login (email) and password from the auth header
-    [login, password] = util.decode(req.headers.authorization);
-
-    // Try to sign the user in with their details
-    util.signIn(login, password).then((user) => {
+    // Log a user in - auth "required"
+    util.signIn(req).then((user) => {
         if(user){
             res.status(200);
             res.send(user);
         } else {
-            res.sendStatus(404);
+            res.sendStatus(500);
         }
     }).catch(err => {
         res.status(500);
-        res.send(err);
-    });
-    res.sendStatus(500);
+        res.send(err.toString());
+    })   
 });
 
-
+// TODO: add anonymous login
 
 module.exports = router;
