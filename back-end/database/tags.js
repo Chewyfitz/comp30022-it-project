@@ -1,0 +1,5 @@
+
+
+tagFields = {
+    photo: "Photo Reference",
+}

@@ -1,91 +1,52 @@
+// server.js Aidan Fitzpatrick (835833)
+/*
+*	A node.js server to serve an api on http://[url]:process.env.PORT/api/
+*	This is the main routing file, and is used in conjunction with database 
+*	interactors written by Patrick to send data to a Firebase "FireStore" 
+*	database.
+*	If you want to use this server in your own environment you can define
+*	environment variables, or alternatively create a file titled '.env' in the
+*	server's root directory with the firebase access configuration variables
+*	defined.
+*/
+
 // Base code taken from medium.com
-// url: medium.com/javascript-in-plain-english/full-stack-mongodb-react-node-js-express-js-in-one-simple-app-6cc8ed6de274  
-var firebase = require('firebase');
+// url: medium.com/javascript-in-plain-english/full-stack-mongodb-react-node-js-express-js-in-one-simple-app-6cc8ed6de274
+// though at this point I'm confident it is distinct enough that I can consider it to be my own work.
+
+// ** Components used for logging - not currently used
+// var cors = require ('cors');
+// const logger = require('morgan');
+// app.use(cors());
+// app.use(bodyParser.urlencoded({extended: false}));
+// app.use(logger('dev'));
+
 const express = require('express');
-var cors = require ('cors');
-const bodyParser = require('body-parser');
-const logger = require('morgan');
-const Data = require('./data');
 require('dotenv').config();
-
-const admin = require('firebase-admin');
-const functions = require('firebase-functions');
-
 const API_PORT = process.env.PORT || 3001;
 const app = express();
-app.use(cors());
-const router = express.Router();
 
-// Firebase databse connection
-const config = {
-	apiKey: process.env.APIKEY,
-	databaseURL: process.env.DATABASEURL,
-	projectId: process.env.PROJECTID,
-	storageBucket: process.env.STORAGEBUCKET,
-	messageSenderId: process.env.SENDERID,
-	appId: process.env.APPID,
-}
-
-admin.initializeApp(functions.config().firebase);
-var db_app = firebase.initializeApp(config);
-
-var database = firebase.database(db_app); 
-console.log("database opened");
-
-// Optional - logging in JSON format
-app.use(bodyParser.urlencoded({extended: false}));
+// Middleware
+const bodyParser = require('body-parser');
 app.use(bodyParser.json());
-app.use(logger('dev'));
 
-// Get method
-router.get('/getData', (req, res) => {
-	Data.find((err, data) => {
-		if (err) return res.json({success: false, error: err});
-		return res.json({success: true, data:data});
-	});
-});
+const MainRouter = express.Router();
 
-// Update method - overwrite existing database data
-router.post('/updateData', (req, res) => {
-	const { id, update } = req.body;
-	Data.findByIdAndUpdate(id, update, (err) => {
-		if (err) return res.json({ success: false, error: err });
-		return res.json({ success:true });
-	});
-});
+// Route Handlers
+MainRouter.use('/image', require('./routes/image'));
+MainRouter.use('/album', require('./routes/album'));
+MainRouter.use('/user', require('./routes/user'));
 
-// Delete method - remove existing data from the database
-router.delete('/deleteData', (req, res) => {
-	const { id } = req.body;
-	Data.findByIDAndRemove(id, (err) => {
-		if (err) return res.send(err);
-		return res.json({ success: true });
-	});
-});
+// Not yet Implemented:
+/* MainRouter.use('/register', require('./routes/signup')); */
+// Not sure if /login or /auth would be better (one might be more useful/general)
+/* MainRouter.use('/login', require('./routes/login')); */
+/* MainRouter.use('/auth', require('./routes/auth')); */
 
-// Create method - create new data in the database
-router.post('/putData', (req, res) => {
-	let data = new Data();
-	
-	const { id, message } = req.body;
-	
-	if ((!id && id !== 0) || !message) {
-		return res.json({
-			success: false,
-			error: 'INVALID INPUTS',
-		});
-	}
-	data.message = message;
-	data.id = id;
-	data.save((err) => {
-		if (err) return res.json ( { success: false, error: err });
-		return res.json({ success: true });
-	});
-});
+// prepend '/api' for our http requests 
+app.use('/api', MainRouter);
 
-// aooend '/api' for our http requests 
-app.use('/api', router);
 
 // launch our backend into a port
-app.listen(API_PORT, () => console.log('LISTENING ON PORT ${API_PORT}'));
+app.listen(API_PORT, () => console.log('LISTENING ON PORT '+API_PORT));
 
