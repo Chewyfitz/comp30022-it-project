@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import "./Navbar.css"
+import UnAlbumPhotoList from "../photolist/UnAlbumPhotoList"
 
 class UploadButton extends React.Component {
   constructor(props) {
@@ -31,6 +32,9 @@ class UploadButton extends React.Component {
     catch(err){
       console.log(err);
     }
+
+    //UnAlbumPhotoList.render(UnAlbumPhotoList);
+
   }
   render() {
     return (

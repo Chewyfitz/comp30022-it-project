@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 //COMPONENTS
 import Navbar from '../components/layout/navbar/Navbar'
-import SubNavbar from '../components/layout/navbar/SubNavbar'
+import ALBUMIFY from '../components/layout/navbar/ALBUMIFY'
 import AlbumPhotoList from '../components/layout/album/AlbumPhotoList'
 import Sidebar from '../components/layout/navbar/Sidebar'
 
@@ -15,7 +15,7 @@ class MainPage extends Component {
             <Sidebar pageWrapId={"page-wrap"} outerContainerId={"App"}/> 
             <div id="page-wrap">
                 <Navbar pageName={"Album Overview"}/>
-                <SubNavbar />
+                <ALBUMIFY />
                 <AlbumPhotoList />
             </div>
         </div>
