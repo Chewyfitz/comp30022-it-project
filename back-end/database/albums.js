@@ -36,6 +36,23 @@ function addAlbum(userID, name) {
 }
 
 /**
+ * !CAUTION!
+ * !COULD POTENTIALLY RESULT IN A LARGE STACK!
+ * !!DOES NOT DELETE REFERENCES TO THE ALBUM!!
+ * Deletes the Album and ALL of its associated data.
+ *
+ * @param {String} userID - The username of the new user who owns the album
+ * @param {String} albumID - The key of the document in the Albums Collection
+ *                           that we are updating the name in
+ *
+ * @return {Boolean} - True only if the photo's DateTime was successfully
+ *                     updated in the database
+ * */
+async function deleteAlbum(userID, albumID) {
+    return await general.deleteDoc(general.albumsPath(userID), albumID);
+}
+
+/**
  * Updates the stored name for an album owned by a user
  *
  * @param {String} userID - The username of the new user who owns the album
@@ -214,14 +231,15 @@ async function getAllAlbumNames(userID) {
 /**Exports the functions and values that are intended to be used by
  * database.js*/
 module.exports = {
-    albumFields: albumFields,
-    addAlbum: addAlbum,
-    getAllAlbumNames: getAllAlbumNames,
-    getAlbumData: getAlbumData,
-    getAlbumName: getAlbumName,
-    getAlbumTemplate: getAlbumTemplate,
-    getAlbumView: getAlbumView,
-    updateAlbumName: updateAlbumName,
-    updateAlbumTemplate: updateAlbumTemplate,
-    updateAlbumView: updateAlbumView,
+    albumFields,
+    addAlbum,
+    deleteAlbum,
+    getAllAlbumNames,
+    getAlbumData,
+    getAlbumName,
+    getAlbumTemplate,
+    getAlbumView,
+    updateAlbumName,
+    updateAlbumTemplate,
+    updateAlbumView,
 };

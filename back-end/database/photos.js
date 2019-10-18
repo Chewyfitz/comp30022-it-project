@@ -12,6 +12,7 @@ const photoFields = {
     description: "Photo Description"
 };
 
+
 /**
  * Adds a new photo owned by a user to the database
  *
@@ -38,67 +39,37 @@ function addPhoto(userID, photoReference, photoDateTime=null) {
 }
 
 /**
- * Updates the stored DateTime for a photo owned by a user
+ * !CAUTION! !!DOES NOT DELETE REFERENCES TO THE PHOTO!! Deletes the photo and
+ * its associated information that is owned by a user
  *
- * @param {String} userID - The username of the new user who owns the photo
+ * @param {String} userID - The username of the user who owns the photo
  * @param {String} photoID - The key of the document in the Photos Collection
  *                           that we are updating the DateTime in
- * @param {String} [dateTime=undefined] - The DateTime of when the photo was
- *                                        taken
  *
- * @return {Boolean} - True only if the photo's DateTime was successfully
- *                     updated in the database
+ * @return {Boolean} - True only if the photo was successfully deleted from the
+ *                     database
  * */
-function updatePhotoDateTime(userID, photoID, dateTime){
-    //Initialisation
-    let data = {};
-    //Add the data that will be updated
-    data[photoFields.dateTime] = dateTime;
-    //Attempt to update the Document and return its success
-    let docID = general.updateDataInDoc(data, general.photosPath(userID), photoID);
-    return docID;
+async function deletePhoto(userID, photoID) {
+    return await general.deleteDoc(general.usersPath(), photoID);
 }
 
 /**
- * Updates the stored description for a photo owned by a user
+ * Gets all the data of the photos owned by a user
  *
- * @param {String} userID - The username of the new user who owns the photo
- * @param {String} photoID - The key of the document in the Photos Collection
- *                           that we are updating the DateTime in
- * @param {String} description - The new description of the photo
+ * @param {String} userID - The username of the new user who owns the photos
  *
- * @return {Boolean} - True only if the photo's description was successfully
- *                     updated in the database
+ * @return {Object} - basically a dictionary with the Photos Key as the key and
+ *                    the photo data (as another dictionary like object as the
+ *                    value.
  * */
-function updatePhotoDescription(userID, photoID, description){
-    //Initialisation
+async function getAllPhotoData(userID) {
     let data = {};
-    //If there is a password, then add it to the data that will be updated
-    data[photoFields.description] = description;
-    //Attempt to update the Document and return its success
-    let success = general.updateDataInDoc(data, general.photosPath(userID), photoID);
-    return success;
-}
-
-/**
- * Updates the stored reference for a photo owned by a user
- *
- * @param {String} userID - The username of the new user who owns the photo
- * @param {String} photoID - The key of the document in the Photos Collection
- *                           that we are updating the DateTime in
- * @param {String} reference - The new reference for the photo
- *
- * @return {Boolean} - True only if the photo's description was successfully
- *                     updated in the database
- * */
-function updatePhotoReference(userID, photoID, reference){
-    //Initialisation
-    let data = {};
-    //If there is a password, then add it to the data that will be updated
-    data[photoFields.reference] = reference;
-    //Attempt to update the Document and return its success
-    let success = general.updateDataInDoc(data, general.photosPath(userID), photoID);
-    return success;
+    let allData = await query.getAllDocsInCollection(general.photosPath(userID));
+    await allData.forEach(value => {
+        data[value.id] = value.data();
+    });
+    //TODO format the data?
+    return data;
 }
 
 /**
@@ -201,36 +172,82 @@ function getPhotoReference(userID, photoID){
 }
 
 /**
- * Gets all the data of the photos owned by a user
+ * Updates the stored DateTime for a photo owned by a user
  *
- * @param {String} userID - The username of the new user who owns the photos
+ * @param {String} userID - The username of the new user who owns the photo
+ * @param {String} photoID - The key of the document in the Photos Collection
+ *                           that we are updating the DateTime in
+ * @param {String} [dateTime=undefined] - The DateTime of when the photo was
+ *                                        taken
  *
- * @return {Object} - basically a dictionary with the Photos Key as the key and
- *                    the photo data (as another dictionary like object as the
- *                    value.
+ * @return {Boolean} - True only if the photo's DateTime was successfully
+ *                     updated in the database
  * */
-async function getAllPhotoData(userID) {
+function updatePhotoDateTime(userID, photoID, dateTime){
+    //Initialisation
     let data = {};
-    let allData = await query.getAllDocsInCollection(general.photosPath(userID));
-    await allData.forEach(value => {
-        data[value.id] = value.data();
-    });
-    //TODO format the data?
-    return data;
+    //Add the data that will be updated
+    data[photoFields.dateTime] = dateTime;
+    //Attempt to update the Document and return its success
+    let docID = general.updateDataInDoc(data, general.photosPath(userID), photoID);
+    return docID;
+}
+
+/**
+ * Updates the stored description for a photo owned by a user
+ *
+ * @param {String} userID - The username of the new user who owns the photo
+ * @param {String} photoID - The key of the document in the Photos Collection
+ *                           that we are updating the DateTime in
+ * @param {String} description - The new description of the photo
+ *
+ * @return {Boolean} - True only if the photo's description was successfully
+ *                     updated in the database
+ * */
+function updatePhotoDescription(userID, photoID, description){
+    //Initialisation
+    let data = {};
+    //If there is a password, then add it to the data that will be updated
+    data[photoFields.description] = description;
+    //Attempt to update the Document and return its success
+    let success = general.updateDataInDoc(data, general.photosPath(userID), photoID);
+    return success;
+}
+
+/**
+ * Updates the stored reference for a photo owned by a user
+ *
+ * @param {String} userID - The username of the new user who owns the photo
+ * @param {String} photoID - The key of the document in the Photos Collection
+ *                           that we are updating the DateTime in
+ * @param {String} reference - The new reference for the photo
+ *
+ * @return {Boolean} - True only if the photo's description was successfully
+ *                     updated in the database
+ * */
+function updatePhotoReference(userID, photoID, reference){
+    //Initialisation
+    let data = {};
+    //If there is a password, then add it to the data that will be updated
+    data[photoFields.reference] = reference;
+    //Attempt to update the Document and return its success
+    let success = general.updateDataInDoc(data, general.photosPath(userID), photoID);
+    return success;
 }
 
 
 /**Exports the functions and values that are intended to be used by
  * database.js*/
 module.exports = {
-    photoFields: photoFields,
-    addPhoto: addPhoto,
-    getPhotoData: getPhotoData,
-    getPhotoDateTime: getPhotoDateTime,
-    getPhotoDescription: getPhotoDescription,
-    getPhotoReference: getPhotoReference,
-    updatePhotoDateTime: updatePhotoDateTime,
-    updatePhotoDescription: updatePhotoDescription,
-    updatePhotoReference: updatePhotoReference,
+    photoFields,
+    addPhoto,
+    deletePhoto,
     getAllPhotoData,
+    getPhotoData,
+    getPhotoDateTime,
+    getPhotoDescription,
+    getPhotoReference,
+    updatePhotoDateTime,
+    updatePhotoDescription,
+    updatePhotoReference,
 };
