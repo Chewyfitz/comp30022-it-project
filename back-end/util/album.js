@@ -5,7 +5,7 @@ const database = require('../database.js');
 ////////////////////////////////////////////////////////////////////////////////
 
 async function createAlbum(user, name){
-    console.log(`User: ${user}, Name: ${name}`);
+    // console.log(`User: ${user}, Name: ${name}`);
     album = await database.addAlbum(user, name);
     return album;
 }
@@ -17,7 +17,7 @@ async function createAlbum(user, name){
 async function getAlbumById(user, albumId){
     // get 'un' album if none specified
     !albumId ? albumId = 'un': albumId = albumId;
-    console.log("getAlbumById: "+user+" -> "+albumId);
+    // console.log("getAlbumById: "+user+" -> "+albumId);
 
     album = await database.getAlbumData(user, albumId);
     var photos = [];

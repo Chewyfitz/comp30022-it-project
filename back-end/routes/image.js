@@ -20,8 +20,8 @@ router.get('/:imageId/view', (req, res) => {
 	var user = req.query.user;
 
 	// Get a specific image's direct url
-	console.log("GET /image/:imageID/view");
-	console.log(req.params);
+	// console.log("GET /image/:imageID/view");
+	// console.log(req.params);
 
 	// TODO: Add catch for possible errors
 	// call the util/image.js function that deals with this route
@@ -33,8 +33,8 @@ router.get('/:imageId/view', (req, res) => {
 router.get('/:imageId', (req, res) => {
 	var user = req.query.user;
 	// Get an image - Reference, Name, DateTime, Description
-	console.log("GET /image/:imageID");
-	console.log(req.params);
+	// console.log("GET /image/:imageID");
+	// console.log(req.params);
 	// TODO: Add catch for possible errors
 	// call the util/image.js function that deals with this route
 	util.getImageById(user, req.params.imageId).then((imageData) => {
@@ -46,7 +46,7 @@ router.post('/', cors(), upload.array('file'), (req, res) => {
 	// variables of interest here are req.files, req.params, and req.query
 
 	// Add a new image - Likely will need upload or some kind of url
-	console.log("POST /image/");
+	// console.log("POST /image/");
 	// TODO: Add user auth check
 	if(req.query.user && req.query.image){
     // Add the URL to the user.

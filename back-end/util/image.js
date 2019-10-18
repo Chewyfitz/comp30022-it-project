@@ -78,14 +78,14 @@ async function addPhotoToUser(user, image, photoDateTime = null){
 ////////////////////////////////////////////////////////////////////////////////
 
 async function getImageById(user, imageId){
-    console.log("getImageById: "+imageId);
+    // console.log("getImageById: "+imageId);
     photoData = await database.getPhotoData(user, imageId);
     return photoData;
 }
 
 async function getImageRefById(user, imageId){
     // Retrieve the image URL/reference from the database
-    console.log("getImageRefById: "+imageId);
+    // console.log("getImageRefById: "+imageId);
     photoData = await database.getPhotoData(user, imageId);
     return photoData.reference;
 }
@@ -98,7 +98,7 @@ async function getImageRefById(user, imageId){
 // TODO: change successes to document IDs
 async function addPhotosToUser(user, images){
     var successes = []
-    console.log("addPhotosToUser: "+images);
+    // console.log("addPhotosToUser: "+images);
     // Iterate through each image and add it individually
     for(i in images){
         console.log(`image: ${images[i]}`);
