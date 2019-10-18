@@ -12,10 +12,10 @@ async function register(req){
         // get the login (email) and password from the auth header
         [login, password] = decode(req.headers.authorization);
 
-        // Try to sign the user in with their details
+        // Try to register the user with their details
         return firebaseRegister(login, password)
     } else if (req.params.email && req.params.psword) {
-        // Try to sign the user in with param email and password
+        // Try to register the user with param email and password
         return firebaseRegister(req.params.email, req.params.psword);
     } else {
         throw new Error("Username and Password not provided!");
