@@ -4,36 +4,37 @@ const database = require('../database.js');
 //                                   CREATE                                   //
 ////////////////////////////////////////////////////////////////////////////////
 
-async function createUser(user, passwordHash){
-    return await database.addUser(user, passwordHash);
+async function createAlbumPage(user, album, number, template){
+    return await database.addAlbumPage(user, album, number, template);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                    READ                                    //
 ////////////////////////////////////////////////////////////////////////////////
 
-async function checkPassword(user, passwordHash){
-    return await database.checkUserPassword(user, passwordHash);
+async function getAlbumPageTemplate(user, album, page){
+    return await database.getAlbumPageData(user, album, page);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                   UPDATE                                   //
 ////////////////////////////////////////////////////////////////////////////////
 
-async function changePassword(user, oldPwHash, newPwHash){
-    return 0;
+async function updateAlbumPageAttributes(user, album, page, template){
+    return await database.updateAlbumPageTemplate(user, album, page, template);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                   DELETE                                   //
 ////////////////////////////////////////////////////////////////////////////////
 
-async function deleteUser(user, pwHash){
-    // Not yet Implemented
-}
 
 module.exports = {
-    createUser,
-    checkPassword,
-    deleteUser,
+    // CREATE
+    createAlbumPage,
+    // READ
+    getAlbumPageTemplate,
+    // UPDATE
+    updateAlbumPageAttributes,
+    // DELETE
 }
