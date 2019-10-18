@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const util = require('../util/album');
-const pageUtil = require('..util/albumPage');
+const pageUtil = require('../util/albumPage');
 
 // ============================================================================
 // '/api/album' routes 
@@ -129,7 +129,7 @@ router.get   ('/:albumId/:pageId', (req, res) => {
 router.put   ('/:albumId/:pageId', (req, res) => {
 	var user = req.query.user;
 	// Update an album page (might be useful eg. for copy/paste)
-	if( req.params.albumId && req.params.pageId & req.query.template ){
+	if( req.params.albumId && req.params.pageId && req.query.template ){
 		template = pageUtil.updateAlbumPageAttributes(user, req.params.albumId, req.params.pageId, req.query.template);
 		res.send(template);
 	} else {
@@ -139,7 +139,7 @@ router.put   ('/:albumId/:pageId', (req, res) => {
 router.patch ('/:albumId/:pageId', (req, res) => {
 	var user = req.query.user;
 	// Update an album page (might be useful eg. for copy/paste)
-	if( req.params.albumId && req.params.pageId & req.query.template ){
+	if( req.params.albumId && req.params.pageId && req.query.template ){
 		pageUtil.updateAlbumPageAttributes(user, req.params.albumId, req.params.pageId, req.query.template);
 		res.sendStatus(204);
 	} else {

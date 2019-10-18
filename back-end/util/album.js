@@ -41,7 +41,7 @@ async function getAlbumById(user, albumId){
 }
 
 async function getAllAlbumNames(user){
-    database.getAllAlbumNames(user);
+    return await database.getAllAlbumNames(user);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

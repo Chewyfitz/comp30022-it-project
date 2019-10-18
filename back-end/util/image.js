@@ -49,6 +49,7 @@ async function uploadPhotos(files){
         // make the file public when the stream finishes
         stream.on('finish', async () => {
             file.makePublic();
+            await addPhotoToUser(User, strings[i]);
         });
 
         // end the stream

@@ -188,6 +188,7 @@ module.exports = {
     getAlbumName: albums.getAlbumName,
     getAlbumTemplate: albums.getAlbumTemplate,
     getAlbumView: albums.getAlbumView,
+    getAllAlbumNames: albums.getAllAlbumNames,
     getAlbumPageData: albumPages.getAlbumPageData,
     getAlbumPageTemplate: albumPages.getAlbumPageTemplate,
     getAlbumPositionData: albumPositions.getAlbumPositionData,

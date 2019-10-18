@@ -20,7 +20,9 @@ async function checkPassword(user, passwordHash){
 //                                   UPDATE                                   //
 ////////////////////////////////////////////////////////////////////////////////
 
-async function changePassword(user, oldPwHash, newPwHash);
+async function changePassword(user, oldPwHash, newPwHash){
+    return 0;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                   DELETE                                   //
