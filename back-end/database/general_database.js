@@ -7,7 +7,7 @@ const admin = require("firebase-admin");
 require("firebase/firestore");
 require('dotenv').config();
 
-/**Configuration settings for the database (read from .env file)*/
+/**Configuration settings for the database*/
 const config = {
     apiKey: process.env.APIKEY,
     databaseURL: process.env.DATABASEURL,
@@ -16,15 +16,15 @@ const config = {
     messageSenderId: process.env.SENDERID,
     appId: process.env.APPID,
 };
+const serviceAccount = JSON.parse(process.env.GCS_JSON_TOKEN);
 
-/**Initialise the database api and store the reference to it*/
+/**Initialise the database api and store the references to it*/
 firebase.initializeApp(config);
-const db = firebase.firestore();
-const serviceAccount = require("serviceAccountKey.json");
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://test-project-60e2a.firebaseio.com"
+    databaseURL: process.env.DATABASEURL
 });
+const db = firebase.firestore();
 
 /**Declaration of all the Collection names that are in the database*/
 const userCollection = 'Users';
@@ -34,7 +34,7 @@ const albumPositionCollection = 'Album Positions';
 const albumPageCollection = 'Album Page';
 const categoryCollection = 'Categories';
 
-/**Function that generates the path to a particular collection of documents
+/**Function that generates the path to a particular Collection of Documents
  * allowing for nesting differences*/
 
 /**
@@ -54,8 +54,8 @@ function usersPath() {
  * @return {String} - Path to the specified Photos SubCollection
  * */
 function photosPath(userID) {
-
-    return usersPath() + '/' + userID + '/' + photoCollection}
+    return usersPath() + '/' + userID + '/' + photoCollection;
+}
 
 /**
  * Generates the Path to the Albums SubCollection owned by the User.
