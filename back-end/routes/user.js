@@ -84,6 +84,7 @@ router.post('/password/:code', (req, res) => {
 	} else {
 		res.sendStatus(403);
 	}
+
 });
 
 module.exports = router;

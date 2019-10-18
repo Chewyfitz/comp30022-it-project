@@ -1,4 +1,4 @@
-// ============================================================================
+// =============================================================================
 // Libraries
 const database = require('../database.js');
 
@@ -12,56 +12,12 @@ var config = require('../config/gcsConfig');
 
 const gcs = new Storage(config());
 
-// ============================================================================
+// =============================================================================
 // Functions
 
-async function getImageById(user, imageId){
-    console.log("getImageById: "+imageId);
-    photoData = await database.getPhotoData(user, imageId);
-    return photoData;
-}
-
-async function getImageRefById(user, imageId){
-    // Retrieve the image URL/reference from the database
-    console.log("getImageRefById: "+imageId);
-    photoData = await database.getPhotoData(user, imageId);
-    return photoData.reference;
-}
-
-/**
- * Add a new photo to a given user.
- * This might need extra processing, deal with that when required. 
- * @param {String} user - the username of the owner of the image
- * @param {String} image - url/reference to the image that's being added
- * @param {String} photoDateTime - datetime as string
- */
-async function addPhotoToUser(user, image, photoDateTime = null){
-    // ... pretty much just call the database function
-    success = database.addPhoto(user, image, photoDateTime);
-    return success;
-}
-
-// TODO: add photoDateTimes
-// TODO: change successes to document IDs
-async function addPhotosToUser(user, images){
-    var successes = []
-    console.log("addPhotosToUser: "+images);
-    // Iterate through each image and add it individually
-    for(i in images){
-        console.log(`image: ${images[i]}`);
-        await addPhotoToUser(user, images[i]).then(imageref => {
-            // return an id for each image input attempt
-            successes.push(imageref);
-        })
-    }
-
-    return successes;
-}
-
-// TODO: Implement Deletions
-async function deletePhotoById(user, image){
-    console.log("Err: Incomplete Function deletePhotoById");
-}
+////////////////////////////////////////////////////////////////////////////////
+//                                   CREATE                                   //
+////////////////////////////////////////////////////////////////////////////////
 
 // Thanks to Rowan for figuring out how all this works!
 async function uploadPhotos(files){
@@ -93,6 +49,7 @@ async function uploadPhotos(files){
         // make the file public when the stream finishes
         stream.on('finish', async () => {
             file.makePublic();
+            await addPhotoToUser(User, strings[i]);
         });
 
         // end the stream
@@ -101,6 +58,67 @@ async function uploadPhotos(files){
 
     // Return the list of URIs
     return strings;
+}
+
+/**
+ * Add a new photo to a given user.
+ * This might need extra processing, deal with that when required. 
+ * @param {String} user - the username of the owner of the image
+ * @param {String} image - url/reference to the image that's being added
+ * @param {String} photoDateTime - datetime as string
+ */
+async function addPhotoToUser(user, image, photoDateTime = null){
+    // ... pretty much just call the database function
+    success = database.addPhoto(user, image, photoDateTime);
+    return success;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                    READ                                    //
+////////////////////////////////////////////////////////////////////////////////
+
+async function getImageById(user, imageId){
+    console.log("getImageById: "+imageId);
+    photoData = await database.getPhotoData(user, imageId);
+    return photoData;
+}
+
+async function getImageRefById(user, imageId){
+    // Retrieve the image URL/reference from the database
+    console.log("getImageRefById: "+imageId);
+    photoData = await database.getPhotoData(user, imageId);
+    return photoData.reference;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                   UPDATE                                   //
+////////////////////////////////////////////////////////////////////////////////
+
+// TODO: add photoDateTimes
+// TODO: change successes to document IDs
+async function addPhotosToUser(user, images){
+    var successes = []
+    console.log("addPhotosToUser: "+images);
+    // Iterate through each image and add it individually
+    for(i in images){
+        console.log(`image: ${images[i]}`);
+        await addPhotoToUser(user, images[i]).then(imageref => {
+            // return an id for each image input attempt
+            successes.push(imageref);
+        })
+    }
+
+    return successes;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                   DELETE                                   //
+////////////////////////////////////////////////////////////////////////////////
+
+
+// TODO: Implement Deletions
+async function deletePhotoById(user, image){
+    console.log("Err: Incomplete Function deletePhotoById");
 }
 
 module.exports = {
