@@ -3,6 +3,7 @@ import { render } from "react-dom";
 import Picky from "react-picky";
 import "./NavDropdown.css";
 
+
 const bigList = [];
 
 
@@ -28,6 +29,19 @@ class NavDropdown extends React.Component {
     console.log("Vals", value);
     this.setState({ value });
   }
+
+  // pushPhoto(value){
+  //   axios.post('/user', {
+  //     firstName: 'Fred',
+  //     lastName: 'Flintstone'
+  //   })
+  //   .then(function (response) {
+  //     console.log(response);
+  //   })
+  //   .catch(function (error) {
+  //     console.log(error);
+  //   });
+  // }
   
   render() {
     return (
@@ -66,11 +80,22 @@ class NavDropdown extends React.Component {
                   key={item[valueKey]} // required
                   onClick={() => selectValue(item)}
               >
-                <input type="checkbox" className="button-format" checked={isSelected} readOnly />
+                {/* <input type="checkbox" className=" button-format" checked={isSelected} readOnly />
 
                 <span style={{fontWeight: isSelected ? "bold" : "normal", fontSize: '16px'}}>
                   {item[labelKey]}
-                </span>
+                </span> */}
+
+                <form>
+                  <div className="custom-control custom-checkbox">
+                    <input type="checkbox" className="custom-control-input" checked={isSelected} name="checkthis" readOnly/>
+                    <label className="custom-control-label" >
+                      <span style={{fontWeight: isSelected ? "bold" : "normal", fontSize: '16px'}}>
+                        {item[labelKey]}
+                      </span>
+                    </label>
+                  </div>
+                </form>
 
               </li>
             );

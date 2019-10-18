@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ImagePicker from 'react-image-picker'
-import './PhotoList.css'
+import './UnAlbumPhotoList.css'
+import axios from 'axios'
 
 //import images from local
 import img1 from './temp_images/1.png'
@@ -17,11 +18,10 @@ import img11 from './temp_images/11.png'
 import img12 from './temp_images/12.png'
 import img13 from './temp_images/13.png'
 //import axios from 'axios'
-const imageList = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13]
+//const imageList = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13]
 
+class UnAlbumPhotoList extends Component {
 
-class PhotoList extends Component {
-    
     constructor(props) {
         super(props)
         this.state = {
@@ -41,9 +41,9 @@ class PhotoList extends Component {
         //axios.post("./api/image",{})
     }
      
-    render() {
+    render(imageList) {
         return (
-          <div className='.main.image_picker'>
+          <div className='main image_picker'>
             
             <ImagePicker 
               multiple={true}
@@ -54,4 +54,4 @@ class PhotoList extends Component {
        )
     }
 }
-export default PhotoList; 
+export default UnAlbumPhotoList; 
