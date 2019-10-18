@@ -5,7 +5,7 @@ const database = require('../database.js');
 ////////////////////////////////////////////////////////////////////////////////
 
 async function createAlbumPage(user, album, number, template){
-    database.addAlbumPage(user, album, number, template);
+    return await database.addAlbumPage(user, album, number, template);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -13,7 +13,7 @@ async function createAlbumPage(user, album, number, template){
 ////////////////////////////////////////////////////////////////////////////////
 
 async function getAlbumPageTemplate(user, album, page){
-    database.getAlbumPageData(user, album, page);
+    return await database.getAlbumPageData(user, album, page);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -21,7 +21,7 @@ async function getAlbumPageTemplate(user, album, page){
 ////////////////////////////////////////////////////////////////////////////////
 
 async function updateAlbumPageAttributes(user, album, page, template){
-    database.updateAlbumPageTemplate(user, album, page, template);
+    return await database.updateAlbumPageTemplate(user, album, page, template);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

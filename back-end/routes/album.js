@@ -130,8 +130,12 @@ router.put   ('/:albumId/:pageId', (req, res) => {
 	var user = req.query.user;
 	// Update an album page (might be useful eg. for copy/paste)
 	if( req.params.albumId && req.params.pageId && req.query.template ){
-		template = pageUtil.updateAlbumPageAttributes(user, req.params.albumId, req.params.pageId, req.query.template);
-		res.send(template);
+		success = pageUtil.updateAlbumPageAttributes(user, req.params.albumId, req.params.pageId, req.query.template);
+		if(success){
+			res.sendStatus(204);
+		} else {
+			res.sendStatus(500);
+		}
 	} else {
 		res.sendStatus(400);
 	}
