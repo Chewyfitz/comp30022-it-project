@@ -32,7 +32,8 @@ const photoCollection = 'Photos';
 const albumCollection = 'Albums';
 const albumPositionCollection = 'Album Positions';
 const albumPageCollection = 'Album Page';
-const categoryCollection = 'Categories';
+//const categoryCollection = 'Categories';
+//const TagCollection = 'Tags';
 
 /**Function that generates the path to a particular Collection of Documents
  * allowing for nesting differences*/
@@ -96,78 +97,98 @@ function albumPositionsPath(userID, albumID) {
 
 
 /**
- * General use adder, currently creates a new Document and stores the data in
- * it. NOTE: If a document key is given it will override any preexisting
- * documents that use that key.
+ * General use Document Creator, currently creates a new Document in the
+ * specified collection and stores the given data in it. If a document key is
+ * given, then a Document with that key will be created if none other exists.
  *
  * @param {Object} data - Basically a dictionary of key-value pairs where the
  *                        key represents the field represents the value will be
  *                        added to in the Document
  * @param {String} path - The path to the Collection the Document will be
- *                        created in
- * @param {String} [doc=undefined] - The key the created document should have, leave
- *                              blank/undefined for a randomly generated key
+ *          created in
+ * @param {String} [doc=undefined] - The key the created document should have,
+ *          leave blank/undefined for a randomly generated key
  *
  * @return {Boolean} - True only if the document was created successfully
  * */
 async function addDataToDoc(data, path, doc=undefined) {
     //Initialisation
-    let docID = undefined;
-    let setDoc = undefined;
+    let docID;
+    let promise;
     let success = false;
     //If a key for the doc was specified, use that key to create the doc
     if(doc) {
-        //Stores the promise to create a document and store the data in it
-        setDoc = db.collection(path)
+        //Stores the promise of .then() to wait on
+        promise = admin.firestore().collection(path)
             .doc(doc)
-            .set(data)
-            //If successfully created then we know that the docID = doc
-            .then(value => {
+            .create(data)
+            //The promise resolves only if it's not overwriting anything
+            .then(resValue => {
+                //If it resolves, then we know the docID = doc and it succeeded
                 docID = doc;
-            });
+                success = true;
+            }, rejValue => {
+                //TODO Do I need to handle this rejection?
+                console.log("ERROR in general_database.js addDataToDoc: " +
+                    "Tried to add the data of " + data + " to " + path + '/' +
+                    doc + "but the promise was rejected \n Rejection Value: " +
+                    rejValue);
+        });
     }
     //Else created the doc with a randomly generated key
     else{
-        //Stores the promise to create a document and store the data in it
-        setDoc = db.collection(path)
+        //Stores the promise of .then()
+        promise = db.collection(path)
             .add(data)
-            //If successfully created then get the docID from the new reference
-            .then(value => {
-                docID = value.id;
+            //If the promise resolves, then its value will be the docID
+            .then(resValue => {
+                docID = resValue.id;
+            }, rejValue => {
+                //TODO Do I need to handle this rejection?
+                console.log("ERROR in general_database.js addDataToDoc: " +
+                    "Tried to add the data of " + data + " to " + path + '/' +
+                    "but the promise was rejected \n Rejection Value: " +
+                    rejValue);
             });
     }
     //Wait for the promise to be resolved/rejected
-    await setDoc;
+    await promise;
     //docID will now have its final value, return it.
     return docID;
 }
 
 /**
- * Deletes the Documents in a Collection.
  * !CAUTION!
+ * !COULD POTENTIALLY RESULT IN A LARGE STACK!
  * !!DOES NOT DELETE REFERENCES TO THE DOCUMENT!!
+ * Deletes the Documents in a Collection and its descendants.
  *
- * @param {String} path - The path to the Collection to delete
- * @returns {Boolean} - True only if all the document were successfully deleted
- *                      false if even one document in the collection failed to
- *                      delete. (All documents must be deleted to delete a
- *                      collection)
+ * @param {String} path - The path to the Collection to be deleted
+ *
+ * @returns {Boolean} - True only if all the documents and their descendants
+ *          were successfully deleted, false if even one document failed to
+ *          delete.
  */
 async function deleteCollection(path) {
+    //Makes a call to a recursive function that does all the work
     return recDeleteAllFomCollection(admin.firestore().collection(path));
 }
 
 /**
  * !CAUTION!
+ * !COULD POTENTIALLY RESULT IN A LARGE STACK!
  * !!DOES NOT DELETE REFERENCES TO THE DOCUMENT!!
- * Deletes the document from the path
+ * Deletes the document and its descendants
  *
- * @param {String} path - The path to the Collection the Document will be
- *                        created in
+ * @param {String} path - The path to the Collection the Document that will be
+ *          deleted
  * @param {String} doc -  The key of the Document
- * @returns {Boolean} - True only if the document was successfully deleted
+ *
+ * @returns {Boolean} - True only if the document and its descendants were
+ *          successfully deleted, false if even one document failed to delete.
  */
 async function deleteDoc(path, doc) {
+    //Makes a call to a recursive function that does all the work
     return recDeleteAllFromDoc(admin.firestore().collection(path).doc(doc));
 }
 
@@ -176,24 +197,30 @@ async function deleteDoc(path, doc) {
  * !COULD POTENTIALLY RESULT IN A LARGE STACK!
  * !!DOES NOT DELETE REFERENCES TO THE DOCUMENT!!
  * Deletes a Collection and all its Documents and SubCollections in a
- * depth-first manner.
+ * depth-first manner using two function recursion.
  *
- * @param {admin.firestore.CollectionReference} reference - The reference to the
- *                                                        Document that is being
- *                                                    deleted from the database
- *                        created in
+ * @param {FirebaseFirestore.CollectionReference} reference - Reference of the
+ *          Document that is being deleted from the database
+ *
  * @returns {Boolean} - True only if the document and all its descendants were
- *                      successfully deleted
+ *          successfully deleted, false if even one document failed
+ *          to delete.
  */
 async function recDeleteAllFomCollection(reference) {
-    let success = false;
+    //Initialisation
     let docDeletionSuccesses = [];
-    let documents = await reference.listDocuments();
+    let documents;
+    let success = false;
+    //Gets the list of all Document References in the Collection
+    documents = await reference.listDocuments();
+    //For each document, delete it and all of its descendants
     documents.forEach(document => {
-        //TODO Finish implementing recDeleteAllFromDoc
+        //Stores each success (which will be a promise)
         docDeletionSuccesses.push(recDeleteAllFromDoc(document));
     });
+    //Wait for all the promises to resolve simultaneously
     await Promise.all(docDeletionSuccesses);
+    //It succeeded only if nothing failed
     success = !docDeletionSuccesses.includes(false);
     return success;
 }
@@ -203,43 +230,33 @@ async function recDeleteAllFomCollection(reference) {
  * !COULD POTENTIALLY RESULT IN A LARGE STACK!
  * !!DOES NOT DELETE REFERENCES TO THE DOCUMENT!!
  * Deletes a document and all its SubCollections and SubDocument in a
- * depth-first manner.
+ * depth-first manner using two function recursion.
  *
- * @param {admin.firestore.DocumentReference} reference - The reference to the
- *                                                        Document that is being
- *                                                    deleted from the database
- *                        created in
+ * @param {FirebaseFirestore.DocumentReference} reference - Reference of the
+ *          Document that is being deleted from the database
+ *
  * @returns {Boolean} - True only if the document and all its descendants were
- *                      successfully deleted
+ *          successfully deleted, false if even one document failed to delete.
  */
 async function recDeleteAllFromDoc(reference) {
-    let subCollections;
+    //Initialisation
     let collectionDelSuccesses = [];
+    let subCollections;
     let success = false;
-    //TODO get list of all collections a documet has...
+    //Gets a list of all the Documents SubCollections
     subCollections = await reference.listCollections();
+    //For each SubCollection, delete it and its descendants
     subCollections.forEach(collection => {
+        //Stores each success (which will be a promise)
         collectionDelSuccesses.push(recDeleteAllFomCollection(collection));
     });
+    //Delete this document as well (and store its success)
     collectionDelSuccesses.push(reference.delete());
+    //Wait for all the promises to resolve simultaneously
     await Promise.all(collectionDelSuccesses);
+    //It succeeded only if nothing failed
     success = !collectionDelSuccesses.includes(false);
     return success;
-}
-
-/**
- * Retrieves a Document from the database
- *
- * @param {String} path - The path to the Collection that the Document is in
- * @param {String} doc - The key of the Document
- *
- * @return {firebase.firestore.DocumentSnapshot} - More or less has everything
- *                                                 about the document at time
- *                                                 of resolution.
- * */
-async function getDoc(path, doc) {
-    let document = await db.collection(path).doc(doc).get();
-    return document;
 }
 
 /**
@@ -249,24 +266,54 @@ async function getDoc(path, doc) {
  * @param {String} doc - The key of the Document
  *
  * @return {firebase.firestore.DocumentData} - Basically a dictionary of
- *                                             key-value pairs where the key
- *                                             represents the field of the data
+ *          key-value pairs where the key represents the field of the data,
+ *          returns undefined if the document doesn't exist
  * */
 async function getDataInDoc(path, doc) {
     //Initialisation
-    let data = {};
+    let data;
     //Stores the promise to retrieve a document
-    let document = await db.collection(path).doc(doc).get()
-    //If the Promise is successfully resolved, retrieve the data from it
-        .then(value => {
-            if(value.exists) {
-                data = value.data();
+    let document = await db.collection(path)
+        .doc(doc)
+        .get()
+        //On resolution of the promise
+        .then(resValue => {
+            //If the document exists get the data
+            if(resValue.exists) {
+                data = resValue.data();
+            } else {
+                //There is no data to get from a Document that doesn't exist
+                console.log("ERROR in general_database.js getDataInDoc: " +
+                    "Tried to get the data of " + path + '/' + doc + "but the" +
+                    " Document does not exist");
             }
+        //On rejection of the promise
+        }, rejValue => {
+            //TODO Do I need to handle this rejection?
+            console.log("ERROR in general_database.js getDataInDoc: " +
+                "Tried to get the data of " + path + '/' + doc + "but the" +
+                " promise was rejected \n Rejection Value: " + rejValue);
         });
     //Wait for the promise to be resolved/rejected
     await document;
-    //Return the data if the document existed otherwise an empty opbject
+    //Return the data if the document existed otherwise an empty object
     return data;
+}
+
+/**
+ * Retrieves a Document from the database
+ *
+ * @param {String} path - The path to the Collection that the Document is in
+ * @param {String} doc - The key of the Document
+ *
+ * @return {firebase.firestore.DocumentSnapshot} - More or less has everything
+ *          about the document at time of resolution.
+ * */
+async function getDoc(path, doc) {
+    let document = await db.collection(path)
+        .doc(doc)
+        .get();
+    return document;
 }
 
 /**
@@ -276,11 +323,11 @@ async function getDataInDoc(path, doc) {
  * @param {String} path - The path to the Collection that the Document is in
  * @param {String} doc - The key of the Document
  *
- * @return {firebase.firestore.DocumentReference} - A firebase reference to the
- *                                                  document
+ * @return {FirebaseFirestore.DocumentReference} - A firebase reference to the
+ *          document
  * */
 function getDocRef(path, doc){
-    return db.collection(path).doc(doc);
+    return admin.firestore().collection(path).doc(doc);
 }
 
 /**
@@ -289,10 +336,10 @@ function getDocRef(path, doc){
  * then one will be created and then updated accordingly.
  *
  * @param {Object} data - Basically a dictionary of key-value pairs where the
- *                        key represents the field represents the value will be
- *                        updated in the Document
+ *          key represents the field represents the value will be
+ *          updated in the Document
  * @param {String} path - The path to the Collection the Document to be updated
- *                        is in.
+ *          is in.
  * @param {String} doc - The key of the Document that will be update
  *
  * @return {Boolean} - True only if the document was updated successfully
@@ -305,8 +352,14 @@ async function updateDataInDoc(data, path, doc) {
         .doc(doc)
         .update(data)
         //If the Promise is successfully resolved, assign success to true
-        .then(value => {
+        .then(resValue => {
             success = true;
+        //If the Promise is rejected
+        }, rejValue => {
+            //TODO Do I need to handle this rejection?
+            console.log("ERROR in general_database.js updateDataInDoc: " +
+                "Tried to update " + path + '/' + doc + "with " + data +
+                "but the promise was rejected \n Rejection Value: " + rejValue);
         });
     //Wait for the promise to be resolved/rejected
     await updateDoc;
@@ -325,7 +378,6 @@ module.exports = {
     albumCollection,
     albumPositionCollection,
     albumPageCollection,
-    categoryCollection,
     //Functions to generate paths to (Sub)Collections
     usersPath,
     photosPath,
@@ -334,12 +386,10 @@ module.exports = {
     albumPositionsPath,
     //Functions to interact with the database
     addDataToDoc,
-    deleteDoc,
     deleteCollection,
+    deleteDoc,
     getDataInDoc,
     getDoc,
     getDocRef,
-    recDeleteAllFomCollection,
-    recDeleteAllFromDoc,
     updateDataInDoc,
 };
