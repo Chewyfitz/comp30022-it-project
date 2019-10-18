@@ -1,0 +1,35 @@
+.carousel,
+.carousel-inner,
+.carousel-inner > .carousel-item {
+    overflow: hidden;
+}
+.carousel-inner > .carousel-item.active,
+.carousel-inner > .carousel-item-next {
+    display: flex;
+    flex-wrap: nowrap;
+    width: auto;
+}
+.carousel-inner:before {
+    position:absolute;
+    top:0;
+    bottom: 0;
+    right: 82%;
+    left: 0;
+    content:"";
+    display:block;
+    background-color: #fff;
+    z-index: 2;
+}
+.carousel-inner:after {
+    position:absolute;
+    top:0;
+    bottom:0;
+    right: 0;
+    left: 82%;
+    content:"";
+    display:block;
+    background-color:#fff;
+    z-index: 2;
+}
+
+
