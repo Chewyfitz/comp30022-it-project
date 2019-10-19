@@ -9,7 +9,9 @@ const photoFields = {
     reference: "Photo Reference",
     name: "Photo Name",
     dateTime: "Photo DateTime",
-    description: "Photo Description"
+    description: "Photo Description",
+    height: "Photo pixel height",
+    width: "Photo pixel width",
 };
 
 
@@ -19,20 +21,24 @@ const photoFields = {
  * @param {String} userID - The username of the owner of the photo
  * @param {String} photoReference - The reference to the photo that's being
  *                                  added to the database
+ * @param {Number} height - The pixel height of the referenced image
+ * @param {Number} width - The pixel width of the referenced image
  * @param {String} [photoDateTime=undefined] - The DateTime of when the photo was
  *                                        taken
  *
  * @return {Boolean} - True only if the new photo was successfully added to the
  *                     database
  * */
-function addPhoto(userID, photoReference, photoDateTime=null) {
+function addPhoto(userID, photoReference, height, width, photoDateTime=null) {
     //Initialisation
     let data = {};
     //Add the appropriate data to be stored in the database
     data[photoFields.reference] = photoReference;
     data[photoFields.dateTime] = photoDateTime;
     data[photoFields.description] = "";
+    data[photoFields.height] = height;
     data[photoFields.name] = "";
+    data[photoFields.width] = width;
     //Attempt to Create the Document and return its success
     let success = general.addDataToDoc(data, general.photosPath(userID));
     return success;
@@ -120,6 +126,29 @@ function getPhotoDateTime(userID, photoID){
 }
 
 /**
+ * Returns the pixel height and pixel width of the image referenced in the
+ * Photos Document
+ *
+ * @param {String} userID - The owner of the photo
+ * @param {String} photoID - The key of the document in the Photos Collection
+ *                           that we are getting the DateTime from
+ *
+ * @return {Object} - A dictionary with the dimensions stored in it.
+ */
+function getPhotoDimensions(userID, photoID) {
+    let dimensions = {};
+    let data = getPhotoData(userID, photoID);
+    try {
+        dimensions.height = data[photoFields.height];
+        dimensions.width = data[photoFields.width];
+    } catch (e) {
+        console.log("Error in Photos.js.getPhotoDimensions");
+        console.log(e);
+    }
+    return dimensions;
+}
+
+/**
  * Retrieves the stored description of a photo
  *
  * @param {String} userID - The owner of the photo
@@ -194,6 +223,30 @@ function updatePhotoDateTime(userID, photoID, dateTime){
 }
 
 /**
+ * Updates the stored dimension information about the referenced image in a
+ * Photos Document
+ *
+ * @param {String} userID - The username of the owner of the photo
+ * @param {String} photoID - The key of the document in the Photos Collection
+ *                           that we are updating the DateTime in
+ * @param {Number} height - The pixel height of the referenced image
+ * @param {Number} width - The pixel width of the referenced image
+ *
+ * @returns {Boolean}
+ */
+function updatePhotoDimensions(userID, photoID, width=undefined, height=undefined) {
+    let data = {};
+    if(height){
+        data[photoFields.height] = height;
+    }
+    if(width){
+        data[photoFields.width] = width;
+    }
+    let success = general.updateDataInDoc(data, general.photosPath(userID), photoID);
+    return success;
+}
+
+/**
  * Updates the stored description for a photo owned by a user
  *
  * @param {String} userID - The username of the new user who owns the photo
@@ -245,9 +298,11 @@ module.exports = {
     getAllPhotoData,
     getPhotoData,
     getPhotoDateTime,
+    getPhotoDimensions,
     getPhotoDescription,
     getPhotoReference,
     updatePhotoDateTime,
     updatePhotoDescription,
+    updatePhotoDimensions,
     updatePhotoReference,
 };
