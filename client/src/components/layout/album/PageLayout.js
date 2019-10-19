@@ -21,9 +21,8 @@ const imageList = [img1, img2, img3, img4, img5, img6]
 const imageList2 = [img7, img8, img9, img10, img11, img12]
 
 
-const PageLayout = (a) => {
+const PageLayout = () => {
 
-    const {pageSide}=a;
 
     return (
         <div>
@@ -36,7 +35,7 @@ const PageLayout = (a) => {
                 </div>
                 <div class="col-lg-3 col-md-4 col-6">
                     <a href='/photo' class="d-block mb-4 h-100 image-thumbnail-container">
-                        <img class="img-fluid img-thumbnail image-album-container" src={img1} alt=""/>
+                        <img class="img-fluid img-thumbnail image-album-container" src={img2} alt=""/>
                     </a>
                 </div>
             </div>  
@@ -45,12 +44,12 @@ const PageLayout = (a) => {
 
                 <div class="col-lg-3 col-md-4 col-6">
                     <a href='/photo' class="d-block mb-4 h-100">
-                        <img class="img-fluid img-thumbnail image-album-container" src={img1} alt=""/>
+                        <img class="img-fluid img-thumbnail image-album-container" src={img7} alt=""/>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-6">
                     <a href='/photo' class="d-block mb-4 h-100 image-thumbnail-container">
-                            <img class="img-fluid img-thumbnail image-album-container" src={img1} alt=""/>
+                            <img class="img-fluid img-thumbnail image-album-container" src={img4} alt=""/>
                     </a>
                 </div>
             </div> 
@@ -59,12 +58,12 @@ const PageLayout = (a) => {
 
                 <div class="col-lg-3 col-md-4 col-6">
                     <a href='/photo' class="d-block mb-4 h-100">
-                        <img class="img-fluid img-thumbnail image-album-container" src={img1} alt=""/>
+                        <img class="img-fluid img-thumbnail image-album-container" src={img5} alt=""/>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-4 col-6">
                     <a href='/photo' class="d-block mb-4 h-100 image-thumbnail-container">
-                            <img class="img-fluid img-thumbnail image-album-container" src={img1} alt=""/>
+                            <img class="img-fluid img-thumbnail image-album-container" src={img6} alt=""/>
                     </a>
                 </div>
             </div>  

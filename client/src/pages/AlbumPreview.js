@@ -3,7 +3,6 @@ import axios from 'axios'
 
 //COMPONENTS
 import Navbar from '../components/layout/navbar/Navbar'
-import SubNavbar from '../components/layout/navbar/SubNavbar'
 import PageView from '../components/layout/album/PageView'
 import Sidebar from '../components/layout/navbar/Sidebar'
 

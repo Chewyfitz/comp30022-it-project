@@ -28,18 +28,18 @@ class PageView extends Component {
 
   render() {
     return (
-      <div className='album-format container'>      
+      <div className='album-format'>      
         
         {/* <PageLayout pageSide={"Album Name"}/> */}
 
-        <div className="container page-left">
+        <div className=" album-page-left">
             
           <PageLayout />
 
         </div>   
 
         {/* <ImagePicker images={imageList2.map((image, i) => ({src: image, value: i}))} /> */}
-        <div className="container page-right">
+        <div className=" album-page-right">
           
           <PageLayout />
           

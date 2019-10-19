@@ -2,7 +2,7 @@
     top:100px !important;
 }
 
-.page-left{
+.album-page-left{
     box-shadow: 5px 5px rgba(116, 136, 163, 0.7);
     top:75px;
     border-right-color: rgb(61, 94, 62) !important;
@@ -13,13 +13,13 @@
         rgba(76, 115, 78, 0.7),rgba(76, 115, 78, 0.9),rgba(25, 64, 71, 0.8));
     background-color: rgba(240, 227, 215, 0.85);
     width: 35% !important;
-    height:75%;
+    height:75% !important;
     border-radius:4px;
     position: absolute;
     right: 50% !important;
 }
 
-.page-right{
+.album-page-right{
     box-shadow: 5px 5px rgba(116, 136, 163, 0.7);
     top:75px;
     border-left-color: rgb(61, 94, 62) !important;
@@ -30,7 +30,7 @@
     rgba(76, 115, 78, 0.7),rgba(76, 115, 78, 0.9),rgba(25, 64, 71, 0.8));
     background-color: rgba(240, 227, 215, 0.85);
     width: 35% !important;
-    height:75%;
+    height:75% !important; 
     border-radius:4px;
     position: absolute;
     left: 50% !important;
