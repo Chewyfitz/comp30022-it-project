@@ -42,7 +42,7 @@ router.get('/:imageId', (req, res) => {
 	});
 });
 
-router.post('/', cors(), upload.array('file'), (req, res) => {
+router.post('/', upload.array('file'), (req, res) => {
 	// variables of interest here are req.files, req.params, and req.query
 
 	// Add a new image - Likely will need upload or some kind of url
