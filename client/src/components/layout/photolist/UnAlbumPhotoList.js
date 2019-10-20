@@ -14,7 +14,7 @@ class UnAlbumPhotoList extends Component {
       imageList: [],
     }
     this.onPick = this.onPick.bind(this)
-    albumAPI.getImagesfromAlbum('un').then((imageList) => {
+    albumAPI.getImagesfromAlbum('un', 'test_user').then((imageList) => {
       this.setState({
         imageList: imageList,
       })
