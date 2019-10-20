@@ -49,6 +49,7 @@ router.post('/', upload.array('file'), (req, res) => {
 	// console.log("POST /image/");
 	// TODO: Add user auth check
 	if(req.query.user && req.query.image){
+		console.log("USER AND IMAGE QUERY");
     // Add the URL to the user.
 		util.addPhotoToUser(req.query.user, req.query.image).then(responseStatus => {
       // If you've never seen this format before, it's just an if/then/else in 
@@ -58,10 +59,12 @@ router.post('/', upload.array('file'), (req, res) => {
 			responseStatus ? res.sendStatus(200) : res.sendStatus(500);
 		});
   } else if(req.query.user && req.files){
-    // Upload the sent files
+		console.log("USER QUERY AND FILE")
+    	// Upload the sent files
     util.uploadPhotos(req.files).then(refs => {
-      // Add the uploaded file URIs to the user so we don't lose them.
-      util.addPhotosToUser(req.query.user, refs).then(responseStatus => {
+		console.log("PHOTO UPLOAD QUEUED");
+		// Add the uploaded file URIs to the user so we don't lose them.
+		util.addPhotosToUser(req.query.user, refs).then(responseStatus => {
         responseStatus ? res.sendStatus(200) : res.sendStatus(500);
 	  });
 	  // TODO: Add the IDs to the un-album.
