@@ -36,6 +36,7 @@ const MainRouter = express.Router();
 MainRouter.use('/image', require('./routes/image'));
 MainRouter.use('/album', require('./routes/album'));
 MainRouter.use('/user', require('./routes/user'));
+MainRouter.use('/', require('./routes/auth'));
 
 // Not yet Implemented:
 /* MainRouter.use('/register', require('./routes/signup')); */
