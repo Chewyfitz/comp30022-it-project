@@ -44,7 +44,7 @@ router.get('/:imageId', (req, res) => {
 
 router.post('/', upload.array('file'), (req, res) => {
 	// variables of interest here are req.files, req.params, and req.query
-
+	console.log("POST: /api/image/")
 	// Add a new image - Likely will need upload or some kind of url
 	// console.log("POST /image/");
 	// TODO: Add user auth check
