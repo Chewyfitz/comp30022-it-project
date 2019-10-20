@@ -63,6 +63,7 @@ router.post('/', upload.array('file'), (req, res) => {
     	// Upload the sent files
     util.uploadPhotos(req.files).then(refs => {
 		console.log("PHOTO UPLOAD QUEUED");
+		console.log(refs);
 		// Add the uploaded file URIs to the user so we don't lose them.
 		util.addPhotosToUser(req.query.user, refs).then(responseStatus => {
         responseStatus ? res.sendStatus(200) : res.sendStatus(500);

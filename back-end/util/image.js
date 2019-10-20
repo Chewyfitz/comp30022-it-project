@@ -24,6 +24,7 @@ async function uploadPhotos(files){
     // Set the information for the uploaded file
     var bucket = gcs.bucket(`gs://${process.env.PROJECTID}.appspot.com`);
     var strings = [];
+    console.log(`RECIEVED FILES files`);
     for(i in files){
         // filename -- include username?
         const gcsname = `${Date.now()}-${files[i].originalname}`;
