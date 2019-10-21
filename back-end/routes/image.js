@@ -72,11 +72,25 @@ router.post('/', cors(), upload.array('file'), (req, res) => {
 	}
 });
 
-router.delete('/', (req, res) => {
+router.delete('/:photoId', (req, res) => {
 	// Delete an image entry. If it has an uploaded image deal with that.
-	console.log("DELETE /image/");
-	console.log(req.params);
-	res.sendStatus(200);
+	const user = req.query.user;
+	if(req.params.photoId){
+		const imageId = req.params.photoId;
+	} else {
+		const imageId = req.query.photoId;
+	}
+
+	util.deletePhotoById(user, imageId).then( (status) => {
+		if(status){
+			res.sendStatus(204);
+		} else {
+			res.sendStatus(400);
+		}
+	}).catch( (err) => {
+		res.status(500);
+		res.send(err.toString());
+	});
 });
 
 module.exports = router;
