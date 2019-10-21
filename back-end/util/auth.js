@@ -11,7 +11,9 @@ async function register(req){
     if(req.headers.authorization){
         // get the login (email) and password from the auth header
         [login, password] = decode(req.headers.authorization);
-
+        
+        console.log(login);
+        
         // Try to register the user with their details
         return firebaseRegister(login, password)
     } else if (req.params.email && req.params.psword) {
