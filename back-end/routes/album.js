@@ -10,9 +10,6 @@ const pageUtil = require('../util/albumPage');
 
 router.post  ('/', (req, res) => {
 	// Create a new album, and return its ID
-	// console.log("POST /album/");
-	// console.log(req.params);
-	// console.log(req.query);
 	var user = req.query.user;
 
 	util.createAlbum(user, req.query.albumName).then( (album) => {
@@ -66,9 +63,6 @@ router.put   ('/:albumId', (req, res) => {
 
 router.patch ('/:albumId', (req, res) => {
 	// Update an album
-	// console.log("PATCH /album/:albumID");
-	// console.log(req.params);
-	// console.log(req.query);
 	var user = req.query.user;
 	util.updateAlbumAttributes(user, req.params.albumId, req.query).then((truth_val) => {
 		if(truth_val){
