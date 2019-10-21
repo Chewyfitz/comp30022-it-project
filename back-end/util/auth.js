@@ -3,6 +3,9 @@ const firebase = require('firebase');
 require('firebase/auth');
 
 async function firebaseRegister(email, password){
+    console.log("registering");
+    console.log(email);
+    console.log(password);
     user = await firebase.auth().createUserWithEmailAndPassword(email, password);
     return user;
 }
