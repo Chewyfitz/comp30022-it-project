@@ -83,6 +83,7 @@ module.exports = {
     getAlbumById,
     getAllAlbumNames,
     // UPDATE
+    addImageToAlbum,
     updateAlbumAttributes,
     // DELETE
 }
