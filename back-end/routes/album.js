@@ -84,10 +84,19 @@ router.patch ('/:albumId', (req, res) => {
 // Delete
 
 router.delete('/:albumId', (req, res) => {
-	// Delete an album
-	console.log("DELETE /album/:albumID");
-	console.log(req.params);
-	res.sendStatus(200);
+	const userId = req.query.userId || 'test_user';
+	const albumId = req.params.albumId;
+
+	util.deleteAlbum(userId, albumId).then((success) => {
+		if(success){
+			res.sendStatus(204);
+		} else {
+			res.sendStatus(400);
+		}
+	}).catch( (err) => {
+		res.status(500);
+		res.send(err.toString());
+	});
 });
 
 // ============================================================================

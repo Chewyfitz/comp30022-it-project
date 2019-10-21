@@ -71,6 +71,9 @@ async function updateAlbumAttributes(user, album, attributes){
 //                                   DELETE                                   //
 ////////////////////////////////////////////////////////////////////////////////
 
+async function deleteAlbum(user, album){
+    return await database.deleteAlbum(user, album);
+}
 
 module.exports = {
     // CREATE
@@ -81,4 +84,5 @@ module.exports = {
     // UPDATE
     updateAlbumAttributes,
     // DELETE
+    deleteAlbum,
 }
