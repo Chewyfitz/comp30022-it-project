@@ -6,7 +6,12 @@ async function firebaseRegister(email, password){
     console.log("registering");
     console.log(email);
     console.log(password);
-    user = await firebase.auth().createUserWithEmailAndPassword(email, password);
+    try{
+        user = await firebase.auth().createUserWithEmailAndPassword(email, password);
+    }
+    catch(err){
+        console.log(err);
+    }
     return user;
 }
 
