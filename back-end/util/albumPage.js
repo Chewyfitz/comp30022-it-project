@@ -1,5 +1,8 @@
 const database = require('../database.js');
 
+// These routes are pretty much all just calling the database functions. If we 
+// need to add more complicated logic in future it will be added here.
+
 ////////////////////////////////////////////////////////////////////////////////
 //                                   CREATE                                   //
 ////////////////////////////////////////////////////////////////////////////////
@@ -28,6 +31,9 @@ async function updateAlbumPageAttributes(user, album, page, template){
 //                                   DELETE                                   //
 ////////////////////////////////////////////////////////////////////////////////
 
+async function deleteAlbumPage(user, album, page){
+    return await database.deleteAlbumPage(user, album, page);
+}
 
 module.exports = {
     // CREATE
@@ -37,4 +43,5 @@ module.exports = {
     // UPDATE
     updateAlbumPageAttributes,
     // DELETE
+    deleteAlbumPage,
 }
