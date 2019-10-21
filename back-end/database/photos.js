@@ -50,7 +50,7 @@ function addPhoto(userID, photoReference, photoDateTime=null) {
  *                     database
  * */
 async function deletePhoto(userID, photoID) {
-    return await general.deleteDoc(general.usersPath(), photoID);
+    return await general.deleteDoc(general.photosPath(userID), photoID);
 }
 
 /**
