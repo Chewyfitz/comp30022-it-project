@@ -76,6 +76,10 @@ async function updateAlbumAttributes(user, album, attributes){
     return name_success && template_success && view_success;
 }
 
+async function addImageToAlbum(image, album, user, caption = ''){
+    database.addAlbumPosition(user, album, image, caption)
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //                                   DELETE                                   //
 ////////////////////////////////////////////////////////////////////////////////
@@ -89,5 +93,6 @@ module.exports = {
     getAllAlbumNames,
     // UPDATE
     updateAlbumAttributes,
+    addImageToAlbum,
     // DELETE
 }

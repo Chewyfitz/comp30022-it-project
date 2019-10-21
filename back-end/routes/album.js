@@ -57,11 +57,25 @@ router.get   ('/:albumId?', (req, res) => {
 
 // Update
 
-// TODO: PUT update
+// Add a Photo to an album
 router.put   ('/:albumId', (req, res) => {
 	// Update an album (May be removed in preference to PATCH)
-	console.log("PUT /album/:albumID");
-	console.log(req.params);
+	var imageId = req.query.imageId;
+	var albumId = req.params.albumId;
+	var user = req.query.user;
+	var caption = req.query.caption || '';
+
+	util.addImageToAlbum(imageId, albumId, user, caption).then( (success) => {
+		// Album add succeeded
+		if(success){
+			res.sendStatus(201);
+		} else {
+			res.sendStatus(500);
+		}
+	}).catch((err) => {
+		res.send(err.toString());
+	})
+
 	res.sendStatus(200);
 });
 
