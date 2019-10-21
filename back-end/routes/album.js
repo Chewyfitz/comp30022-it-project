@@ -41,8 +41,9 @@ router.get   ('/:albumId?', (req, res) => {
 			} else {
 				res.sendStatus(500);
 			}
-		}).catch(() => {
-			res.sendStatus(404);
+		}).catch((err) => {
+			res.send(err.toString());
+			// res.sendStatus(404);
 		});
 	} else {
 		util.getAllAlbumNames(user).then((names) => {

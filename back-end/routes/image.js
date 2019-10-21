@@ -42,19 +42,22 @@ router.get('/:imageId', (req, res) => {
 	});
 });
 
-router.post('/', cors(), upload.array('file'), (req, res) => {
+// cors() is already being used in the top level implementation
+router.post('/', /*cors(),*/ upload.array('file'), (req, res) => {
 	// variables of interest here are req.files, req.params, and req.query
 
 	// Add a new image - Likely will need upload or some kind of url
 	// console.log("POST /image/");
 	// TODO: Add user auth check
+	var album = req.query.album || 'un';
 	if(req.query.user && req.query.image){
+		console.log(`user: ${req.query.user} | image: ${req.query.image}`);
     // Add the URL to the user.
-		util.addPhotoToUser(req.query.user, req.query.image).then(responseStatus => {
-      // If you've never seen this format before, it's just an if/then/else in 
-      // a different form (that I think looks clean).
-      // Read it similarly to a normal english sentence: 
-      // [is] responseStatus? res.sendStatus(200)[.] : [else] res.sendStatus(500)
+		util.addPhotoToUser(req.query.user, req.query.image, album).then(responseStatus => {
+			// If you've never seen this format before, it's just an if/then/else in 
+			// a different form (that I think looks clean).
+			// Read it similarly to a normal english sentence: 
+			// [is] responseStatus? res.sendStatus(200)[.] : [else] res.sendStatus(500)
 			responseStatus ? res.sendStatus(200) : res.sendStatus(500);
 		});
   } else if(req.query.user && req.files){

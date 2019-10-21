@@ -14,29 +14,38 @@ async function createAlbum(user, name){
 //                                    READ                                    //
 ////////////////////////////////////////////////////////////////////////////////
 
-async function getAlbumById(user, albumId){
+async function getAlbumById(user, albumId, pageNum = 0, perPage = 12){
     // get 'un' album if none specified
     !albumId ? albumId = 'un': albumId = albumId;
-    // console.log("getAlbumById: "+user+" -> "+albumId);
 
+    // Get the album data
     album = await database.getAlbumData(user, albumId);
+    
     var photos = [];
-    for(i=0;;i++){
-        album_positions = await database.getAlbumPositionData(user, albumId, String(i));
-        if(!album_positions) break;
-
-        photos[i] = {
-            'id': album_positions.photo.id,
-            'caption': album_positions.caption
-        };
-        console.log("AlbumPositionData does not fail gracefully.");
+    // The first photo you get should be this one, and we'll try to get ${perPage} photos
+    var start = perPage*pageNum;
+    for(i=start; i<start + perPage; i++){
+        // Try to get the photo
+        database.getAlbumPositionData(user, albumId, String(i)).then( (album_image) => {
+            // Do nothing if it isn't a photo
+            if(!album_image['Photo Reference']) return;
+            
+            // Add it to the photos array if it is a photo
+            photos.push({
+                'id': album_image['Photo Reference'].id,
+                'caption': album_image.caption,
+            });
+        });
         // At the moment database.getAlbumPositionData does not handle exceptions gracefully.
         // when it does this break; can be removed.
-        break;
+        // break;
     }
-    album.photos = photos;
+    // Wait for all the photos
+    console.log(photos);
+    album.photos = await Promise.all(photos);
     
     console.log(album);
+    // return the entire album
     return album;
 }
 
