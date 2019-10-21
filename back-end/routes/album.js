@@ -87,16 +87,32 @@ router.delete('/:albumId', (req, res) => {
 	const userId = req.query.userId || 'test_user';
 	const albumId = req.params.albumId;
 
-	util.deleteAlbum(userId, albumId).then((success) => {
-		if(success){
-			res.sendStatus(204);
-		} else {
-			res.sendStatus(400);
-		}
-	}).catch( (err) => {
-		res.status(500);
-		res.send(err.toString());
-	});
+	// Optional - delete position
+	const position = req.params.position;
+	if(position){
+		util.deleteAlbumPosition(userId, albumId, position).then( (success) => {
+			if(success){
+				res.sendStatus(204);
+			} else {
+				res.sendStatus(400);
+			}
+		}).catch( (err) => {
+			res.status(500);
+			res.send(err.toString());
+		});
+	} else {
+		util.deleteAlbum(userId, albumId).then((success) => {
+			if(success){
+				res.sendStatus(204);
+			} else {
+				res.sendStatus(400);
+			}
+		}).catch( (err) => {
+			res.status(500);
+			res.send(err.toString());
+		});
+	}
+
 });
 
 // ============================================================================

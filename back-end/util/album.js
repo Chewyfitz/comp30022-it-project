@@ -75,6 +75,10 @@ async function deleteAlbum(user, album){
     return await database.deleteAlbum(user, album);
 }
 
+async function deleteAlbumPosition(user, album, position){
+    return await database.deleteAlbumPosition(user, album, position);
+}
+
 module.exports = {
     // CREATE
     createAlbum,
@@ -85,4 +89,5 @@ module.exports = {
     updateAlbumAttributes,
     // DELETE
     deleteAlbum,
+    deleteAlbumPosition,
 }
