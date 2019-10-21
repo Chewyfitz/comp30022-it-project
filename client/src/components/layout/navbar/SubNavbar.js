@@ -41,8 +41,7 @@ const SubNavbar = () => { //functional component, equal to arrow function
                     </ul>
                 </div>
             </div>
-        </div>
-    </nav>
+        </nav>
     )
 }
  
