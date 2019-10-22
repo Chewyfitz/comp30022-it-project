@@ -29,17 +29,6 @@
     color: #717381;
   }
 
- .button-format {
-    background-color: #717381;
-    position: relative;
-    color: #717381;
-    height: 20px !important;
-    width: 20px !important;
-    z-index: 100;
-    top: 4px !important;
-    border-color: #4C734E !important;
- }
-
   .picky__dropdown {
     -webkit-touch-callout: none;
     /* iOS Safari */
@@ -128,3 +117,61 @@
 	  position: relative;
 	  top: -8px;
   }
+
+  .custom-controltick{
+    background-color: grey !important;
+  }
+
+  .checkbox label:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+  
+  .checkbox .cr {
+    position: relative;
+    /* display: inline-block; */
+    border: 1px solid #a9a9a9;
+    border-radius: .25em;
+    width: 1.3em;
+    height: 1.3em;
+    float: left;
+    margin-right: .5em;
+    background-color: #717381;
+  }
+  
+  .checkbox .cr .cr-icon {
+    position: absolute;
+    font-size: .8em;
+    line-height: 0;
+    top: 50%;
+    left: 15%;
+  }
+  
+  .checkbox label input[type="checkbox"] {
+    display: none;
+  }
+  
+  .checkbox label input[type="checkbox"]+.cr>.cr-icon {
+    opacity: 0;
+  }
+  
+  .checkbox label input[type="checkbox"]:checked+.cr>.cr-icon {
+    opacity: 1;
+  }
+  
+  .checkbox label input[type="checkbox"]:disabled+.cr {
+    opacity: .5;
+  }
+
+  
+ .button-format{
+  background-color: #717381;
+  position: relative;
+  color: #717381;
+  height: 20px !important;
+  width: 20px !important;
+  z-index: 100;
+  top: 4px !important;
+  border-color: #4C734E !important;
+}

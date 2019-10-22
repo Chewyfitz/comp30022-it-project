@@ -36,3 +36,16 @@
 .collapse-colour {
     background-color: #7488A3 !important;
 }
+
+.ALBUMIFY-text {
+    color: #4C734E !important;
+    font-style: oblique;
+}
+
+.ALBUMIFY-text:hover {
+    color: #F4F6F8 !important;
+    background-color:#4C734E;
+    font-style: oblique;
+    font-size:25px;
+    font-weight: bold;
+}

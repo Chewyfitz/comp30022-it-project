@@ -5,6 +5,8 @@ import './Page.css'
 import './PagePhotos.css'
 import {withRouter} from 'react-router-dom';
 
+//COMPONENTS
+import PageLayout from './PageLayout'
 
 //import images from local
 import img1 from '../photolist/temp_images/1.png'
@@ -56,71 +58,23 @@ class Page extends Component {
 
   render() {
     return (
-      <div className='album-format container'>
-      
-        <div className='page-left container'>
-        {/* <ImagePicker images={imageList.map((image, i) => ({src: image, value: i}))} /> */}
-          
-          {/* <div class="row">
-            <div class="col-sm">
-              
-            </div>
-            <div class="col-sm">
-              One of three columns
-            </div>
-          </div>
-          
-          <div class="row">
-            <div class="col-sm">
-              One of three columns
-            </div>
-            <div class="col-sm">
-              One of three columns
-            </div>
-          </div>
+      <div className='album-format'>      
+        
+        {/* <PageLayout pageSide={"Album Name"}/> */}
 
-          <div class="row">
-            <div class="col-sm">
-              One of three columns
-            </div>
-            <div class="col-sm">
-              One of three columns
-            </div>
-          </div>*/}
-        </div>
-
-        <div className='page-right container'>
-        {/* <ImagePicker images={imageList2.map((image, i) => ({src: image, value: i}))} /> */}
-          
-          {/* <div class="row">
-            <div class="col-sm">
-              One of three columns
-            </div>
-            <div class="col-sm">
-              One of three columns
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-sm">
-              One of three columns
-            </div>
-            <div class="col-sm">
-              One of three columns
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-sm">
-              One of three columns
-            </div>
-            <div class="col-sm">
-              One of three columns
-            </div> 
+        <div className=" album-page-left">
             
-          </div>*/}
+          <PageLayout />
 
-        </div>
+        </div>   
+
+        {/* <ImagePicker images={imageList2.map((image, i) => ({src: image, value: i}))} /> */}
+        <div className=" album-page-right">
+          
+          <PageLayout />
+          
+        </div>  
+
 
         {/* Pagination */}
         <nav class="pagination pagination-location">
