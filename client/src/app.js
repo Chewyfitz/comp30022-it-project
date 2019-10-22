@@ -22,7 +22,7 @@ class App extends Component {
     return (
       <div className="App main-format">
         <div id="background">
-          <img src={backgroundpic} class="stretch" alt="" />
+          <img src={backgroundpic} className="stretch" alt="" />
         </div>
 
         <BrowserRouter>
