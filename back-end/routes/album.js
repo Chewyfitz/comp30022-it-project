@@ -78,7 +78,12 @@ router.patch ('/:albumId', (req, res) => {
 // Delete
 
 router.delete('/:albumId', (req, res) => {
-	const userId = req.query.userId || 'test_user';
+	// You have to specify which user's album you want to delete.
+	if(!req.query.userId){
+		res.sendStatus (400);
+		return;
+	}
+	const userId = req.query.userId;
 	const albumId = req.params.albumId;
 
 	// Optional - delete position

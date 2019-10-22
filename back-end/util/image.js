@@ -116,9 +116,9 @@ async function addPhotosToUser(user, images){
 ////////////////////////////////////////////////////////////////////////////////
 
 
-async function deletePhotoById(user, image){
+async function deletePhotoById(user, imageId){
     // TODO: Check domain of image, delete from GCS if it's uploaded.
-    return database.deletePhoto(user, image);
+    return database.deletePhoto(user, imageId);
 }
 
 module.exports = {
