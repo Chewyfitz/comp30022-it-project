@@ -17,11 +17,8 @@ const upload = multer({ storage });
 // '/api/image' routes
 
 router.get('/:imageId/view', (req, res) => {
-	var user = req.query.user;
-
 	// Get a specific image's direct url
-	// console.log("GET /image/:imageID/view");
-	// console.log(req.params);
+	var user = req.query.user;
 
 	// TODO: Add catch for possible errors
 	// call the util/image.js function that deals with this route
@@ -31,10 +28,9 @@ router.get('/:imageId/view', (req, res) => {
 });
 
 router.get('/:imageId', (req, res) => {
-	var user = req.query.user;
 	// Get an image - Reference, Name, DateTime, Description
-	// console.log("GET /image/:imageID");
-	// console.log(req.params);
+	var user = req.query.user;
+
 	// TODO: Add catch for possible errors
 	// call the util/image.js function that deals with this route
 	util.getImageById(user, req.params.imageId).then((imageData) => {
@@ -43,10 +39,9 @@ router.get('/:imageId', (req, res) => {
 });
 
 router.post('/', cors(), upload.array('file'), (req, res) => {
+	// Add a new image - Likely will need upload or some kind of url
 	// variables of interest here are req.files, req.params, and req.query
 
-	// Add a new image - Likely will need upload or some kind of url
-	// console.log("POST /image/");
 	// TODO: Add user auth check
 	if(req.query.user && req.query.image){
     // Add the URL to the user.
@@ -72,11 +67,30 @@ router.post('/', cors(), upload.array('file'), (req, res) => {
 	}
 });
 
-router.delete('/', (req, res) => {
+router.delete('/:photoId', (req, res) => {
 	// Delete an image entry. If it has an uploaded image deal with that.
-	console.log("DELETE /image/");
-	console.log(req.params);
-	res.sendStatus(200);
+	const user = req.query.user;
+	var imageId;
+	if(req.params.photoId){
+		imageId = req.params.photoId;
+	} else if(req.query.photoId) {
+		imageId = req.query.photoId;
+	} else {
+		// If you don't say what photo you want us to delete, we can't do it...
+		res.sendStatus(400);
+		return;
+	}
+
+	util.deletePhotoById(user, imageId).then( (status) => {
+		if(status){
+			res.sendStatus(204);
+		} else {
+			res.sendStatus(400);
+		}
+	}).catch( (err) => {
+		res.status(500);
+		res.send(err.toString());
+	});
 });
 
 module.exports = router;
