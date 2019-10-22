@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import Gallery from "react-photo-gallery";
-import Photo from "./PhotoTest";
+
 import arrayMove from "array-move";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
-import photos from '../photolist/tmpimglist';
 
-import img1 from '../photolist/temp_images/1.png';
+
+import photos from '../photolist/tmpimglist';
+import Photo from "./Photo";
+
+import ALBUMIFY from '../navbar/ALBUMIFY'
 
 //DO MAPPING
 // const photos = [
@@ -16,8 +19,10 @@ import img1 from '../photolist/temp_images/1.png';
 //   }
 // ]
 
+
 /* popout the browser and maximize to see more rows! -> */
 const SortablePhoto = SortableElement(item => <Photo {...item} />);
+
 const SortableGallery = SortableContainer(({ items }) => (
   <Gallery photos={items} renderImage={props => <SortablePhoto {...props} />} />
 ));
@@ -32,7 +37,8 @@ function AlbumPhotoList() {
 
     return (
         <div>
-            <SortableGallery items={items} onSortEnd={onSortEnd} axis={"xy"} />
+          <ALBUMIFY items={items}/>
+          <SortableGallery items={items} onSortEnd={onSortEnd} axis={"xy"} />
         </div>
     )
 
