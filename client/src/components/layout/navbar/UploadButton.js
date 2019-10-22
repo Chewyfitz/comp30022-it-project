@@ -103,7 +103,6 @@ class UploadButton extends React.Component {
       </div>
     </div>
     );
-
   }
 }
 
