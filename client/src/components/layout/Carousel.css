@@ -32,4 +32,24 @@
     z-index: 2;
 }
 
+.carousel-control-prev-icon{
+    color: black !important;
+    box-shadow: 5px 5px rgba(116, 136, 163, 0.7);
+    border:1px solid #4C734E;
+    background-color: black !important;
+    
+}
+
+.carousel-control-prev-icon:hover{
+    color: blue !important;
+    box-shadow: 5px 5px rgba(116, 136, 163, 0.7);
+    border:1px solid #4C734E;
+    background-color: blue !important;
+}
+
+.carousel-container{
+    align-self: center !important;
+    width: 50% !important;
+    
+}
 

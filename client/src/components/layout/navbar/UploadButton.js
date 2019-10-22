@@ -43,6 +43,8 @@ class UploadButton extends React.Component {
         fileText: this.state.fileText + ', ' + filenames,
       });
     }
+
+    //ADD ERROR CATCHING FOR CASE NULL
   }
 
   onClickHandler = () => {

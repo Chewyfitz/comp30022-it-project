@@ -61,7 +61,7 @@ class Carousel extends Component {
                         </div>
                     </div>
                     
-                    <a className="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                    <a className="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev" nClick="prev">
                         <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span className="sr-only">Previous</span>
                     </a>
