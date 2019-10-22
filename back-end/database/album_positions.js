@@ -28,11 +28,11 @@ async function addAlbumPosition(userID, albumID, photoID, caption=null) {
     let data = {};
     //Finds what the position in the album is needed next
     let position = await query.getNumDocsInCollection(general.albumPositionsPath(userID, albumID));
-    console.log(`position = {position}`);
+    console.log('position = '+position);
     //Add the appropriate data to be stored in the database
     data[albumPositionFields.photo] = general.getDocRef(general.photosPath(userID), photoID);
     data[albumPositionFields.caption] = caption;
-    console.log(`data = {data}`);
+    console.log('data = '+data);
     //Attempt to Create the Document and return its success
     let docID = await general.addDataToDoc(data, general.albumPositionsPath(userID, albumID), position.toString());
     return docID
