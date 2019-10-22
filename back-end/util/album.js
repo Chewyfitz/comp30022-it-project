@@ -24,22 +24,9 @@ async function getAlbumById(user, albumId, pageNum = 0, perPage = 12){
     var photos = [];
     // The first photo you get should be this one, and we'll try to get ${perPage} photos
     var start = perPage*pageNum;
-    for(i=start; i<start + perPage; i++){
-        // Try to get the photo
-        database.getAlbumPositionData(user, albumId, String(i)).then( (album_image) => {
-            // Do nothing if it isn't a photo
-            if(!album_image['Photo Reference']) return;
-            
-            // Add it to the photos array if it is a photo
-            photos.push({
-                'id': album_image['Photo Reference'].id,
-                'caption': album_image.caption,
-            });
-        });
-        // At the moment database.getAlbumPositionData does not handle exceptions gracefully.
-        // when it does this break; can be removed.
-        // break;
-    }
+
+    photos = database.getSomeAlbumPhotos(user, albumId, start, start + perPage);
+
     // Wait for all the photos
     console.log(photos);
     album.photos = await Promise.all(photos);
