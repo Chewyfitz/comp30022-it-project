@@ -9,6 +9,9 @@ import NavDropdown from './NavDropdown';
 //COMPONENTs
 
 const SubNavbar = () => { //functional component, equal to arrow function
+	constructor(props) {
+		super(props);
+	}
     return(
 
         <nav className="navbar navbar-expand-sm navbar-dark fixed-top2" style={{backgroundColor:'#F4F6F8'}}>
@@ -24,7 +27,7 @@ const SubNavbar = () => { //functional component, equal to arrow function
                                 Add to Album
                             </button>
                             <div className="dropdown-menu">
-                                <NavDropdown />
+                                <NavDropdown photoList={this.props.photos} />
                             </div>                            
                         </li>
 

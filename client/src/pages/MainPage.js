@@ -11,25 +11,19 @@ import SignoutButton from '../components/auth/SignoutButton'
 import "../App.css";
 
 class MainPage extends Component {
-  constructor(props) {
-	  super(props);
-	  this.PhotoListRef = React.createRef();
-	  this.state = { arrayImage: [] };
-  }
-  onPhotoClick() {
-	  const currentPhotoList = this.PhotoListRef.current;
-	  this.setState(arrayImage: currentPhotoList.state(arrayImage));
-	  console.log("image sent to main page");
-	  console.log(this.state(arrayImage));
-  }
+  state = { CurrentPhotoList: [] }
+  callbackFunction = (childData) => {
+      this.setState({CurrentPhotoList: childData})
+},
   render() {
     return (
         <div className="mainpage">
-            <Sidebar pageWrapId={"page-wrap"} outerContainerId={"App"}/> 
+            <Sidebar pageWrapId={"page-wrap"} 
+					 outerContainerId={"App"} /> 
             <div id="page-wrap">
                 <Navbar pageName={"Main Page"}/>
-                <SubNavbar />
-                <PhotoList onPhotoClick={this.OnPhotoClick} ref={this.PhotoListRef}/>
+                <SubNavbar photos={this.state.currentPhotoList} />
+                <PhotoList parentCallback = {this.callbackFunction}/>
                 <PhotoUpload />
             </div>
 			<div>

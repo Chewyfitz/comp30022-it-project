@@ -3,6 +3,20 @@ const router = express.Router();
 const util = require('../util/image');
 
 // ============================================================================
+<<<<<<< HEAD
+=======
+// Middleware
+
+// Cors enables cross-origin resource sharing
+const cors = require('cors');
+
+// Multer enables reading form data from a HTTP request
+var multer = require('multer');
+var storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+// ============================================================================
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
 // '/api/image' routes
 
 router.get('/:imageId/view', (req, res) => {
@@ -28,6 +42,7 @@ router.get('/:imageId', (req, res) => {
 	});
 });
 
+<<<<<<< HEAD
 /**
  * Currently only allows URL-based "upload"
  * will add actual image upload... when I can figure out how
@@ -43,6 +58,34 @@ router.post('/', (req, res) =>{
 			responseStatus?res.sendStatus(200) : res.sendStatus(500);
 		});
 	} else{
+=======
+router.post('/', cors(), upload.array('file'), (req, res) => {
+	// variables of interest here are req.files, req.params, and req.query
+
+	// Add a new image - Likely will need upload or some kind of url
+	console.log("POST /image/");
+	// TODO: Add user auth check
+	if(req.query.user && req.query.image){
+    // Add the URL to the user.
+		util.addPhotoToUser(req.query.user, req.query.image).then(responseStatus => {
+      // If you've never seen this format before, it's just an if/then/else in 
+      // a different form (that I think looks clean).
+      // Read it similarly to a normal english sentence: 
+      // [is] responseStatus? res.sendStatus(200)[.] : [else] res.sendStatus(500)
+			responseStatus ? res.sendStatus(200) : res.sendStatus(500);
+		});
+  } else if(req.query.user && req.files){
+    // Upload the sent files
+    util.uploadPhotos(req.files).then(refs => {
+      // Add the uploaded file URIs to the user so we don't lose them.
+      util.addPhotosToUser(req.query.user, refs).then(responseStatus => {
+        responseStatus ? res.sendStatus(200) : res.sendStatus(500);
+	  });
+	  // TODO: Add the IDs to the un-album.
+    });
+  } else {
+    // Something weird happened
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
 		res.sendStatus(400);
 	}
 });

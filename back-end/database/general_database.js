@@ -99,6 +99,7 @@ function albumPositionsPath(userID, albumID) {
  *                        added to in the Document
  * @param {String} path - The path to the Collection the Document will be
  *                        created in
+<<<<<<< HEAD
  * @param {String} [doc=null] - The key the created document should have, leave
  *                              blank/null for a randomly generated key
  *
@@ -110,30 +111,62 @@ async function addDataToDoc(data, path, doc=null) {
     let success = false;
     //If a key for the doc was specified, use that key to create the doc
     if(doc != null) {
+=======
+ * @param {String} [doc=undefined] - The key the created document should have, leave
+ *                              blank/undefined for a randomly generated key
+ *
+ * @return {Boolean} - True only if the document was created successfully
+ * */
+async function addDataToDoc(data, path, doc=undefined) {
+    //Initialisation
+    let docID = undefined;
+    let setDoc = undefined;
+    let success = false;
+    //If a key for the doc was specified, use that key to create the doc
+    if(doc) {
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
         //Stores the promise to create a document and store the data in it
         setDoc = db.collection(path)
             .doc(doc)
             .set(data)
+<<<<<<< HEAD
             //If the Promise is successfully resolved, assign success to true
             .then(value => {
                 success = true;
+=======
+            //If successfully created then we know that the docID = doc
+            .then(value => {
+                docID = doc;
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
             });
     }
     //Else created the doc with a randomly generated key
     else{
         //Stores the promise to create a document and store the data in it
         setDoc = db.collection(path)
+<<<<<<< HEAD
             .doc()
             .set(data)
             //If the Promise is successfully resolved, assign success to true
             .then(value => {
                 success = true;
+=======
+            .add(data)
+            //If successfully created then get the docID from the new reference
+            .then(value => {
+                docID = value.id;
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
             });
     }
     //Wait for the promise to be resolved/rejected
     await setDoc;
+<<<<<<< HEAD
     //Success will now have its final value, return it.
     return success;
+=======
+    //docID will now have its final value, return it.
+    return docID;
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
 }
 
 /**
@@ -177,7 +210,11 @@ async function updateDataInDoc(data, path, doc) {
  * @return {firebase.firestore.DocumentReference} - A firebase reference to the
  *                                                  document
  * */
+<<<<<<< HEAD
 function docRef(path, doc){
+=======
+function getDocRef(path, doc){
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
     return db.collection(path).doc(doc);
 }
 
@@ -198,7 +235,11 @@ async function getDoc(path, doc) {
 
 //just an example of how to get the key of a document from its documentsnapshot
 async function getDocID(path, doc) {
+<<<<<<< HEAD
     let id = null
+=======
+    let id = undefined
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
     let document = await db.collection(path).doc(doc).get().then(value => {
         id = value.id;
     });
@@ -254,4 +295,8 @@ module.exports = {
     addDataToDoc: addDataToDoc,
     updateDataInDoc: updateDataInDoc,
     getDataInDoc: getDataInDoc,
+<<<<<<< HEAD
+=======
+    getDocRef: getDocRef,
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
 };
