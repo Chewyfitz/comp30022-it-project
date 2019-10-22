@@ -13,12 +13,8 @@
   "dependencies": {
     "concurrently": "^4.1.2",
     "create-react-app": "^3.1.2",
-<<<<<<< HEAD
     "dotenv": "^8.1.0",
     "eslint-loader": "^3.0.2",
     "react-scripts": "^3.0.1"
-=======
-    "dotenv": "^8.1.0"
->>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
   }
 }

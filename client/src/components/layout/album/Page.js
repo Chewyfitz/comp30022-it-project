@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 import './Page.css'
 //import ImagePicker from 'react-image-picker'
 import './PagePhotos.css'
+import {withRouter} from 'react-router-dom';
+
 
 //import images from local
 import img1 from '../photolist/temp_images/1.png'
@@ -23,6 +26,33 @@ const imageList2 = [img7, img8, img9, img10, img11, img12]
 
 
 class Page extends Component {
+	constructor(props){
+		super(props);
+		this.state = { pageLeft: 1,
+				  pageRight: 2,
+				  albumID: this.props.location.pathname }
+		console.log(this.state);
+		console.log("printed state from constructor above");
+	}
+	componentDidMount(){
+		console.log(this.state);
+		axios({method: "get",
+			//url: 'https://robbiesapiteam.herokuapp.com/api/album=${this.state.albumID}/page=${this.state.pageLeft}',
+			url: `https://itprojecttestapi.herokuapp.com/api/album=${this.state.albumID}/page=${this.state.pageLeft}`, 
+			params: {loginToken: localStorage.getItem("loginToken"),
+					uid: localStorage.getItem("uid")}
+			})
+			.then(res => { // then print response status
+				console.log(res.statusText);
+				console.log(res.data);
+				try {
+					const imageList = res.data.pageLeft;
+					const imageList2 = res.data.pageRight;
+				} catch(err){
+					console.log(err);
+				}
+			})
+	}
 
   render() {
     return (
@@ -110,4 +140,4 @@ class Page extends Component {
     )
   }
 }
-export default Page; 
+export default withRouter(Page); 

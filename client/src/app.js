@@ -39,7 +39,7 @@ class App extends Component {
 				<SearchPage />
 			</PrivateRoute> 
 			
-			<PrivateRoute exact path='/album'> 
+			<PrivateRoute path='/album'> 
 				<AlbumPreview />
 			</PrivateRoute> 
 			

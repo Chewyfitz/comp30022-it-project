@@ -24,21 +24,27 @@ class Login extends Component {
 		// if valid username/password, send it to back end and store the login token to indicate we're logged in
 		if(this.state.username!='' && this.state.psword!==''){
 			// this format is required to send params on get requests, strangely enough
-			axios({method: "get",
-			//url: 'https://robbiesapiteam.herokuapp.com/api/user/',
-			url: 'https://itprojecttestapi.herokuapp.com/api/user/', 
-			params: {email: this.state.email,
-					 psword: this.state.psword}
+			axios({method: "post",
+			//url: 'https://robbiesapiteam.herokuapp.com/api/login',
+			//url: 'https://itprojecttestapi.herokuapp.com/api/user/login', 
+			url: 'https://robbiesdebugteam.herokuapp.com/api/login',
+			auth: {username: this.state.email,
+					password: this.state.psword}
 			})
 			.then(res => { // then print response status
 				console.log(res.statusText);
+				console.log("res data");
 				console.log(res.data);
 				try {
-					localStorage.setItem('loginToken', res.data.loginToken);
-					localStorage.setItem('uid', res.data.uid);
-					this.setState({
+
+						localStorage.setItem('loginToken', res.data.user.stsTokenManager.accessToken);
+					localStorage.setItem('uid', res.data.user.uid);
+					console.log(localStorage.getItem("loginToken"));
+					console.log(localStorage.getItem("uid"));
+					console.log("set credentials");
+					/*this.setState({
 						redirect: true
-					})
+					})*/
 				} catch(err){
 					console.log(err);
 				}
@@ -52,18 +58,28 @@ class Login extends Component {
 	//works exactly the same as for logging in, but sends request to the account creation route instead
 	AccountCreateSubmitHandler = (event) => {
 		event.preventDefault();
-		if(this.state.email!='' && this.state.psword!=''){
-			axios.post('https://robbiesapiteam.herokuapp.com/api/user/', null, {params: {email: this.state.email,
-			//axios.post('https://itprojecttestapi.herokuapp.com/api/user/', null, {params: {email: this.state.email,
-																						 psword: this.state.psword} })
+		if(this.state.email!='' && this.state.psword!='' && this.state.psword.length>=6){
+			console.log(`${this.state.email}:${this.state.psword}`);
+			//axios.post('https://robbiesapiteam.herokuapp.com/api/register', null, {auth: {username: this.state.email,
+			axios.post('https://robbiesdebugteam.herokuapp.com/api/register', null, {auth: {username: this.state.email,
+																					password: this.state.psword}})
+				//headers: {"authorization": "Basic ".concat(btoa(`${this.state.email}:${this.state.psword}`))}})
+			//axios.post('https://itprojecttestapi.herokuapp.com/api/user/register', null, {headers: {"authorization": "Basic ".concat(btoa(`${this.state.email}:${this.state.psword}`))}})
+			//axios.post('https://itprojecttestapi.herokuapp.com/api/user/register', null, {auth: {username: this.state.email,
+			//																		password: this.state.psword}})
 			.then(res => { // then print response status
 				console.log(res.statusText);
 				try {
-					localStorage.setItem('loginToken', res.data);
-					localStorage.setItem('uid', res.data.uid);
-					this.setState({
+					
+					localStorage.setItem('loginToken', res.data.user.stsTokenManager.accessToken);		
+					localStorage.setItem('uid', res.data.user.uid);
+					console.log("set credentials");
+					//console.log(localStorage.getItem("loginToken"));
+					//console.log(localStorage.getItem("uid"));
+					
+					/*this.setState({
 						redirect: true
-					})
+					})*/
 				} catch(err){
 					console.log(err);
 				}
@@ -94,7 +110,7 @@ class Login extends Component {
 						<div class="form-group row d-flex justify-content-center">
 							<div class="col-xl-6">
 								<label for="formGroupExampleInput2">Password</label>
-								<input type="password" class="form-control" id="password" placeholder="Password" onChange={this.PasswordChangeHandler}/>
+								<input type="password" class="form-control" id="password" placeholder="Password (at least 6 characters)" onChange={this.PasswordChangeHandler}/>
 							</div>
 						</div>
 						<br />
@@ -113,7 +129,7 @@ class Login extends Component {
 					  this.state.failedLogin?
 					  <div class="row d-flex justify-content-center">
 						  <div class="alert alert-danger loginAlert">
-							  Please input a username and password
+							  Please input a valid username and password
 						  </div>
 					  </div>
 
@@ -121,6 +137,7 @@ class Login extends Component {
 
 					  <div></div>
 					}
+					<div> uid = {localStorage.getItem("uid")}</div>
 				</div>
 			</div>
 		)

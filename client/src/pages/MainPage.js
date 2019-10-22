@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 
+import ReactDOM from 'react-dom';
+import axios from 'axios';
+import { Redirect } from 'react-router-dom';
+
 //COMPONENTS
 import Navbar from '../components/layout/navbar/Navbar'
 import SubNavbar from '../components/layout/navbar/SubNavbar'
@@ -11,23 +15,143 @@ import SignoutButton from '../components/auth/SignoutButton'
 import "../App.css";
 
 class MainPage extends Component {
-  state = { CurrentPhotoList: [] }
+  state = { CurrentPhotoList: [],
+			AlbumList: [],
+			FilteredAlbumList: [],
+			searchText: ''}
   callbackFunction = (childData) => {
       this.setState({CurrentPhotoList: childData})
-},
+	  console.log("callback called");
+	  console.log(childData);
+	  console.log(this.state);
+  }
+  
+  componentDidMount() {
+	/*const album1={ AlbumID: 1,
+				   Name: "Test1"}
+	const album2={ AlbumID: 2,
+				   Name: "Test2"}
+	const album3={ AlbumID: 3,
+				   Name: "Test3"}
+	const testAlbumList = [album1, album2, album3]		   
+	
+	this.setState({AlbumList: testAlbumList});
+	this.setState({FilteredAlbumList: testAlbumList});*/
+	axios({method: "get",
+			url: 'https://robbiesapiteam.herokuapp.com/api/album/',
+			params: {user: localStorage.getItem("uid")}
+			//url: `https://itprojecttestapi.herokuapp.com/api/album/`,
+			/*params: {loginToken: localStorage.getItem("loginToken"),
+					uid: localStorage.getItem("uid")}*/
+			})
+			.then(res => { // then print response status
+				console.log(res.statusText);
+				console.log(res.data);
+				try {
+					var newList = [];
+					for(var key in res.data){
+						if (res.data.hasOwnProperty(key)) {
+							newList.push({key: res.data[key]});
+						}
+					}
+					this.setState({AlbumList: newList});
+					this.setState({FilteredAlbumList: newList});
+					//for(i=0;i<res.data.albums.length;i++){
+					//	this.setState({AlbumList: res.data.albums[i]});
+					//}
+				} catch(err){
+					console.log(err);
+				}
+			})
+  }
+  
+  SearchAlbums = (event) => {
+	  console.log(event);
+	  if(this.state.FilteredAlbumList){
+		  this.setState({FilteredAlbumList: this.state.AlbumList.filter(function(album) {
+						return Object.values(album)[0].toLowerCase().includes(event.target.value.toLowerCase());
+						})
+		  });	
+		  
+	  }
+	  this.setState({searchText: event.target.value});
+  }
+  CreateNewAlbum = () => {
+	  if(this.state.searchText){
+		  var newAlbumName=this.state.searchText;
+		  console.log("creating album");
+		  axios({method: "post",
+			//url: 'https://robbiesapiteam.herokuapp.com/api/album/',
+			url: 'https://robbiesdebugteam.herokuapp.com/api/album/',
+			params: {albumName: newAlbumName,
+					user: localStorage.getItem("uid")}
+					//uid: localStorage.getItem("uid")}
+		})
+		.then(res => { // then print response status
+				console.log(res.statusText);
+				console.log(res.data);
+				newAlbumName=res.data;
+				this.AddImagesToAlbum(this.state.CurrentPhotoList, newAlbumName);
+				
+				/*try {
+					this.setState({
+						redirect: res.
+					})
+				}
+				} catch(err){
+					console.log(err);
+				}*/
+			})
+	  }
+	  
+  }
+  
+  async AddImagesToAlbum(photos, albumName) {
+	if(photos.length>0){
+		console.log("adding photos");
+		console.log(photos);
+		axios({method: "put",
+		//url: `https://robbiesapiteam.herokuapp.com/api/album/${albumName}`,
+			url: `https://robbiesdebugteam.herokuapp.com/api/album/${albumName}`,
+			params: {user: localStorage.getItem("uid"),
+				imageId: photos[0].value}
+				//uid: localStorage.getItem("uid")}
+			})
+			await(res => {
+				this.AddImagesToAlbum(photos.slice(1));
+			})
+	}
+  }
+  
   render() {
     return (
         <div className="mainpage">
             <Sidebar pageWrapId={"page-wrap"} 
-					 outerContainerId={"App"} /> 
+					 outerContainerId={"App"}
+					 parentCallback = {this.SearchAlbums}
+					 parentCreateNewAlbum = {this.CreateNewAlbum}
+					 rows={
+						 <React.Fragment>
+							
+							{!!this.state.FilteredAlbumList && this.state.FilteredAlbumList.map(album => (
+								<>
+									<a className="menu-item menu-text" href={'/album/'+Object.keys(album)[0]}> {Object.values(album)[0]} </a>
+									<br />
+								</>
+							))}
+						</ React.Fragment>
+						 }
+			 /> 
             <div id="page-wrap">
                 <Navbar pageName={"Main Page"}/>
-                <SubNavbar photos={this.state.currentPhotoList} />
-                <PhotoList parentCallback = {this.callbackFunction}/>
+                <SubNavbar photos={this.state.CurrentPhotoList}/>
+                <PhotoList parentCallback = {this.callbackFunction} />
                 <PhotoUpload />
             </div>
 			<div>
-				<SignoutButton />
+				uid = {localStorage.getItem("uid")}
+				loginToken = {localStorage.getItem("loginToken")}
+				
 			</div>
         </div>
 		

@@ -7,11 +7,8 @@ import "./Navbar.css"
 import NavDropdown from './NavDropdown';
 
 //COMPONENTs
+const SubNavbar = ({photos, testFunction}) => { //functional component, equal to arrow function
 
-const SubNavbar = () => { //functional component, equal to arrow function
-	constructor(props) {
-		super(props);
-	}
     return(
 
         <nav className="navbar navbar-expand-sm navbar-dark fixed-top2" style={{backgroundColor:'#F4F6F8'}}>
@@ -23,11 +20,15 @@ const SubNavbar = () => { //functional component, equal to arrow function
                 <div className="collapse navbar-collapse text-center" id="extrabuttons">
                     <ul className="navbar-nav">
                         <li className="nav-item dropdown">
-                            <button type="button" className="btn btn-default navbar-btn dropdown-toggle subnavbar-text" id="dropdownMenuButton" data-toggle="dropdown">
+                            <button type="button" 
+									className="btn btn-default navbar-btn dropdown-toggle subnavbar-text" 
+									id="dropdownMenuButton" 
+									data-toggle="dropdown"
+									onClick={testFunction}>
                                 Add to Album
                             </button>
                             <div className="dropdown-menu">
-                                <NavDropdown photoList={this.props.photos} />
+                                <NavDropdown photoList={photos} />
                             </div>                            
                         </li>
 

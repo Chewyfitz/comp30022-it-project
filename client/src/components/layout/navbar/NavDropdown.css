@@ -124,3 +124,7 @@
     height: 30px;
   }
   
+  .navDropdownButton {
+	  position: relative;
+	  top: -8px;
+  }

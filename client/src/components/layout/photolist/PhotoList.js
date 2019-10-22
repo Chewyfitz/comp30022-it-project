@@ -18,7 +18,11 @@ import img12 from './temp_images/12.png'
 import img13 from './temp_images/13.png'
 //import axios from 'axios'
 const imageList = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13]
-
+/*imageList = [{url: "https://hidamarirhodonite.kirara.ca/spread/200205.png", id="1"},
+			 {url: "https://hidamarirhodonite.kirara.ca/spread/200644.png", id="2"},
+			 {url: "https://usamin.info/img/cards/200453.png", id="3"},
+			 {url: "https://usamin.info/img/cards/200277.png", id="4"},
+			 {url: "https://images2.alphacoders.com/894/thumb-350-894109.jpg", id="5"}]*/
 
 class PhotoList extends Component {
     
@@ -28,18 +32,20 @@ class PhotoList extends Component {
           image: null,
           arrayImage: []
         }
+		
         this.onPick = this.onPick.bind(this)
     }
      
     onPick(image) {
         console.count('onChange');
         console.log("Image", image);
-        this.setState({ arrayImage : image });
+        this.setState({ arrayImage : image })
         //this.setState({image});
         
         //todo: connect to backend: 
         //axios.post("./api/image",{})
-    }
+		this.props.parentCallback(image);
+	}
      
     render() {
         return (
