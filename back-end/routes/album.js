@@ -86,8 +86,8 @@ router.patch ('/:albumId', (req, res) => {
 	// console.log(req.params);
 	// console.log(req.query);
 	var user = req.query.user;
-	util.updateAlbumAttributes(user, req.params.albumId, req.query).then((truth_val) => {
-		if(truth_val){
+	util.updateAlbumAttributes(user, req.params.albumId, req.query).then((docID) => {
+		if(docID!=null){
 			res.sendStatus(200);
 		} else {
 			res.sendStatus(404);
