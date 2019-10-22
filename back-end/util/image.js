@@ -127,9 +127,9 @@ async function addPhotosToUser(user, images){
 ////////////////////////////////////////////////////////////////////////////////
 
 
-// TODO: Implement Deletions
-async function deletePhotoById(user, image){
-    console.log("Err: Incomplete Function deletePhotoById");
+async function deletePhotoById(user, imageId){
+    // TODO: Check domain of image, delete from GCS if it's uploaded.
+    return database.deletePhoto(user, imageId);
 }
 
 module.exports = {
@@ -138,5 +138,5 @@ module.exports = {
     deletePhotoById,
     getImageById,
     getImageRefById,
-    uploadPhotos
+    uploadPhotos,
 }

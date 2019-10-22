@@ -10,9 +10,6 @@ const pageUtil = require('../util/albumPage');
 
 router.post  ('/', (req, res) => {
 	// Create a new album, and return its ID
-	// console.log("POST /album/");
-	// console.log(req.params);
-	// console.log(req.query);
 	var user = req.query.user;
 
 	util.createAlbum(user, req.query.albumName).then( (album) => {
@@ -81,9 +78,6 @@ router.put   ('/:albumId', (req, res) => {
 
 router.patch ('/:albumId', (req, res) => {
 	// Update an album
-	// console.log("PATCH /album/:albumID");
-	// console.log(req.params);
-	// console.log(req.query);
 	var user = req.query.user;
 	util.updateAlbumAttributes(user, req.params.albumId, req.query).then((truth_val) => {
 		if(truth_val){
@@ -99,10 +93,40 @@ router.patch ('/:albumId', (req, res) => {
 // Delete
 
 router.delete('/:albumId', (req, res) => {
-	// Delete an album
-	console.log("DELETE /album/:albumID");
-	console.log(req.params);
-	res.sendStatus(200);
+	// You have to specify which user's album you want to delete.
+	if(!req.query.userId){
+		res.sendStatus (400);
+		return;
+	}
+	const userId = req.query.userId;
+	const albumId = req.params.albumId;
+
+	// Optional - delete position
+	const position = req.params.position;
+	if(position){
+		util.deleteAlbumPosition(userId, albumId, position).then( (success) => {
+			if(success){
+				res.sendStatus(204);
+			} else {
+				res.sendStatus(400);
+			}
+		}).catch( (err) => {
+			res.status(500);
+			res.send(err.toString());
+		});
+	} else {
+		util.deleteAlbum(userId, albumId).then((success) => {
+			if(success){
+				res.sendStatus(204);
+			} else {
+				res.sendStatus(400);
+			}
+		}).catch( (err) => {
+			res.status(500);
+			res.send(err.toString());
+		});
+	}
+
 });
 
 // ============================================================================
@@ -168,10 +192,20 @@ router.patch ('/:albumId/:pageId', (req, res) => {
 // Delete
 
 router.delete('/:albumId/:pageId', (req, res) => {
-	// Delete an album page
-	console.log("DELETE /album/:albumID/:pageId");
-	console.log(req.params);
-	res.sendStatus(200);
+	const user = req.query.user;
+	const album = req.params.albumId;
+	const page = req.params.pageId;
+
+	pageUtil.deleteAlbumPage(user, album, page).then( (success) => {
+		if(success){
+			res.sendStatus(204);
+		} else {
+			res.sendStatus(400);
+		}
+	}).catch( (error) => {
+		res.status(500);
+		res.send( error.toString() );
+	});
 });
 
 module.exports = router;

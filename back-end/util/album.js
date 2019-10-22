@@ -71,6 +71,13 @@ async function addImageToAlbum(image, album, user, caption = ''){
 //                                   DELETE                                   //
 ////////////////////////////////////////////////////////////////////////////////
 
+async function deleteAlbum(user, album){
+    return await database.deleteAlbum(user, album);
+}
+
+async function deleteAlbumPosition(user, album, position){
+    return await database.deleteAlbumPosition(user, album, position);
+}
 
 module.exports = {
     // CREATE
@@ -82,4 +89,6 @@ module.exports = {
     updateAlbumAttributes,
     addImageToAlbum,
     // DELETE
+    deleteAlbum,
+    deleteAlbumPosition,
 }

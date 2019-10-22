@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const util = require('../util/auth');
 
-
 // In the final product these routes should be the only ones which do not require
 // authentication / a login token
+router.options(['/register', '/signup']);
 router.post(['/register', '/signup'], (req, res, next) => {
     // Create a user - auth optional
     util.register(req).then((user) => {
