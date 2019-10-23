@@ -29,7 +29,7 @@ const photoFields = {
  * @return {Boolean} - True only if the new photo was successfully added to the
  *                     database
  * */
-function addPhoto(userID, photoReference, height, width, photoDateTime=null) {
+function addPhoto(userID, photoReference, height=1, width=1, photoDateTime=null) {
     //Initialisation
     let data = {};
     //Add the appropriate data to be stored in the database
