@@ -12,7 +12,9 @@ class Login extends Component {
 		this.state = { email: '',
 					  psword: '', 
 					  redirect: false,
-					  failedLogin: false};
+					  failedLogin: false,
+					  userForgotPassword: false,
+					  noEmail: false};
 	}
 	renderRedirect = () => {
 		if (this.state.redirect) {
@@ -42,9 +44,9 @@ class Login extends Component {
 					console.log(localStorage.getItem("loginToken"));
 					console.log(localStorage.getItem("uid"));
 					console.log("set credentials");
-					/*this.setState({
+					this.setState({
 						redirect: true
-					})*/
+					})
 				} catch(err){
 					console.log(err);
 				}
@@ -77,9 +79,9 @@ class Login extends Component {
 					//console.log(localStorage.getItem("loginToken"));
 					//console.log(localStorage.getItem("uid"));
 					
-					/*this.setState({
+					this.setState({
 						redirect: true
-					})*/
+					})
 				} catch(err){
 					console.log(err);
 				}
@@ -94,6 +96,15 @@ class Login extends Component {
 	}
 	PasswordChangeHandler = (event) => {
 		this.setState({psword: event.target.value});
+	}
+	forgotPassword = () => {
+		if(!this.state.email){
+			this.setState({noEmail: true});
+		}
+		else{
+			axios.post('https://robbiesapiteam.herokuapp.com/api/user/password', null, {params: {email: this.state.email}})
+			.then(res => {this.setState({userForgotPassword: true})})
+		}
 	}
 	render() {		
 		return (  
@@ -111,8 +122,12 @@ class Login extends Component {
 							<div class="col-xl-6">
 								<label for="formGroupExampleInput2">Password</label>
 								<input type="password" class="form-control" id="password" placeholder="Password (at least 6 characters)" onChange={this.PasswordChangeHandler}/>
+								<small id="passwordHelpBlock" class="form-text text-muted">
+									<a href="#" onClick={this.forgotPassword.bind(this)}>Forgot Password?</a>
+								</small>
 							</div>
 						</div>
+						
 						<br />
 						<div class="row d-flex justify-content-center">
 						{this.renderRedirect()}
@@ -129,7 +144,7 @@ class Login extends Component {
 					  this.state.failedLogin?
 					  <div class="row d-flex justify-content-center">
 						  <div class="alert alert-danger loginAlert">
-							  Please input a valid username and password
+							  Please input a valid email and password
 						  </div>
 					  </div>
 
@@ -137,7 +152,30 @@ class Login extends Component {
 
 					  <div></div>
 					}
-					<div> uid = {localStorage.getItem("uid")}</div>
+					{
+					  this.state.userForgotPassword?
+					  <div class="row d-flex justify-content-center">
+						  <div class="alert alert-danger loginAlert">
+							  Recovery email sent. Please check your inbox
+						  </div>
+					  </div>
+
+					  :
+
+					  <div></div>
+					}
+					{
+					  this.state.noEmail?
+					  <div class="row d-flex justify-content-center">
+						  <div class="alert alert-danger loginAlert">
+							  Please input a valid email
+						  </div>
+					  </div>
+
+					  :
+
+					  <div></div>
+					}
 				</div>
 			</div>
 		)

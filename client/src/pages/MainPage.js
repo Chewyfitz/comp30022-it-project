@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
+import { AddImagesToAlbum } from '../components/api/api'
 
 //COMPONENTS
 import Navbar from '../components/layout/navbar/Navbar'
@@ -18,7 +19,17 @@ class MainPage extends Component {
   state = { CurrentPhotoList: [],
 			AlbumList: [],
 			FilteredAlbumList: [],
-			searchText: ''}
+			searchText: '',
+            redirect: false, 
+            selectedAlbum: ''}
+            
+    renderRedirect = () => {
+        if (this.state.redirect && this.state.selectedAlbum) {
+            console.log("selected album");
+            console.log(this.state.selectedAlbum);
+          return <Redirect to={`/album/${this.state.selectedAlbum}`} />
+        }
+    }
   callbackFunction = (childData) => {
       this.setState({CurrentPhotoList: childData})
 	  console.log("callback called");
@@ -51,7 +62,8 @@ class MainPage extends Component {
 					var newList = [];
 					for(var key in res.data){
 						if (res.data.hasOwnProperty(key)) {
-							newList.push({key: res.data[key]});
+							newList.push({name: res.data[key],
+										albumId: key});
 						}
 					}
 					this.setState({AlbumList: newList});
@@ -91,7 +103,9 @@ class MainPage extends Component {
 				console.log(res.statusText);
 				console.log(res.data);
 				newAlbumName=res.data;
-				this.AddImagesToAlbum(this.state.CurrentPhotoList, newAlbumName);
+				AddImagesToAlbum(this.state.CurrentPhotoList, newAlbumName);
+                this.setState({selectedAlbum: newAlbumName});
+                this.setState({redirect: true});
 				
 				/*try {
 					this.setState({
@@ -106,22 +120,6 @@ class MainPage extends Component {
 	  
   }
   
-  async AddImagesToAlbum(photos, albumName) {
-	if(photos.length>0){
-		console.log("adding photos");
-		console.log(photos);
-		axios({method: "put",
-		//url: `https://robbiesapiteam.herokuapp.com/api/album/${albumName}`,
-			url: `https://robbiesdebugteam.herokuapp.com/api/album/${albumName}`,
-			params: {user: localStorage.getItem("uid"),
-				imageId: photos[0].value}
-				//uid: localStorage.getItem("uid")}
-			})
-			await(res => {
-				this.AddImagesToAlbum(photos.slice(1));
-			})
-	}
-  }
   
   render() {
     return (
@@ -135,7 +133,7 @@ class MainPage extends Component {
 							
 							{!!this.state.FilteredAlbumList && this.state.FilteredAlbumList.map(album => (
 								<>
-									<a className="menu-item menu-text" href={'/album/'+Object.keys(album)[0]}> {Object.values(album)[0]} </a>
+									<a className="menu-item menu-text" href={'/album/'+album.albumId}> {album.name} </a>
 									<br />
 								</>
 							))}
@@ -144,14 +142,10 @@ class MainPage extends Component {
 			 /> 
             <div id="page-wrap">
                 <Navbar pageName={"Main Page"}/>
-                <SubNavbar />
+                <SubNavbar photos={this.state.CurrentPhotoList} albums={this.state.AlbumList}/>
                 <UnAlbumPhotoList />
             </div>
-			<div>
-				uid = {localStorage.getItem("uid")}
-				loginToken = {localStorage.getItem("loginToken")}
-				
-			</div>
+			{this.renderRedirect()}
         </div>
 		
     );

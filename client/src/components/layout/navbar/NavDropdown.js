@@ -3,6 +3,7 @@ import { render } from "react-dom";
 import Picky from "react-picky";
 import "./NavDropdown.css";
 import axios from 'axios';
+import { AddImagesToAlbum } from '../../api/api';
 
 
 const bigList = [];
@@ -19,6 +20,7 @@ class NavDropdown extends React.Component {
       arrayValue: []
     };
     this.selectMultipleOption = this.selectMultipleOption.bind(this);
+	this.uploadToSelected = this.uploadToSelected.bind(this);
   }
 
   selectMultipleOption(value) {
@@ -52,16 +54,21 @@ class NavDropdown extends React.Component {
 		}
 	  }
   }
+  uploadToSelected() {
+      this.state.arrayValue.forEach(album =>
+                                AddImagesToAlbum(this.props.photoList, album.albumId)
+        )
+  }
   render() {
     return (
 	<>
-      <button type="button" class="btn navDropdownButton btn-primary" onClick={this.uploadToAlbum.bind(this)}>Upload to Selected</button>
+            <button type="button" class="btn navDropdownButton btn-primary" onClick={this.uploadToSelected}>Upload to Selected</button>
       <Picky
           value={this.state.arrayValue}
-          options={bigList}
+          options={this.props.albums}
           onChange={this.selectMultipleOption}
           open={true}
-          valueKey="id"
+          valueKey="albumId"
           labelKey="name"
           multiple={true}
           includeSelectAll={false}

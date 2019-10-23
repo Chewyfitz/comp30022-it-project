@@ -3,6 +3,7 @@
 //TO DO put all stuff in navbar
 import React from 'react'
 import "./Navbar.css"
+import SignoutButton from '../../auth/SignoutButton'
 
 //COMPONENTs
 const Navbar = (a) => {
@@ -31,7 +32,7 @@ const Navbar = (a) => {
             <div className="navbar-collapse collapse w-100 order-3 mainbuttons">
                 <ul className="navbar-nav ml-auto">
                     <li className="nav-item active">
-                        <a className="btn btn-outline-light" href="/search" role="button">Search Photos</a>
+                        <SignoutButton />
                     </li>
                 </ul>
             </div>

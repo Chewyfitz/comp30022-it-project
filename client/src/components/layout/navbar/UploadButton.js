@@ -53,8 +53,9 @@ class UploadButton extends React.Component {
       headers: { 'content-type': 'multipart/form-data'}
     }
     // Set the send values
-    this.state.user='test_user'; // For testing purposes
-    const url = `${process.env.REACT_APP_API_URL}/api/image?user=${this.state.user}`;
+    this.state.user=localStorage.getItem("uid"); // For testing purposes
+    //const url = `${process.env.REACT_APP_API_URL}/api/image?user=${this.state.user}`;
+	const url = `https://robbiesapiteam.herokuapp.com/api/image?user=${this.state.user}`;
 
     // Send the files
     var files = this.state.selectedFile;
@@ -64,6 +65,7 @@ class UploadButton extends React.Component {
     }
     // Send the data
     axios.post(url, data, config).then( (/*res*/) => { 
+	  
       // then reset the state
       // console.log(res.statusText);
       this.setState({
@@ -71,6 +73,7 @@ class UploadButton extends React.Component {
         fileText: "Choose File",
         loaded: 0,
       });
+	  window.location.reload()
     }).catch(err => {
       // Print any errors from sending the files
       console.error(err.response);
