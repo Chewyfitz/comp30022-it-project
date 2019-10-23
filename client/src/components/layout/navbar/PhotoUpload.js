@@ -1,5 +1,6 @@
 import React,{ Component } from 'react'
-import './PhotoUpload.css'
+// import './PhotoUpload.css'
+import axios from 'axios'
 
 //based off: https://codepen.io/mrMetalWood/pen/XjXAAV
 
@@ -12,7 +13,16 @@ class PhotoUpload extends Component {
         fullscreen: false,
         loading: false
       };
-      
+      axios.post('/user', {
+    firstName: 'Fred',
+    lastName: 'Flintstone'
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
       this.handleFileChange = this.handleFileChange.bind(this);
       this.handlePreviewClick = this.handlePreviewClick.bind(this);
       this.handleClearClick = this.handleClearClick.bind(this);

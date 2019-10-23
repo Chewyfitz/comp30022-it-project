@@ -4,11 +4,12 @@
 import React from 'react'
 import "./Navbar.css"
 
-import NavDropdown from './NavDropdown';
-
 //COMPONENTs
-const SubNavbar = ({photos, testFunction}) => { //functional component, equal to arrow function
+import NavDropdown from './NavDropdown';
+// testing
+import UploadButton from './UploadButton';
 
+const SubNavbar = ({photos, testFunction}) => { //functional component, equal to arrow function
     return(
 
         <nav className="navbar navbar-expand-sm navbar-dark fixed-top2" style={{backgroundColor:'#F4F6F8'}}>
@@ -19,6 +20,7 @@ const SubNavbar = ({photos, testFunction}) => { //functional component, equal to
                 </button>
                 <div className="collapse navbar-collapse text-center" id="extrabuttons">
                     <ul className="navbar-nav">
+                        
                         <li className="nav-item dropdown">
                             <button type="button" 
 									className="btn btn-default navbar-btn dropdown-toggle subnavbar-text" 
@@ -33,40 +35,15 @@ const SubNavbar = ({photos, testFunction}) => { //functional component, equal to
                         </li>
 
                         <li className="nav-item">
-                            <button type="button" className="btn btn-default navbar-btn subnavbar-text">Upload Photos</button>
+                            <UploadButton />
                         </li>
                         <li className="nav-item">
                             <button type="button" className="btn btn-default navbar-btn subnavbar-text">Delete Photos</button>
                         </li>
                     </ul>
                 </div>
-            <div class="mx-auto d-sm-flex d-block flex-sm-nowrap">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#extrabuttons">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse text-center" id="extrabuttons">
-                    <ul class="navbar-nav">
-                        <li class="nav-item dropdown">
-                            <button type="button" class="btn btn-default navbar-btn dropdown-toggle subnavbar-text" id="dropdownMenuButton" data-toggle="dropdown">
-                                Add to Album
-                            </button>
-
-                            <div class="dropdown-menu">
-                                <NavDropdown />
-                            </div>
-                        </li>
-
-                        <li class="nav-item">
-                            <button type="button" class="btn btn-default navbar-btn subnavbar-text">Upload Photos</button>
-                        </li>
-                        <li class="nav-item">
-                            <button type="button" class="btn btn-default navbar-btn subnavbar-text">Delete Photos</button>
-                        </li>
-                    </ul>
-                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
     )
 }
  

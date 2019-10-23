@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 //COMPONENTS
 import Navbar from '../components/layout/navbar/Navbar'
 import SubNavbar from '../components/layout/navbar/SubNavbar'
-import PhotoList from '../components/layout/photolist/PhotoList'
+import UnAlbumPhotoList from '../components/layout/photolist/UnAlbumPhotoList'
 
 import "../App.css";
 
@@ -13,7 +13,7 @@ class SearchPage extends Component {
         <div className="searchpage">  
             <Navbar pageName={"Search Page"}/>
             <SubNavbar />
-            <PhotoList />
+            <UnAlbumPhotoList />
         </div>
     );
   }

@@ -7,7 +7,7 @@ import { Redirect } from 'react-router-dom';
 //COMPONENTS
 import Navbar from '../components/layout/navbar/Navbar'
 import SubNavbar from '../components/layout/navbar/SubNavbar'
-import PhotoList from '../components/layout/photolist/PhotoList'
+import UnAlbumPhotoList from '../components/layout/photolist/UnAlbumPhotoList'
 import Sidebar from '../components/layout/navbar/Sidebar'
 import PhotoUpload from '../components/layout/navbar/PhotoUpload'
 import SignoutButton from '../components/auth/SignoutButton'
@@ -144,9 +144,8 @@ class MainPage extends Component {
 			 /> 
             <div id="page-wrap">
                 <Navbar pageName={"Main Page"}/>
-                <SubNavbar photos={this.state.CurrentPhotoList}/>
-                <PhotoList parentCallback = {this.callbackFunction} />
-                <PhotoUpload />
+                <SubNavbar />
+                <UnAlbumPhotoList />
             </div>
 			<div>
 				uid = {localStorage.getItem("uid")}
