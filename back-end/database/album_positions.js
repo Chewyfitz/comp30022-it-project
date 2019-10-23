@@ -36,6 +36,37 @@ async function addAlbumPosition(userID, albumID, photoID, caption=null) {
     return docID
 }
 
+/**
+ * USE AT OWN RISK
+ * Adds a new album position of an album that is owned by a user to the database
+ *
+ * @param {String} userID - The username of the owner of the album
+ * @param {String} albumID - The key of the document for the album
+ * @param {Array.<Object>} photoInfoList - List of photos to be stored in the album position
+ * @return {Boolean} - True only if the new album position was successfully
+ *                     added to the database
+ * */
+async function addManyAlbumPosition(userID, albumID, photoInfoList) {
+    //Finds what the position in the album is needed next
+    let position = await query.getNumDocsInCollection(general.albumPositionsPath(userID, albumID));
+    let promises = [];
+    let success;
+    for(i=0; i<photoInfoList.length; i++){
+        let data = {};
+        //Add the appropriate data to be stored in the database
+        data[albumPositionFields.photo] = general.getDocRef(general.photosPath(userID), photoInfoList[i].photoID);
+        //TODO VALUE CHECK
+        data[albumPositionFields.caption] = photoInfoList[i].caption;
+        promises = general.addDataToDoc(data, general.albumPositionsPath(userID, albumID), (position+i).toString());
+    }
+    Promise.all(promises).then(resVal => {
+        success = true;
+    }, rejVal => {
+        success = false;
+        //TODO error handling
+    });
+    return success;
+}
 /**!NOT YET IMPLEMENTED!
  * !CAUTION!
  * !!DOES NOT DELETE REFERENCES TO THE ALBUM PAGE!!
@@ -52,7 +83,8 @@ async function addAlbumPosition(userID, albumID, photoID, caption=null) {
  * */
 async function deleteAlbumPosition(userID, albumID, position) {
     //TODO Carefully consider the logic used to delete and move this data
-    return false;
+    let transaction = general.db.runTransaction(t => callBack(userID, albumID, position, t));
+    return await transaction.then(v=>{console.log(v); return true}, v=>{console.log(v); return false});
 }
 
 /**
@@ -191,6 +223,7 @@ function updateAlbumPositionPhoto(userID, albumsID, position, photoDocRef) {
 module.exports = {
     albumPositionFields,
     addAlbumPosition,
+    addManyAlbumPosition,
     deleteAlbumPosition,
     getAlbumPositionCaption,
     getAlbumPositionData,
