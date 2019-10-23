@@ -65,6 +65,8 @@ async function getAllAlbumPhotos(userID, albumID, start=undefined, end=undefined
                         data[albumPositionsDoc.id].caption = albumPositionsDoc.data()[albumPositions.albumPositionFields.caption];
                         //Store the Image Reference from the Photos Doc
                         data[albumPositionsDoc.id].reference = photosDoc.data()[photos.photoFields.reference];
+                        //Store the Photo Document ID for future reference by the front end
+                        data[albumPositionsDoc.id].photoID = photosDoc.id;
                     })
             );
         }
@@ -150,6 +152,7 @@ async function getSomeAlbumPhotos(userID, albumID, start=undefined, end=undefine
         //If the document exists, get the image reference from its data
         if (photoDoc.exists) {
             data[i + start].reference = photoDoc.data()[photos.photoFields.reference];
+            data[i + start].photoID = photoDoc.id;
         //TODO error handling for non existent Photos doc
         } else {
             continue;
