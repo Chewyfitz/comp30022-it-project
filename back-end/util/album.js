@@ -25,10 +25,8 @@ async function getAlbumById(user, albumId, pageNum = 0, perPage = 12){
     // The first photo you get should be this one, and we'll try to get ${perPage} photos
     var start = perPage*pageNum;
     
-    // This Function is buggy @PCA000
-    // photos = database.getSomeAlbumPhotos(user, albumId, start, start + perPage);
+    photos = database.getSomeAlbumPhotos(user, albumId, start, start + perPage);
 
-    photos = database.getAllAlbumPhotos(user, albumId, start, start+perPage);
     // Wait for all the photos
     album.photos = await photos;
     
