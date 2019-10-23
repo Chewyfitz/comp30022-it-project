@@ -34,12 +34,22 @@ describe("/api/album/", function () {
     });
     // Read
     describe("GET", function () {
-        it("returns 404 NOT FOUND for an album that does not exist")
+        it("returns 404 NOT FOUND for an album that does not exist", (done) => {
+            chai.request(app)
+                .get(`/api/album/${albumName_1}`)
+                .query({user: user})
+                .end ( (err, res) => {
+                    chai.expect(res).to.have.status(404);
+                    chai.expect(res.body).to.be.empty;
+                    done();
+                });
+        });
         it("returns album properties for a known album", (done) => {
             chai.request(app)
                 .get('/api/album/un')
+                .query({user: user})
                 .end( (err, res) => {
-                    chai.expect(res).to.have.status(200);
+                    chai.expect(res).to.have.status(201);
                     chai.expect(res.body).to.not.be.empty;
                     chai.expect(res.body).to.have.property('Album Name');
                     chai.expect(res.body).to.have.property('Album Template');
@@ -54,19 +64,28 @@ describe("/api/album/", function () {
         it("returns 200 OK if all album properties are updated successfully", (done) => {
             chai.request(app)
                 .put(`/api/album/${validAlbumId}`)
-                .query({albumName: albumName, template: template, view: view})
+                .query({user: user, albumName: albumName, template: template, view: view})
                 .end( (err, res) => {
                     chai.expect(res).to.have.status(200);
+                    chai.expect(res.body).to.be.empty;
                     done();
                 });
         });
-        it("returns 404 NOT FOUND if an update is attempted on a nonexistent album");
+        it("returns 404 NOT FOUND if an update is attempted on a nonexistent album", (done) => {
+            chai.request(app)
+                .put(`/api/album/${invalidAlbumId}`)
+                .query({user: user, albumName: albumName, template: template, view: view})
+                .end( (err, res) => {
+                    chai.expect(res).to.have.status(404);
+                    chai.expect(res.body).to.be.empty;
+                });
+        });
     });
     describe("PATCH", function () {
         it("returns 200 OK if a single album property is updated successfully", (done) => {
             chai.request(app)
                 .patch(`/api/album/${validAlbumId}`)
-                .query({albumName: albumName_1})
+                .query({user: user, albumName: albumName_1})
                 .end( (err, res) => {
                     chai.expect(res).to.have.status(200);
                     done();
@@ -75,7 +94,7 @@ describe("/api/album/", function () {
         it("returns 200 OK if two album properties are updated successfully", (done) => {
             chai.request(app)
                 .patch(`/api/album/${validAlbumId}`)
-                .query({template: template_1, view: view_1})
+                .query({user: user, template: template_1, view: view_1})
                 .end( (err, res) => {
                     chai.expect(res).to.have.status(200);
                     done();
@@ -84,7 +103,7 @@ describe("/api/album/", function () {
         it("returns 200 OK if three album properties are updated successfully", (done) => {
             chai.request(app)
                 .patch(`/api/album/${validAlbumId}`)
-                .query({albumName: albumName, template: template, view: view})
+                .query({user: user, albumName: albumName, template: template, view: view})
                 .end( (err, res) => {
                     chai.expect(res).to.have.status(200);
                     done();
@@ -93,7 +112,7 @@ describe("/api/album/", function () {
         it("returns 404 NOT FOUND if an update is attempted on a nonexistent album", (done) => {
             chai.request(app)
                 .patch(`/api/album/${invalidAlbumId}`)
-                .query({albumName: albumName, template: template, view: view})
+                .query({user: user, albumName: albumName, template: template, view: view})
                 .end( (err, res) => {
                     chai.expect(res).to.have.status(404);
                     done();
@@ -102,7 +121,14 @@ describe("/api/album/", function () {
     });
     // Delete
     describe("DELETE", function () {
-        it("returns 200 OK if an album is successfully deleted");
+        it("returns 204 NO CONTENT if an album is successfully deleted", (done) => {
+            chai.request(app)
+                .delete(`/api/album/${validAlbumId}`)
+                .query({user: user})
+                .end( (err, res) => {
+                    chai.expect(res).to.have.status(204);
+                })
+        });
     });
 });
 // album page tests
@@ -133,7 +159,15 @@ describe("/api/album/{albumId}/", function () {
     });
     // Update
     describe("PATCH", function () {
-        it("returns 200 OK if an album page property is updated successfully");
+        it("returns 200 OK if an album page property is updated successfully", (done) => {
+            chai.request(app)
+                .patch(`/api/album/${validAlbumId}/${albumPage}`)
+                .query({user: user, template: template_1})
+                .end((err, res) => {
+                    chai.expect(res).to.have.status(204);
+                    done();
+                });
+        });
     });
     describe("PUT", function () {
         it("returns 200 OK if an album page is updated successfully");
