@@ -23,7 +23,8 @@ const albumFields = {
  * @return {Boolean} - True only if the new album was successfully added to the
  *                     database
  * */
-function addAlbum(userID, name) {
+//TODO Add sneaky key overwrite
+function addAlbum(userID, name, override=undefined) {
     //Initialisation
     let data = {};
     //Add the appropriate data to be stored in the database
@@ -31,7 +32,7 @@ function addAlbum(userID, name) {
     data[albumFields.template] = 0;
     data[albumFields.view] = 'Overview';
     //Attempt to Create the Document and return its success
-    let docID = general.addDataToDoc(data, general.albumsPath(userID), name);
+    let docID = general.addDataToDoc(data, general.albumsPath(userID), override);
     return docID;
 }
 
