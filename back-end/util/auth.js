@@ -2,10 +2,16 @@ const database = require('../database.js');
 const firebase = require('firebase');
 require('firebase/auth');
 
+// A hack
+const general = require('../database/general_database');
+const album = require('../database/albums');
+const db = require("firebase/app").firestore();
+
 async function firebaseRegister(email, password){
     user = await firebase.auth().createUserWithEmailAndPassword(email, password);
     return user;
 }
+
 
 async function register(req){
     if(req.headers.authorization){
@@ -15,7 +21,13 @@ async function register(req){
         console.log(login);
         
         // Try to register the user with their details
-        return firebaseRegister(login, password)
+        var user = firebaseRegister(login, password).then((user) => {
+            console.log(user.user.uid);
+            database.addUser(user.user.uid, '').then((userKey) => {
+                album.addAlbum(userKey, 'un');
+            });
+        });
+        return user;
     } else if (req.params.email && req.params.psword) {
         // Try to register the user with param email and password
         return firebaseRegister(req.params.email, req.params.psword);
