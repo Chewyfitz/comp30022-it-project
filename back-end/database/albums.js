@@ -24,7 +24,7 @@ const albumFields = {
  *                     database
  * */
 //TODO Add sneaky key overwrite
-function addAlbum(userID, name) {
+function addAlbum(userID, name, override=undefined) {
     //Initialisation
     let data = {};
     //Add the appropriate data to be stored in the database
@@ -32,7 +32,7 @@ function addAlbum(userID, name) {
     data[albumFields.template] = 0;
     data[albumFields.view] = 'Overview';
     //Attempt to Create the Document and return its success
-    let docID = general.addDataToDoc(data, general.albumsPath(userID));
+    let docID = general.addDataToDoc(data, general.albumsPath(userID), override);
     return docID;
 }
 
