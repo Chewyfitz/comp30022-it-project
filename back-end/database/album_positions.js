@@ -68,6 +68,26 @@ async function addManyAlbumPosition(userID, albumID, photoInfoList) {
     return success;
 }
 
+/**!NOT YET IMPLEMENTED!
+ * !CAUTION!
+ * !!DOES NOT DELETE REFERENCES TO THE ALBUM PAGE!!
+ * !!!ONLY DELETES THE LAST PAGE!!!
+ * Deletes the Album Position and its associated data.
+ *
+ * @param {String} userID - The username of the user who owns the Album
+ * @param {String} albumID - The ID of the album
+ * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
+ *                           Collection that we are getting the data of
+ *
+ * @return {Boolean} - True only if the Album Position was successfully deleted
+ *                     from the database
+ * */
+async function deleteAlbumPosition(userID, albumID, position) {
+    //TODO Carefully consider the logic used to delete and move this data
+    let transaction = general.db.runTransaction(t => deleteAlbumPositionCallBack(userID, albumID, position, t));
+    return await transaction.then(v=>{console.log(v); return true}, v=>{console.log(v); return false});
+}
+
 /**
  *
  * @param userID
@@ -76,7 +96,7 @@ async function addManyAlbumPosition(userID, albumID, photoInfoList) {
  * @param {firebase.firestore.Transaction} t
  * @returns {Promise<unknown[]>}
  */
-async function callBack(userID, albumID, position, t){
+async function deleteAlbumPositionCallBack(userID, albumID, position, t){
     let data;
     let docRefs = [];
     let docs = [];
@@ -103,26 +123,6 @@ async function callBack(userID, albumID, position, t){
     }
     promises.push(t.delete(docRefs[docRefs.length-1]));
     return Promise.all(promises);
-}
-
-/**!NOT YET IMPLEMENTED!
- * !CAUTION!
- * !!DOES NOT DELETE REFERENCES TO THE ALBUM PAGE!!
- * !!!ONLY DELETES THE LAST PAGE!!!
- * Deletes the Album Position and its associated data.
- *
- * @param {String} userID - The username of the user who owns the Album
- * @param {String} albumID - The ID of the album
- * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
- *                           Collection that we are getting the data of
- *
- * @return {Boolean} - True only if the Album Position was successfully deleted
- *                     from the database
- * */
-async function deleteAlbumPosition(userID, albumID, position) {
-    //TODO Carefully consider the logic used to delete and move this data
-    let transaction = general.db.runTransaction(t => callBack(userID, albumID, position, t));
-    return await transaction.then(v=>{console.log(v); return true}, v=>{console.log(v); return false});
 }
 
 /**
