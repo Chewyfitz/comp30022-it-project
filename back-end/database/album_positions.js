@@ -2,10 +2,7 @@
  * Collection*/
 
 const general = require('./general_database');
-<<<<<<< HEAD
-=======
 const query = require('./query');
->>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
 
 /*Used to reference fields that are stored in the Documents that belong to the
 AlbumPages (Sub)Collection*/
@@ -20,30 +17,12 @@ const albumPositionFields = {
  *
  * @param {String} userID - The username of the owner of the album
  * @param {String} albumID - The key of the document for the album
-<<<<<<< HEAD
- * @param {firebase.firestore.DocumentReference} photo - The photo to be stored in the album position
-=======
  * @param {String} photoID - The photo to be stored in the album position
->>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
  * @param {String} caption - The caption of this position in the album
  *
  * @return {Boolean} - True only if the new album position was successfully
  *                     added to the database
  * */
-<<<<<<< HEAD
-async function addAlbumPosition(userID, albumID, photoRef, caption=null) {
-    //Initialisation
-    let success =false;
-    let data = {};
-    //Finds what the position in the album is needed next
-    let position = 0; // need to find next position
-    //Add the appropriate data to be stored in the database
-    data[albumPositionFields.photo] = photoRef;
-    data[albumPositionFields.caption] = caption;
-    //Attempt to Create the Document and return its success
-    success = await general.addDataToDoc(data, general.albumPositionsPath(userID, albumID), position);
-    return success
-=======
 async function addAlbumPosition(userID, albumID, photoID, caption=null) {
     //Initialisation
     let data = {};
@@ -55,7 +34,6 @@ async function addAlbumPosition(userID, albumID, photoID, caption=null) {
     //Attempt to Create the Document and return its success
     let docID = await general.addDataToDoc(data, general.albumPositionsPath(userID, albumID), position.toString());
     return docID
->>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
 }
 
 /**
@@ -71,11 +49,7 @@ async function addAlbumPosition(userID, albumID, photoID, caption=null) {
  * @return {Boolean} - True only if the album position was successfully updated
  *                     in the database
  * */
-<<<<<<< HEAD
-async function updateAlbumPositionCaption(userID, albumID, position, caption=null) {
-=======
 async function updateAlbumPositionCaption(userID, albumID, position, caption=undefined) {
->>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
     //Initialisation
     let success = false;
     let data = {};
@@ -123,11 +97,7 @@ function updateAlbumPositionPhoto(userID, albumsID, position, photoDocRef) {
  * @return {firebase.firestore.DocumentData} - If the Data was successfully
  *                                             retrieved it will return the
  *                                             Data, otherwise it will return
-<<<<<<< HEAD
- *                                             null
-=======
  *                                             undefined
->>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
  * */
 async function getAlbumPositionData(userID, albumID, position) {
     //Attempt to retrieve the Data for the the album position and return it
@@ -145,19 +115,11 @@ async function getAlbumPositionData(userID, albumID, position) {
  *                           Collection that we are getting the data of
  *
  * @return {string} - If the caption was successfully retrieved it will return
-<<<<<<< HEAD
- * the caption as a String, otherwise it will return null
- * */
-async function getAlbumPositionCaption(userID, albumID, position) {
-    //Initialisation
-    let caption = null;
-=======
  * the caption as a String, otherwise it will return undefined
  * */
 async function getAlbumPositionCaption(userID, albumID, position) {
     //Initialisation
     let caption = undefined;
->>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
     let data = getAlbumPositionData(userID, albumID, position);
     try {
         //Try to retrieve the value from the data
@@ -186,19 +148,11 @@ async function getAlbumPositionCaption(userID, albumID, position) {
  *                                            retrieved it will return the photo
  *                                         reference as a
  *                                      firebase.firestore.DocumentReference,
-<<<<<<< HEAD
- *                                   otherwise it will return null
- * */
-async function getAlbumPositionPhotoDocRef(userID, albumID, position) {
-    //Initialisation
-    let caption = null;
-=======
  *                                   otherwise it will return undefined
  * */
 async function getAlbumPositionPhotoDocRef(userID, albumID, position) {
     //Initialisation
     let caption = undefined;
->>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
     let data = getAlbumPositionData(userID, albumID, position);
     try {
         //Try to retrieve the value from the data
