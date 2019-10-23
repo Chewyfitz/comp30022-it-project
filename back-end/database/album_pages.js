@@ -2,7 +2,10 @@
  * Collection*/
 
 const general = require('./general_database');
+<<<<<<< HEAD
+=======
 const album = require('./albums');
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
 
 /*Used to reference fields that are stored in the Documents that belong to the
 AlbumPages (Sub)Collection*/
@@ -26,20 +29,34 @@ const albumPageFields = {
  * */
 async function addAlbumPage(userID, albumID, pageNumber, template) {
     //Initialisation
+<<<<<<< HEAD
+    let success = false;
+    //If the template is different to the albums
+    if(template != getAlbumTemplate(userId, albumID)) {
+=======
     let docID = undefined;
     //If the template is different to the albums
     if(template != album.getAlbumTemplate(userID, albumID)) {
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
         //Add the appropriate data to be stored in the database
         let data = {};
         data[albumPageFields.template] = template;
         //Attempt to Create the Document and record its success
+<<<<<<< HEAD
+        success = await general.addDataToDoc(data, general.albumPagesPath(userID, albumID), pageNumber);
+=======
         docID = await general.addDataToDoc(data, general.albumPagesPath(userID, albumID), pageNumber.toString());
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
     //There's no point taking up database storage
     } else {
         console.log("Please only create album pages in the data base if you are changing the template of one");
     }
     //Return the success of the creation
+<<<<<<< HEAD
+    return success;
+=======
     return docID;
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
 }
 
 /**
@@ -84,7 +101,11 @@ async function updateAlbumPageTemplate(userID, albumID, pageNumber, template) {
  * @return {firebase.firestore.DocumentData} - If the Data was successfully
  *                                             retrieved it will return the
  *                                             Data, otherwise it will return
+<<<<<<< HEAD
+ *                                             null
+=======
  *                                             undefined
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
  * */
 async function getAlbumPageData(userID, albumID, pageNumber) {
     //Attempt to retrieve the Data for the the album page and return it
@@ -102,11 +123,19 @@ async function getAlbumPageData(userID, albumID, pageNumber) {
  *                           Collection that we are getting the template of
  *
  * @return {int} - If the template was successfully retrieved it will return the
+<<<<<<< HEAD
+ *                 template, otherwise it will return null
+ * */
+function getAlbumPageTemplate(userID, albumID, pageNumber) {
+    //Initialisation
+    let template = null;
+=======
  *                 template, otherwise it will return undefined
  * */
 function getAlbumPageTemplate(userID, albumID, pageNumber) {
     //Initialisation
     let template = undefined;
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
     let data = getAlbumPageData(userID, userID, pageNumber);
     try {
         //Try to retrieve the value from the data

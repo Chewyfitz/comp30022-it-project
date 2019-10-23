@@ -8,37 +8,54 @@ import MainPage from './pages/MainPage'
 import SearchPage from './pages/SearchPage'
 import AlbumPreview from './pages/AlbumPreview'
 import PhotoPreview from './pages/PhotoPreview'
-import SignIn from './pages/auth/SignIn'
-import SignUp from './pages/auth/SignUp'
+import LoginPage from './pages/auth/LoginPage'
+
+//ROUTES
+import PrivateRoute from './components/auth/PrivateRoute'
+import LoginPageRoute from './components/auth/LoginPageRoute'
 import AlbumOverview from './pages/AlbumOverview'
 
 import "./App.css";
 import backgroundpic from './components/layout/photolist/images/fav.jpg'
 
-
 class App extends Component {
-
-  render() {
-    return (
+	
+	render() {
+    // note that the router formatting is necessary to make the authenticated routing work, rather than having it as a component=
+	  // in order to disable Private Router (to access pages without needing to be logged in), edit the PrivateRoute file as directed in the file
+	return (
       <div className="App main-format">
         <div id="background">
           <img src={backgroundpic} className="stretch" alt="" />
         </div>
-
         <BrowserRouter>
           <Switch>
-            <Route exact path='/' component={MainPage} />
-            <Route exact path='/search' component={SearchPage} />
-            <Route exact path='/album' component={AlbumOverview} />
-            <Route exact path='/albumify' component={AlbumPreview} />
-            <Route exact path='/photo' component={PhotoPreview} />
-            <Route exact path='/signup' component={SignIn} />
-            <Route exact path='/signin' component={SignUp} />
+            <PrivateRoute exact path='/'> 
+              <MainPage />
+            </PrivateRoute> 
+            
+            <PrivateRoute exact path='/search'> 
+              <SearchPage />
+            </PrivateRoute> 
+            
+            <PrivateRoute path='/album'> 
+              <AlbumOverview />
+            </PrivateRoute> 
+            
+            <PrivateRoute path='/albumify'>
+              <AlbumPreview />
+            </PrivateRoute>
+
+            <PrivateRoute exact path='/photo'> 
+              <PhotoPreview />
+            </PrivateRoute>
+                  
+            <LoginPageRoute exact path='/login'>
+              <LoginPage />
+            </LoginPageRoute>
           </Switch>       
         </BrowserRouter>
-      
       </div>
-
     );
   }
 }

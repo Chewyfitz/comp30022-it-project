@@ -3,8 +3,11 @@
 
 /**The core js file responsible for interacting with the database*/
 const general = require('./database/general_database');
+<<<<<<< HEAD
+=======
 /*The file for large scale retrieval*/
 const query = require('./database/query');
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
 /**Every js file responsible for managing interactions with a single document
  * in its specific collection in the database*/
 const users = require('./database/users');
@@ -15,6 +18,9 @@ const albumPages = require('./database/album_pages');
 const categories = require('./database/categoies');
 const tags = require('./database/tags');
 
+<<<<<<< HEAD
+/**Functions that require more than one document to be executed*/
+=======
 async function getAlbumPhotos(userID, albumID, start=undefined, end=undefined) {
     if(start == undefined){
         start = 0;
@@ -80,21 +86,29 @@ async function fasterPrototypeThatDoesntWork(userID, albumID){
     return await albumPhotos;
 
 }
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
 
 /**Exports the functions that should be exposed to the rest of the system*/
 module.exports = {
     //
+<<<<<<< HEAD
+=======
     UserFields: users.userFields,
     PhotoFields: photos.photoFields,
     AlbumFields: albums.albumFields,
     AlbumPageFields: albumPages.albumPageFields,
     AlbumPositionFields: albumPositions.albumPositionFields,
     //
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
     addUser: users.addUser,
     addPhoto: photos.addPhoto,
     addAlbum: albums.addAlbum,
     addAlbumPosition: albumPositions.addAlbumPosition,
+<<<<<<< HEAD
+    addAlbumPage:albumPages.addAlbumPage,
+=======
     addAlbumPage: albumPages.addAlbumPage,
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
     //
     checkUserPassword: users.checkUserPassword,
     //
@@ -123,5 +137,8 @@ module.exports = {
     updateAlbumPositionCaption: albumPositions.updateAlbumPositionCaption,
     updateAlbumPositionPhoto: albumPositions.updateAlbumPositionPhoto,
 
+<<<<<<< HEAD
+=======
     getAlbumPhotos: getAlbumPhotos,
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
 };
