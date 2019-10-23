@@ -60,11 +60,11 @@ async function getAllAlbumPhotos(userID, albumID, start=undefined, end=undefined
                 albumPositionsDoc.data()[albumPositions.albumPositionFields.photo].get()
                     .then(photosDoc => {
                         //Initialise the internal dictionary
-                        data[albumPositionsDoc.id] = {};
+                        data[photosDoc.id] = {};
                         //Store the caption from the AlbumPositions Doc
-                        data[albumPositionsDoc.id].caption = albumPositionsDoc.data()[albumPositions.albumPositionFields.caption];
+                        data[photosDoc.id].caption = photosDoc.data()[albumPositions.albumPositionFields.caption];
                         //Store the Image Reference from the Photos Doc
-                        data[albumPositionsDoc.id].reference = photosDoc.data()[photos.photoFields.reference];
+                        data[photosDoc.id].reference = photosDoc.data()[photos.photoFields.reference];
                     })
             );
         }
