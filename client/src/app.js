@@ -13,7 +13,6 @@ import SignUp from './pages/auth/SignUp'
 import AlbumOverview from './pages/AlbumOverview'
 
 import "./App.css";
-import backgroundpic from './components/layout/photolist/images/fav.jpg'
 
 
 class App extends Component {
@@ -21,9 +20,6 @@ class App extends Component {
   render() {
     return (
       <div className="App main-format">
-        <div id="background">
-          <img src={backgroundpic} className="stretch" alt="" />
-        </div>
 
         <BrowserRouter>
           <Switch>

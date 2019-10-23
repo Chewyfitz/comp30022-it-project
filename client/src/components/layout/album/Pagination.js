@@ -1,7 +1,8 @@
 import React from 'react'
 import './Page.css'
 import photos from '../photolist/tmpimglist';
-import PageView from './PageView'
+//COMPONENTS
+import PageLayout from './PageLayoutTest'
 
 //import axios from 'axios'
 
@@ -35,46 +36,103 @@ class Pagination extends React.Component {
         });
     }
 
+    PaginationSelected(number){
+        return(
+            <li class="pagination-selected page-item active"  aria-current="page">
+                <button class="page-link pagination-selected"> {number}</button>
+            </li>
+        )
+    }
+    PaginationDisabled(number){
+        return(
+            <li class="page-item disabled">
+                <button class="page-link pagination-disabled" tabindex="-1" aria-disabled="true">{number}</button>
+            </li>
+        )
+    }
+    PaginationActive(number){
+        return(
+            <li class="page-item">
+                <button class="page-link pagination-button" key={number} id={number} onClick={this.handleClick} href="#">
+                    {number}
+                </button>
+            </li>
+        )
+    }
+    PaginationNormal(number, totalPages){
+
+        if(number<=0 || number>totalPages){ return (this.PaginationDisabled(number)); }
+
+        return (this.PaginationActive(number))
+
+    }
+
     render() {
         const { ImageList, CurrentPage, PhotosPerPage } = this.state;
 
-        // Logic for displaying current todos
+        // Logic for displaying current photos
         const indexOfLastPhoto = CurrentPage * PhotosPerPage;
         const indexOfFirstPhoto = indexOfLastPhoto - PhotosPerPage;
         const currentPhotos = ImageList.slice(indexOfFirstPhoto, indexOfLastPhoto);
 
-        // const renderPhotos = currentPhotos.map((photo, index) => {
-        //     return <img key={index} src={photo.src}/>;
-        //     //return <ul key={index}>{photo}</ul>;
-        // });
+        const UltimatePhotoIndex = Math.ceil(ImageList.length/ PhotosPerPage);
 
+        //slice photos into 2 separate lists
+        const leftPagePhotos = currentPhotos.slice(0, Math.floor((currentPhotos.length)/2));
+        const rightPagePhotos = currentPhotos.slice(Math.floor((currentPhotos.length)/2), currentPhotos.length);
 
-        // Logic for displaying page numbers
-        const pageNumbers = [];
-        for (let i = 1; i <= Math.ceil(ImageList.length / PhotosPerPage); i++) {
-            pageNumbers.push(i);
-        }
-
-        const renderPageNumbers = pageNumbers.map(number => {
-            return (
-            <li
-                key={number}
-                id={number}
-                onClick={this.handleClick}
-            >
-                {number}
-            </li>
-            );
-        });
 
         return (
-            <div>
+            
+            <div className='album-format'>
+
+                {/* Actual album */}
+                <div className= "album-page-left">
+
+                    <PageLayout photolist={leftPagePhotos}/>
+
+                </div>   
+
+                {/* <ImagePicker images={imageList2.map((image, i) => ({src: image, value: i}))} /> */}
+                <div className=" album-page-right">
+                    
+                    <PageLayout photolist={rightPagePhotos}/>
+                </div>
+
                 
-                <PageView /> 
-                
-                <ul id="page-numbers">
-                    {renderPageNumbers}
-                </ul>
+                {/* Pagination */}
+                <nav id="page-numbers" class="pagination pagination-location">
+                    
+                    <li class="page-item">
+                        <button class="page-link pagination-button" key={1} id={1} onClick={this.handleClick}>
+                            First
+                        </button>
+                    </li>
+                    
+                    {this.PaginationNormal(CurrentPage-1, UltimatePhotoIndex)}
+                    {this.PaginationSelected(CurrentPage)}
+                    {this.PaginationNormal(CurrentPage+1, UltimatePhotoIndex)}
+
+                    <li class="page-item">
+                        <button class="page-link pagination-button" key={UltimatePhotoIndex} id={UltimatePhotoIndex} onClick={this.handleClick}>
+                            Last
+                        </button>
+                    </li>
+                </nav>
+{/* 
+                <nav class="pagination pagination-location">
+                    <li class="page-item disabled">
+                    <a class="page-link pagination-disabled" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    <li class="page-item"><a class="page-link pagination-button" href="#">1</a></li>
+                    <li class="page-item active" aria-current="page">
+                    <a class="page-link pagination-selected" href="#">2 <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="page-item"><a class="page-link pagination-button" href="#">3</a></li>
+                    <li class="page-item">
+                    <a class="page-link pagination-button" href="#">Next</a>
+                    </li>
+                </nav> */}
             </div>
         );
     }

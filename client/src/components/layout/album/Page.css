@@ -88,11 +88,6 @@
     top: 90% !important;
 }
 
-html, body {
-    margin: 0;
-    font-family: 'Roboto', Arial, sans-serif;
-    font-size: 1.2em;
-}
 
 #page-numbers {
     list-style: none;
