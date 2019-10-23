@@ -83,7 +83,7 @@ router.put   ('/:albumId', (req, res) => {
 
 	util.addImageToAlbum(imageId, albumId, user, caption).then( (success) => {
 		// Album add succeeded
-		if(success){
+		if(success !== undefined){
 			res.sendStatus(201);
 		} else {
 			res.sendStatus(500);
