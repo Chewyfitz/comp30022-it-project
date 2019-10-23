@@ -35,6 +35,9 @@ router.post  ('/', (req, res) => {
 router.get   ('/:albumId?', (req, res) => {
 	// Get an album with a specified ID
 	var user = req.query.user;
+	const albumId = req.params.albumId;
+	const page_num = req.query.page;
+	const perPage = req.query.perPage;
 
 	if(!user){
 		res.sendStatus(401);
@@ -42,7 +45,7 @@ router.get   ('/:albumId?', (req, res) => {
 	}
 
 	if(req.params.albumId){
-		util.getAlbumById(user, req.params.albumId).then((album) =>{
+		util.getAlbumById(user, albumId, page_num, perPage).then((album) =>{
 			if(album){
 				res.status(201);
 				res.send(album);
