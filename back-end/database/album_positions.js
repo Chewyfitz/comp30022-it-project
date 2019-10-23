@@ -226,7 +226,6 @@ function updateAlbumPositionPhoto(userID, albumID, position, photoDocRef) {
  */
 async function updateAlbumPositionOrder(userID, albumID, permutaion){
     let transaction = general.db.runTransaction(t => updateAlbumPositionOrderCallBack(userID, albumID, permutaion, t));
-    console.log(0);
     return await transaction.then(resVal => {console.log(resVal); return true;}, rejVal => {console.log(rejVal); return false});
 }
 
@@ -241,20 +240,20 @@ async function updateAlbumPositionOrder(userID, albumID, permutaion){
 async function updateAlbumPositionOrderCallBack(userID, albumID, permutation, t){
     let docRefs = {};
     let data = {};
-    console.log(permutation);
-    let keys = permutation.keys();
+    let keys = Object.keys(permutation);
     let promises = [];
-    console.log(1);
+    let a = [];
     keys.forEach(key => {
-        docRefs.key = t.get(general.db.collection(general.albumPositionsPath(userID, albumID)).doc(key.toString()));
+        docRefs[key] = general.db.collection(general.albumPositionsPath(userID, albumID)).doc(key.toString());
     });
-    console.log(2);
-    keys.forEach(key => async function (key) {
-        data.key = (await docRefs[permutation.key].get()).data();
-    });
-    console.log(3);
     keys.forEach(key => {
-        promises.push(t.update(docRefs.key, data.key));
+        a.push(t.get(docRefs[permutation[key]]).then(value => {
+            data[key] = value.data();
+        }));
+    });
+    await Promise.all(a);
+    keys.forEach(key => {
+        promises.push(t.update(docRefs[key], data[key]));
     });
     return Promise.all(promises);
 }
