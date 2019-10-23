@@ -206,7 +206,7 @@ async function updateAlbumPositionCaption(userID, albumID, position, caption=und
  * @return {Boolean} - True only if the album position was successfully updated
  *                     in the database
  * */
-function updateAlbumPositionPhoto(userID, albumsID, position, photoDocRef) {
+function updateAlbumPositionPhoto(userID, albumID, position, photoDocRef) {
     //Initialisation
     let success = false;
     let data = {};
@@ -215,6 +215,48 @@ function updateAlbumPositionPhoto(userID, albumsID, position, photoDocRef) {
     //Attempt to Create the Document and return its success
     success = general.updateDataInDoc(data, general.albumPositionsPath(userID, albumsID), position);
     return success;
+}
+
+/**
+ *
+ * @param userID
+ * @param albumID
+ * @param {Object} permutaion - A dictionary where the key is the original
+ *              position and the value is the new position.
+ */
+async function updateAlbumPositionOrder(userID, albumID, permutaion){
+    let transaction = general.db.runTransaction(t => updateAlbumPositionOrderCallBack(userID, albumID, permutaion, t));
+    console.log(0);
+    return await transaction.then(resVal => {console.log(resVal); return true;}, rejVal => {console.log(rejVal); return false});
+}
+
+/**
+ *
+ * @param userID
+ * @param albumID
+ * @param {Object} permutation
+ * @param {firebase.firestore.Transaction} t
+ * @returns {Promise<void>}
+ */
+async function updateAlbumPositionOrderCallBack(userID, albumID, permutation, t){
+    let docRefs = {};
+    let data = {};
+    console.log(permutation);
+    let keys = permutation.keys();
+    let promises = [];
+    console.log(1);
+    keys.forEach(key => {
+        docRefs.key = t.get(general.db.collection(general.albumPositionsPath(userID, albumID)).doc(key.toString()));
+    });
+    console.log(2);
+    keys.forEach(key => async function (key) {
+        data.key = (await docRefs[permutation.key].get()).data();
+    });
+    console.log(3);
+    keys.forEach(key => {
+        promises.push(t.update(docRefs.key, data.key));
+    });
+    return Promise.all(promises);
 }
 
 
@@ -229,5 +271,6 @@ module.exports = {
     getAlbumPositionData,
     getAlbumPositionPhotoDocRef,
     updateAlbumPositionCaption,
+    updateAlbumPositionOrder,
     updateAlbumPositionPhoto,
 };

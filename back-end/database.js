@@ -215,6 +215,7 @@ module.exports = {
     updateAlbumView: albums.updateAlbumView,
     updateAlbumPageTemplate: albumPages.updateAlbumPageTemplate,
     updateAlbumPositionCaption: albumPositions.updateAlbumPositionCaption,
+    updateAlbumPositionOrder: albumPositions.updateAlbumPositionOrder,
     updateAlbumPositionPhoto: albumPositions.updateAlbumPositionPhoto,
 
 };
