@@ -72,8 +72,6 @@ router.put   ('/:albumId', (req, res) => {
 	}).catch((err) => {
 		res.send(err.toString());
 	})
-
-	res.sendStatus(200);
 });
 
 router.patch ('/:albumId', (req, res) => {

@@ -64,7 +64,7 @@ async function updateAlbumAttributes(user, album, attributes){
 }
 
 async function addImageToAlbum(image, album, user, caption = ''){
-    database.addAlbumPosition(user, album, image, caption)
+    return database.addAlbumPosition(user, album, image, caption)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
