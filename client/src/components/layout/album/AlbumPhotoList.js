@@ -9,6 +9,7 @@ import photos from '../photolist/tmpimglist';
 import Photo from "./Photo";
 
 import ALBUMIFY from '../navbar/ALBUMIFY'
+import axios from 'axios';
 
 //DO MAPPING
 // const photos = [
@@ -26,6 +27,7 @@ const SortablePhoto = SortableElement(item => <Photo {...item} />);
 const SortableGallery = SortableContainer(({ items }) => (
   <Gallery photos={items} renderImage={props => <SortablePhoto {...props} />} />
 ));
+
 
 function AlbumPhotoList() {
   const [items, setItems] = useState(photos);
