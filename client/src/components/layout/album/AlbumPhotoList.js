@@ -20,7 +20,6 @@ import axios from 'axios';
 //   }
 // ]
 
-
 /* popout the browser and maximize to see more rows! -> */
 const SortablePhoto = SortableElement(item => <Photo {...item} />);
 
@@ -33,13 +32,23 @@ function AlbumPhotoList() {
   const [items, setItems] = useState(photos);
 
   const onSortEnd = ({ oldIndex, newIndex }) => {
+    console.log(oldIndex);
+    console.log(newIndex);
+    console.log(items);
     setItems(arrayMove(items, oldIndex, newIndex));
+    console.log(items);
+    console.log(arrayMove(items, oldIndex, newIndex));
+
+    
   };
+
+  console.log(photos);
+  console.log(items);
 
 
     return (
         <div>
-          <ALBUMIFY items={items}/>
+          <ALBUMIFY items={items} photos={photos}/>
           <SortableGallery items={items} onSortEnd={onSortEnd} axis={"xy"} />
         </div>
     )

@@ -16,10 +16,9 @@ class Pagination extends React.Component {
             ImageList: photos,
             //ImageList: [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12],
             CurrentPage: 1,
-            PhotosPerPage: 6
+            PhotosPerPage: 10
         };
         this.handleClick = this.handleClick.bind(this);
-        console.log(photos);
 
         albumAPI.getImagesfromAlbum('un', 'test_user').then((ImageList) => {
           this.setState({
@@ -89,14 +88,17 @@ class Pagination extends React.Component {
                 {/* Actual album */}
                 <div className= "album-page-left">
 
-                    <PageLayout photolist={leftPagePhotos}/>
+                    <div className="album-page-photos">
+                        <PageLayout photolist={leftPagePhotos}/>
+                    </div>
 
                 </div>   
 
                 {/* <ImagePicker images={imageList2.map((image, i) => ({src: image, value: i}))} /> */}
                 <div className=" album-page-right">
-                    
-                    <PageLayout photolist={rightPagePhotos}/>
+                    <div className="album-page-photos">
+                        <PageLayout photolist={rightPagePhotos}/>
+                    </div>
                 </div>
 
                 

@@ -101,6 +101,10 @@
     cursor: pointer;
 }
 
+.album-page-photos{
+    padding: 5 !important;
+}
+
 
 /* 
 .image_picker .responsive .thumbnail{
