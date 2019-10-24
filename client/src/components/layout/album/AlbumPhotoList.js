@@ -39,26 +39,41 @@ async function makeAlbumList(albumId){
     return finalImageList
 }
 
-function AlbumPhotoList() {
-    const [items, setItems] = useState(null);
-    if(items==null){
-        makeAlbumList(window.location.pathname.slice(7)).then(setItems);
-    }
-    // items.foreach(item => {item.height = 1; item.width = 1});
+const photos = [];
+
+class AlbumPhotoList extends React.Component {
+  
+  
+  loadPhotos({photos}){
     
-    console.log("set state-ish");
+    console.log(`PHOTOS: ${photos}`) 
+
+    const [items, setItems] = useState(photos);
+    
+
+    
     const onSortEnd = ({ oldIndex, newIndex }) => {
-        setItems(arrayMove(items, oldIndex, newIndex));    
+      setItems(arrayMove(items, oldIndex, newIndex));    
     };
 
-    return (
-        <div>
-            {items && <>
-                <ALBUMIFY items={items}/>
-                    <SortableGallery items={items} onSortEnd={onSortEnd} axis={"xy"} />
-                </>
-            }
-        </div>
-    )
+      return (
+          <div>
+      {items && <>
+        <ALBUMIFY items={items} photos={photos}/>
+            <SortableGallery albumName={window.location.pathname.slice(7)} items={items} onSortEnd={onSortEnd} axis={"xy"} />
+        </>
+      }
+          </div>
+      )
+  }
+
+  photos = makeAlbumList(window.location.pathname.slice(7)).then(
+    
+    console.log('PHOTOS:' + photos) 
+    //this.loadPhotos(photos)
+
+  );
+  
+
 }
 export default AlbumPhotoList;
