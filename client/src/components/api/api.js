@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const url = `${process.env.REACT_APP_API_URL}/api`
-
+const url = `${process.env.REACT_APP_API_URL}/api`;
 // Get all the images from a specified album
 export async function getImagesfromAlbum(albumId, userId) {
 	

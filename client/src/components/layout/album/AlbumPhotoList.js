@@ -6,6 +6,7 @@ import { SortableContainer, SortableElement } from "react-sortable-hoc";
 
 
 import makeAlbumList from '../photolist/tmpimglist';
+
 import Photo from "./Photo";
 
 import ALBUMIFY from './ALBUMIFY';
@@ -19,6 +20,7 @@ import axios from 'axios';
 //     height: 1
 //   }
 // ]
+
 
 /* popout the browser and maximize to see more rows! -> */
 const SortablePhoto = SortableElement(item => <Photo {...item} />);
