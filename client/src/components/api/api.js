@@ -1,7 +1,7 @@
 import Axios from "axios";
 
-//const url = `${process.env.REACT_APP_API_URL}/api`;
-const url = 'https://robbiesapiteam.herokuapp.com/api'
+const url = `${process.env.REACT_APP_API_URL}/api`;
+//const url = 'https://robbiesapiteam.herokuapp.com/api'
 
 // Get all the images from a specified album
 export async function getImagesfromAlbum(albumId, userId) {

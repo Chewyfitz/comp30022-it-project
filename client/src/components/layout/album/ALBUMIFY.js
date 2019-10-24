@@ -2,14 +2,14 @@
 //don't need to save state
 //TO DO put all stuff in navbar
 import React from 'react'
-import "./Navbar.css"
+import "../navbar/Navbar.css"
 import axios from 'axios';
 
 function handleClick(oldphotolist, newphotolist) {
 
     var toSend = {};
 
-    //TO DO change src to albumposition then SEND to front end
+    //TO DO change src to id (albumposition) then SEND to front end
 
     for (var i=0 ; i<oldphotolist.length ; i++){
         if(oldphotolist[i].src != newphotolist[i].src){
@@ -17,11 +17,17 @@ function handleClick(oldphotolist, newphotolist) {
         }
         
     }
-    
-    // //const updatedItems = items.map(item => {return {old, item.index}});
+    console.log(toSend);
 
-    // //onClick(event, { photo, index });
-    // //onClick={onClick ? handleClick : null}
+    // for (id in oldphotolist){
+    //     if(oldphotolist[id] != newphotolist[id]){
+    //         toSend[oldphotolist[id]] = newphotolist[id]; 
+    //     }
+        
+    // }
+
+    
+
     // let data = new FormData() 
     // const config = {
     //   headers: { 'content-type': 'multipart/form-data'}
@@ -30,7 +36,7 @@ function handleClick(oldphotolist, newphotolist) {
     // const user='test_user'; // For testing purposes
     // const url = `${process.env.REACT_APP_API_URL}/api/image?user=${user}`;
     // // Send the data
-    // axios.post(url, items, config).then( (res) => { 
+    // axios.post(url, toSend, config).then( (res) => { 
 
     //   console.log(res.statusText);
 

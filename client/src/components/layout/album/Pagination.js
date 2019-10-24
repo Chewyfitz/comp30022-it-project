@@ -2,7 +2,7 @@ import React from 'react'
 import './Page.css'
 import photos from '../photolist/tmpimglist';
 //COMPONENTS
-import PageLayout from './PageLayoutTest'
+import PageLayout from './PageLayout'
 
 //import axios from 'axios'
 
