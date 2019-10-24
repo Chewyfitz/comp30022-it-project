@@ -1,11 +1,8 @@
 const database = require('../database.js');
 const firebase = require('firebase');
 require('firebase/auth');
+const UN = 'un' //Constant for UnAlbum
 
-// A hack
-const general = require('../database/general_database');
-const album = require('../database/albums');
-const db = require("firebase/app").firestore();
 
 async function firebaseRegister(email, password){
     user = await firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -24,7 +21,7 @@ async function register(req){
         var user = firebaseRegister(login, password).then((user) => {
             console.log(user.user.uid);
             database.addUser(user.user.uid, '').then((userKey) => {
-                album.addAlbum(userKey, 'un');
+                database.addAlbum(userKey, UN, UN);
             });
         });
         return user;
