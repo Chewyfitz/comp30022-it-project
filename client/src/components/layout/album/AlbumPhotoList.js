@@ -18,7 +18,7 @@ const SortablePhoto = SortableElement(item => <Photo {...item} />);
 
 const SortableGallery = SortableContainer(({ items }) => (
 
-  <Gallery photos={items} renderImage={props => <SortablePhoto {...props} />} />
+  <Gallery photos={items.map(image => {return image.src})} renderImage={props => <SortablePhoto {...props} />} />
 ));
 
 

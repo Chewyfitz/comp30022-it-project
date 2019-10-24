@@ -103,9 +103,14 @@ class MainPage extends Component {
 				console.log(res.statusText);
 				console.log(res.data);
 				newAlbumName=res.data;
-				AddImagesToAlbum(this.state.CurrentPhotoList, newAlbumName);
-                this.setState({selectedAlbum: newAlbumName});
-                this.setState({redirect: true});
+				if(this.state.CurrentPhotoList){
+					AddImagesToAlbum(this.state.CurrentPhotoList, newAlbumName).then(res => {
+						//window.location.reload();
+					});
+				}
+				else{
+					//window.location.reload();
+				}
 				
 				/*try {
 					this.setState({
@@ -143,7 +148,7 @@ class MainPage extends Component {
             <div id="page-wrap">
                 <Navbar pageName={"Main Page"}/>
                 <SubNavbar photos={this.state.CurrentPhotoList} albums={this.state.AlbumList}/>
-                <UnAlbumPhotoList />
+                <UnAlbumPhotoList parentCallback = {this.callbackFunction}/>
             </div>
 			{this.renderRedirect()}
         </div>

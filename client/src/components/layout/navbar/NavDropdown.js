@@ -62,7 +62,7 @@ class NavDropdown extends React.Component {
   render() {
     return (
 	<>
-            <button type="button" class="btn navDropdownButton btn-primary" onClick={this.uploadToSelected}>Upload to Selected</button>
+            <button type="button" class="btn navDropdownButton btn-primary" onClick={this.uploadToSelected}>Add to Selected</button>
       <Picky
           value={this.state.arrayValue}
           options={this.props.albums}

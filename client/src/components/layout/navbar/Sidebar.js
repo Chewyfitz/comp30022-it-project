@@ -56,8 +56,9 @@ class Sidebar extends Component {
 	}
 	render(){
 		return (
+
 			<Menu id="Menu" customBurgerIcon={ <div> <button type="button" className="btn icon-text">Albums</button> </div>}>
-				<div>
+				<div className="form-group row d-flex justify-content-center">
 					<input type="text" onChange={this.textUpdate} placeholder="Enter Album Name"></input>
 					<button type="button" class="btn btn-primary" onClick={this.CreateNewAlbum}>Create New Album</button>
 				</div>
