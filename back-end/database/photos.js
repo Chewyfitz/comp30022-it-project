@@ -60,6 +60,7 @@ function addPhoto(userID, photoReference, height=1, width=1, photoDateTime=null,
  * */
 async function deletePhoto(userID, photoID) {
     return await general.deleteDoc(general.photosPath(userID), photoID);
+    //TODO Delete references
 }
 
 /**

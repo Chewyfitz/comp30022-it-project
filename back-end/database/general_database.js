@@ -369,7 +369,6 @@ async function updateDataInDoc(data, path, doc) {
             success = true;
         //If the Promise is rejected
         }, rejValue => {
-            //TODO Do I need to handle this rejection?
             console.log("ERROR in general_database.js updateDataInDoc: " +
                 "Tried to update " + path + '/' + doc + "with " + data +
                 "but the promise was rejected \n Rejection Value: " + rejValue);

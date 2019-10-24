@@ -83,7 +83,6 @@ async function addManyAlbumPosition(userID, albumID, photoInfoList) {
  *          was successfully deleted from the database
  * */
 async function deleteAlbumPosition(userID, albumID, position) {
-    //TODO Carefully consider the logic used to delete and move this data
     let transaction = general.db.runTransaction(t => deleteAlbumPositionCallBack(userID, albumID, position, t));
     return await transaction.then(resVal=>{return true}, rejVal=>{return false});
 }

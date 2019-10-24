@@ -73,7 +73,6 @@ async function getAllAlbumPhotos(userID, albumID, start=undefined, end=undefined
     //Wait for all the promises to be resolved because data will on have its
     //final value after they have all been resoled
     await Promise.all(promises);
-    //TODO rejection handling?
     return data;
 
 }
@@ -151,7 +150,7 @@ async function getSomeAlbumPhotos(userID, albumID, start=undefined, end=undefine
         if (photoDoc.exists) {
             data[i + start].reference = photoDoc.data()[photos.photoFields.reference];
             data[i + start].photoID = photoDoc.id;
-        //TODO error handling for non existent Photos doc
+        //TODO error handling for non existent Photos doc?
         } else {
             continue;
         }
