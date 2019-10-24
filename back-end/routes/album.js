@@ -10,10 +10,12 @@ const pageUtil = require('../util/albumPage');
 
 router.post  ('/', (req, res) => {
 	// Create a new album, and return its ID
-	// console.log("POST /album/");
-	// console.log(req.params);
-	// console.log(req.query);
 	var user = req.query.user;
+
+	if(!user){
+		res.sendStatus(401);
+		return;
+	}
 
 	util.createAlbum(user, req.query.albumName).then( (album) => {
 		if(album){
@@ -33,16 +35,26 @@ router.post  ('/', (req, res) => {
 router.get   ('/:albumId?', (req, res) => {
 	// Get an album with a specified ID
 	var user = req.query.user;
+	const albumId = req.params.albumId;
+	const page_num = req.query.page;
+	const perPage = req.query.perPage;
+
+	if(!user){
+		res.sendStatus(401);
+		return;
+	}
+
 	if(req.params.albumId){
-		util.getAlbumById(user, req.params.albumId).then((album) =>{
+		util.getAlbumById(user, albumId, page_num, perPage).then((album) =>{
 			if(album){
 				res.status(201);
 				res.send(album);
 			} else {
 				res.sendStatus(500);
 			}
-		}).catch(() => {
-			res.sendStatus(404);
+		}).catch((err) => {
+			res.send(err.toString());
+			// res.sendStatus(404);
 		});
 	} else {
 		util.getAllAlbumNames(user).then((names) => {
@@ -56,20 +68,40 @@ router.get   ('/:albumId?', (req, res) => {
 
 // Update
 
-// TODO: PUT update
+// Add a Photo to an album
 router.put   ('/:albumId', (req, res) => {
 	// Update an album (May be removed in preference to PATCH)
-	console.log("PUT /album/:albumID");
-	console.log(req.params);
-	res.sendStatus(200);
+	var imageId = req.query.imageId;
+	var albumId = req.params.albumId;
+	var user = req.query.user;
+	var caption = req.query.caption || '';
+
+	if(!user){
+		res.sendStatus(401);
+		return;
+	}
+
+	util.addImageToAlbum(imageId, albumId, user, caption).then( (success) => {
+		// Album add succeeded
+		if(success !== undefined){
+			res.sendStatus(201);
+		} else {
+			res.sendStatus(500);
+		}
+	}).catch((err) => {
+		res.send(err.toString());
+	})
 });
 
 router.patch ('/:albumId', (req, res) => {
 	// Update an album
-	// console.log("PATCH /album/:albumID");
-	// console.log(req.params);
-	// console.log(req.query);
 	var user = req.query.user;
+
+	if(!user){
+		res.sendStatus(401);
+		return;
+	}
+
 	util.updateAlbumAttributes(user, req.params.albumId, req.query).then((truth_val) => {
 		if(truth_val){
 			res.sendStatus(200);
@@ -84,10 +116,45 @@ router.patch ('/:albumId', (req, res) => {
 // Delete
 
 router.delete('/:albumId', (req, res) => {
-	// Delete an album
-	console.log("DELETE /album/:albumID");
-	console.log(req.params);
-	res.sendStatus(200);
+	// You have to specify which user's album you want to delete.
+	if(!req.query.userId){
+		res.sendStatus (400);
+		return;
+	}
+	const userId = req.query.userId;
+	const albumId = req.params.albumId;
+
+	if(!userId){
+		res.sendStatus(401);
+		return;
+	}
+
+	// Optional - delete position
+	const position = req.params.position;
+	if(position){
+		util.deleteAlbumPosition(userId, albumId, position).then( (success) => {
+			if(success){
+				res.sendStatus(204);
+			} else {
+				res.sendStatus(400);
+			}
+		}).catch( (err) => {
+			res.status(500);
+			res.send(err.toString());
+		});
+	} else {
+		util.deleteAlbum(userId, albumId).then((success) => {
+			if(success){
+				res.sendStatus(204);
+			} else {
+				res.sendStatus(400);
+			}
+		}).catch( (err) => {
+			res.status(500);
+			res.send(err.toString());
+		});
+	}
+
 });
 
 // ============================================================================
@@ -98,6 +165,11 @@ router.delete('/:albumId', (req, res) => {
 router.post  ('/:albumId/:pageId', (req, res) => {
 	// Create a new album page
 	var user = req.query.user;
+
+	if(!user){
+		res.sendStatus(401);
+		return;
+	}
 
 	if( req.params.albumId && req.params.pageId 
 		&& req.query.template){
@@ -114,6 +186,12 @@ router.post  ('/:albumId/:pageId', (req, res) => {
 // '/api/album/:albumId/:pageId'
 router.get   ('/:albumId/:pageId', (req, res) => {
 	var user = req.query.user;
+
+	if(!user){
+		res.sendStatus(401);
+		return;
+	}
+
 	// Get a page of an album
 	if( req.params.albumId && req.params.pageId ){
 		template = pageUtil.getAlbumPageTemplate(user, req.params.albumId, req.params.pageId);
@@ -127,24 +205,38 @@ router.get   ('/:albumId/:pageId', (req, res) => {
 
 router.put   ('/:albumId/:pageId', (req, res) => {
 	var user = req.query.user;
+	if(!user){
+		res.sendStatus(401);
+		return;
+	}
 	// Update an album page (might be useful eg. for copy/paste)
 	if( req.params.albumId && req.params.pageId && req.query.template ){
-		success = pageUtil.updateAlbumPageAttributes(user, req.params.albumId, req.params.pageId, req.query.template);
-		if(success){
-			res.sendStatus(204);
-		} else {
-			res.sendStatus(500);
-		}
+		pageUtil.updateAlbumPageAttributes(user, req.params.albumId, req.params.pageId, req.query.template).then((success) => {
+			if(success){
+				res.sendStatus(204);
+			} else {
+				res.sendStatus(500);
+			}
+		});
 	} else {
 		res.sendStatus(400);
 	}
 });
 router.patch ('/:albumId/:pageId', (req, res) => {
 	var user = req.query.user;
+	if(!user){
+		res.sendStatus(401);
+		return;
+	}
 	// Update an album page (might be useful eg. for copy/paste)
 	if( req.params.albumId && req.params.pageId && req.query.template ){
-		pageUtil.updateAlbumPageAttributes(user, req.params.albumId, req.params.pageId, req.query.template);
-		res.sendStatus(204);
+		pageUtil.updateAlbumPageAttributes(user, req.params.albumId, req.params.pageId, req.query.template).then( (success) => {
+			if(success){
+				res.sendStatus(204);
+			} else {
+				res.sendStatus(500);
+			}
+		});
 	} else {
 		res.sendStatus(400);
 	}
@@ -153,10 +245,25 @@ router.patch ('/:albumId/:pageId', (req, res) => {
 // Delete
 
 router.delete('/:albumId/:pageId', (req, res) => {
-	// Delete an album page
-	console.log("DELETE /album/:albumID/:pageId");
-	console.log(req.params);
-	res.sendStatus(200);
+	const user = req.query.user;
+	const album = req.params.albumId;
+	const page = req.params.pageId;
+
+	if(!user){
+		res.sendStatus(401);
+		return;
+	}
+
+	pageUtil.deleteAlbumPage(user, album, page).then( (success) => {
+		if(success){
+			res.sendStatus(204);
+		} else {
+			res.sendStatus(400);
+		}
+	}).catch( (error) => {
+		res.status(500);
+		res.send( error.toString() );
+	});
 });
 
 module.exports = router;

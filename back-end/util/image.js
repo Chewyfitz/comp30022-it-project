@@ -66,11 +66,22 @@ async function uploadPhotos(files){
  * @param {String} user - the username of the owner of the image
  * @param {String} image - url/reference to the image that's being added
  * @param {String} photoDateTime - datetime as string
+ * 
+ * @return {DocumentID} if successful, otherwise 
+ * @return {bool} if failure
  */
-async function addPhotoToUser(user, image, photoDateTime = null){
+async function addPhotoToUser(user, image, album = undefined, photoDateTime = null){
     // ... pretty much just call the database function
-    success = database.addPhoto(user, image, photoDateTime);
-    return success;
+    var albumPosition = await database.addPhoto(user, image, photoDateTime).then((success) => {
+        console.log(success);
+        if(success){
+            docId = database.addAlbumPosition(user, 'un' || album, success);
+            return docId;
+        }
+        return success;
+    });
+
+    return albumPosition;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -116,9 +127,9 @@ async function addPhotosToUser(user, images){
 ////////////////////////////////////////////////////////////////////////////////
 
 
-// TODO: Implement Deletions
-async function deletePhotoById(user, image){
-    console.log("Err: Incomplete Function deletePhotoById");
+async function deletePhotoById(user, imageId){
+    // TODO: Check domain of image, delete from GCS if it's uploaded.
+    return database.deletePhoto(user, imageId);
 }
 
 module.exports = {
@@ -127,5 +138,5 @@ module.exports = {
     deletePhotoById,
     getImageById,
     getImageRefById,
-    uploadPhotos
+    uploadPhotos,
 }
