@@ -17,6 +17,7 @@ function handleClick(oldphotolist, newphotolist) {
         }
         
     }
+    console.log(oldphotolist);
     console.log(toSend);
 
     // for (id in oldphotolist){
@@ -26,11 +27,9 @@ function handleClick(oldphotolist, newphotolist) {
         
     // }
 
-    
-
     // let data = new FormData() 
     // const config = {
-    //   headers: { 'content-type': 'multipart/form-data'}
+    //   headers: { 'content-type': 'application/json'}
     // }
     // // Set the send values
     // const user='test_user'; // For testing purposes
