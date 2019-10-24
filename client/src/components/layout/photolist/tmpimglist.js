@@ -1,5 +1,5 @@
-//import images from local
-/*import img1 from '../photolist/temp_images/1.png'
+/*//import images from local
+import img1 from '../photolist/temp_images/1.png'
 
 import img2 from '../photolist/temp_images/2.png'
 import img3 from '../photolist/temp_images/3.png'
@@ -86,7 +86,6 @@ const tmpimglist = [
 ];
 
 export default tmpimglist;
-
 */
 
 
