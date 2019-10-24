@@ -99,8 +99,8 @@ function albumPositionsPath(userID, albumID) {
 /**
  * General use Document Creator, currently creates a new Document in the
  * specified collection and stores the given data in it. If a document key is
- * given, then a Document with that key will be created if none other exists.
- * Otherwise the Document key will be randomly generated.
+ * given, then a Document with that key will be created if no Document with that
+ * key already exists. Otherwise the Document key will be randomly generated.
  *
  * @param {Object} data - Basically a dictionary of key-value pairs where the
  *          key represents the field represents the value will be added to in
@@ -195,9 +195,8 @@ async function deleteCollection(path) {
  * !!DOES NOT DELETE REFERENCES TO THE DOCUMENT!!
  * Deletes the document and its descendants
  *
- * @param {String} path - The path to the Collection the Document that will be
- *          deleted
- * @param {String} doc -  The key of the Document
+ * @param {String} path - The path to the Collection the Document is in
+ * @param {String} doc -  The key of the Document to be deleted
  *
  * @returns {Boolean} - True only if the document and its descendants were
  *          successfully deleted, false if even one document failed to delete.
@@ -278,7 +277,7 @@ async function recDeleteAllFromDoc(reference) {
  * Retrieves the data from a Document in the database
  *
  * @param {String} path - The path to the Collection that the Document is in
- * @param {String} doc - The key of the Document
+ * @param {String} doc - The key of the Document to get data from
  *
  * @return {firebase.firestore.DocumentData} - Basically a dictionary of
  *          key-value pairs where the key represents the field of the data,
@@ -359,9 +358,8 @@ function getDocRef(path, doc){
  * @param {Object} data - Basically a dictionary of key-value pairs where the
  *          key represents the field represents the value will be
  *          updated in the Document
- * @param {String} path - The path to the Collection the Document to be updated
- *          is in.
- * @param {String} doc - The key of the Document that will be update
+ * @param {String} path - The path to the Collection the Document is in
+ * @param {String} doc - The key of the Document that will be updated
  *
  * @return {Boolean} - True only if the document was updated successfully
  * */

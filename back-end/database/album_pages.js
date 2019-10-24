@@ -17,12 +17,12 @@ const albumPageFields = {
  *
  * @param {String} userID - The username of the owner of the album
  * @param {String} albumID - The key of the document for the album
- * @param {Number} pageNumber - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
- *                           Collection that we are creating
- * @param {Number} template - SHOULD BE NON NEGATIVE INT! The template specific to this album page
+ * @param {Number} pageNumber - !SHOULD BE NON NEGATIVE INT! The Page that is
+ *          being created to store template information
+ * @param {Number} template - The template specific to this album page
  *
- * @return {Boolean} - True only if the new album page was successfully added to
- *                     the database
+ * @return {String} - True Key of the AlbumPage if it was created successfully,
+ *          Otherwise it will return undefined
  * */
 async function addAlbumPage(userID, albumID, pageNumber, template) {
     //Initialisation
@@ -48,12 +48,12 @@ async function addAlbumPage(userID, albumID, pageNumber, template) {
  * Deletes the Album Page and its associated data.
  *
  * @param {String} userID - The username of the user who owns the Album
- * @param {String} albumID - The ID of the album
- * @param {Number} pageNumber - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
- *                           Collection that is being deleted
+ * @param {String} albumID - The Album the Album Page is in
+ * @param {Number} pageNumber - !SHOULD BE NON NEGATIVE INT! The AlbumPage that
+ *          is being deleted
  *
- * @return {Boolean} - True only if the Album Page was successfully deleted from
- *                     the database
+ * @return {Boolean} - True only if the Album Page and its associated data was
+ *          successfully deleted from the database
  * */
 async function deleteAlbumPage(userID, albumID, pageNumber) {
     return general.deleteDoc(general.albumPagesPath(userID, albumID), pageNumber);
@@ -63,15 +63,13 @@ async function deleteAlbumPage(userID, albumID, pageNumber) {
  * Gets the stored data of an album page in an album owned by a user
  *
  * @param {String} userID - The username of the new user who owns the album
- * @param {String} albumID - The key of the document in the Albums Collection
- *                           that we are getting the data from
- * @param {Number} pageNumber - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
- *                           Collection that we are getting the data of
+ * @param {String} albumID - The Album that has the Album Page
+ * @param {Number} pageNumber - !SHOULD BE NON NEGATIVE INT! The AlbumPage that
+ *          you are getting the data of
  *
  * @return {firebase.firestore.DocumentData} - If the Data was successfully
- *                                             retrieved it will return the
- *                                             Data, otherwise it will return
- *                                             undefined
+ *          retrieved it will return the Data, otherwise it will return
+ *          undefined
  * */
 async function getAlbumPageData(userID, albumID, pageNumber) {
     //Attempt to retrieve the Data for the the album page and return it
@@ -83,13 +81,13 @@ async function getAlbumPageData(userID, albumID, pageNumber) {
  * Gets the stored template of an album page in an album owned by a user
  *
  * @param {String} userID - The username of the new user who owns the album
- * @param {String} albumID - The key of the document in the Albums Collection
- *                           that we are getting the template from
- * @param {Number} pageNumber - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
- *                           Collection that we are getting the template of
+ * @param {String} albumID - The Album the Album Page is in
+ * @param {Number} pageNumber - !SHOULD BE NON NEGATIVE INT! The AlbumPage
+ *          that you are getting the template of
  *
- * @return {Number} - WILL BE A NON NEGATIVE INT! If the template was successfully retrieved it will return the
- *                 template, otherwise it will return undefined
+ * @return {Number} - !WILL BE A NON NEGATIVE INT! If the template was
+ *          successfully retrieved it will return the template, otherwise it
+ *          will return undefined
  * */
 async function getAlbumPageTemplate(userID, albumID, pageNumber) {
     //Initialisation
@@ -111,13 +109,13 @@ async function getAlbumPageTemplate(userID, albumID, pageNumber) {
  * user in the database
  *
  * @param {String} userID - The username of the owner of the album
- * @param {String} albumID - The key of the document for the album
- * @param {Number} pageNumber - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
- *                           Collection that we are updating the template of
- * @param {Number} template - SHOULD BE NON NEGATIVE INT! The template specific to this album page
+ * @param {String} albumID - The Album that the Album Page is in
+ * @param {Number} pageNumber - !SHOULD BE NON NEGATIVE INT! The AlbumPage
+ *          that you are updating the template of
+ * @param {Number} template - The template specific to this album page
  *
  * @return {Boolean} - True only if the album page was successfully updated in
- *                     the database
+ *          the database
  * */
 async function updateAlbumPageTemplate(userID, albumID, pageNumber, template) {
     //Initialisation

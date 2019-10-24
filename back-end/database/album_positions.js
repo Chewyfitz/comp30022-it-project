@@ -16,12 +16,12 @@ const albumPositionFields = {
  * Adds a new album position of an album that is owned by a user to the database
  *
  * @param {String} userID - The username of the owner of the album
- * @param {String} albumID - The key of the document for the album
+ * @param {String} albumID - The Album the Album Position it in
  * @param {String} photoID - The photo to be stored in the album position
- * @param {String} caption - The caption of this position in the album
+ * @param {String} [caption=null] - The caption of this position in the album
  *
  * @return {String} - True only if the new album position was successfully
- *                     added to the database
+ *          added to the database, otherwise it returns undefined
  * */
 async function addAlbumPosition(userID, albumID, photoID, caption=null) {
     //Initialisation
@@ -37,14 +37,15 @@ async function addAlbumPosition(userID, albumID, photoID, caption=null) {
 }
 
 /**
- * USE AT OWN RISK
- * Adds a new album position of an album that is owned by a user to the database
+ * USE AT OWN RISK - UNTESTED
+ * Adds new album positions to an album that is owned by a user to the database
  *
  * @param {String} userID - The username of the owner of the album
- * @param {String} albumID - The key of the document for the album
- * @param {Array.<Object>} photoInfoList - List of photos to be stored in the album position
- * @return {Boolean} - True only if the new album position was successfully
- *                     added to the database
+ * @param {String} albumID - The album the Album Positions are being added tp
+ * @param {Array.<Object>} photoInfoList - List of photos to be stored in the
+ *          album positions of the form {photoID: String, caption: String}
+ * @return {Boolean} - True only if the new album positions were all
+ *          successfully added to the database
  * */
 async function addManyAlbumPosition(userID, albumID, photoInfoList) {
     //Finds what the position in the album is needed next
@@ -68,19 +69,19 @@ async function addManyAlbumPosition(userID, albumID, photoInfoList) {
     return success;
 }
 
-/**!NOT YET IMPLEMENTED!
+/**
  * !CAUTION!
+ * !COULD POTENTIALLY RESULT IN A LARGE STACK!
  * !!DOES NOT DELETE REFERENCES TO THE ALBUM PAGE!!
- * !!!ONLY DELETES THE LAST PAGE!!!
  * Deletes the Album Position and its associated data.
  *
  * @param {String} userID - The username of the user who owns the Album
- * @param {String} albumID - The ID of the album
- * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
- *                           Collection that we are getting the data of
+ * @param {String} albumID - The Album that the Album Position is in
+ * @param {Number} position - !SHOULD BE NON NEGATIVE INT! The Album Position
+ *          that you are deleting
  *
- * @return {Boolean} - True only if the Album Position was successfully deleted
- *                     from the database
+ * @return {Boolean} - True only if the Album Position and its associated data
+ *          was successfully deleted from the database
  * */
 async function deleteAlbumPosition(userID, albumID, position) {
     //TODO Carefully consider the logic used to delete and move this data
@@ -126,10 +127,9 @@ async function deleteAlbumPositionCallBack(userID, albumID, position, t){
  * Gets the stored caption of an album position in an album owned by a user
  *
  * @param {String} userID - The username of the new user who owns the album
- * @param {String} albumID - The key of the document in the Albums Collection
- *                           that we are getting the data from
- * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
- *                           Collection that we are getting the data of
+ * @param {String} albumID - The Album that the Album Position is in
+ * @param {Number} position - !SHOULD BE NON NEGATIVE INT! The Album Position
+ *          that you want the caption of
  *
  * @return {string} - If the caption was successfully retrieved it will return
  * the caption as a String, otherwise it will return undefined
@@ -154,15 +154,13 @@ async function getAlbumPositionCaption(userID, albumID, position) {
  * Gets the stored data of an album position in an album owned by a user
  *
  * @param {String} userID - The username of the new user who owns the album
- * @param {String} albumID - The key of the document in the Albums Collection
- *                           that we are getting the data from
- * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
- *                           Collection that we are getting the data of
+ * @param {String} albumID - The Album the Album Position is in
+ * @param {Number} position - !SHOULD BE NON NEGATIVE INT! The Album Position
+ *          you are getting the data of
  *
  * @return {firebase.firestore.DocumentData} - If the Data was successfully
- *                                             retrieved it will return the
- *                                             Data, otherwise it will return
- *                                             undefined
+ *          retrieved it will return the Data, otherwise it will return
+ *          undefined
  * */
 async function getAlbumPositionData(userID, albumID, position) {
     //Attempt to retrieve the Data for the the album position and return it
@@ -175,32 +173,29 @@ async function getAlbumPositionData(userID, albumID, position) {
  * owned by a user
  *
  * @param {String} userID - The username of the new user who owns the album
- * @param {String} albumID - The key of the document in the Albums Collection
- *                           that we are getting the data from
- * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
- *                           Collection that we are getting the data of
+ * @param {String} albumID - The Album the Album Position is in
+ * @param {Number} position - !SHOULD BE NON NEGATIVE INT! The Album Position
+ *          you are getting the Photo Document Reference of
  *
  * @return {firebase.firestore.DocumentReference} - If the photo document
- *                                               reference was successfully
- *                                            retrieved it will return the photo
- *                                         reference as a
- *                                      firebase.firestore.DocumentReference,
- *                                   otherwise it will return undefined
+ *          reference was successfully retrieved it will return the photo
+ *          reference as a firebase.firestore.DocumentReference, otherwise it
+ *          will return undefined
  * */
 async function getAlbumPositionPhotoDocRef(userID, albumID, position) {
     //Initialisation
-    let caption = undefined;
+    let photoDocRef = undefined;
     let data = await getAlbumPositionData(userID, albumID, position);
     try {
         //Try to retrieve the value from the data
-        caption = data[albumPositionFields.photo];
+        photoDocRef = data[albumPositionFields.photo];
     } catch (e) {
         console.log("Error in AlbumPositions.js.getAlbumPageCaption, - " +
-            "probably trying to get the caption of an album position that " +
+            "probably trying to get the photoDocRef of an album position that " +
             "doesn't exist");
         console.log(e);
     }
-    return caption;
+    return photoDocRef;
 }
 
 /**
@@ -209,12 +204,12 @@ async function getAlbumPositionPhotoDocRef(userID, albumID, position) {
  *
  * @param {String} userID - The username of the owner of the album
  * @param {String} albumID - The key of the document for the album
- * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPositions
- *                           Collection that we are updating the caption of
+ * @param {Number} position - !SHOULD BE NON NEGATIVE INT! The Album Position you
+ *          are updating the caption of
  * @param {String} caption - The new value of caption
  *
  * @return {Boolean} - True only if the album position was successfully updated
- *                     in the database
+ *          in the database
  * */
 async function updateAlbumPositionCaption(userID, albumID, position, caption=undefined) {
     //Initialisation
@@ -233,8 +228,8 @@ async function updateAlbumPositionCaption(userID, albumID, position, caption=und
  *
  * @param {String} userID - The username of the owner of the album
  * @param {String} albumID - The key of the document for the album
- * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPositions
- *                          Collection that we are updating the caption of
+ * @param {Number} position - !SHOULD BE NON NEGATIVE INT! The Album Position
+ *          you are updating the Photo Document Reference of
  * @param {String} photoID - The ID of the new photo for this position
  *
  * @return {Boolean} - True only if the album position was successfully updated
@@ -252,14 +247,15 @@ function updateAlbumPositionPhoto(userID, albumID, position, photoID) {
 }
 
 /**
+ * //TODO JSDOC
  *
- * @param userID
- * @param albumID
- * @param {Object} permutaion - A dictionary where the key is the original
+ * @param {String} userID
+ * @param {String} albumID
+ * @param {Object} permutation - A dictionary where the key is the original
  *              position and the value is the new position.
  */
-async function updateAlbumPositionOrder(userID, albumID, permutaion){
-    let transaction = general.db.runTransaction(t => updateAlbumPositionOrderCallBack(userID, albumID, permutaion, t));
+async function updateAlbumPositionOrder(userID, albumID, permutation){
+    let transaction = general.db.runTransaction(t => updateAlbumPositionOrderCallBack(userID, albumID, permutation, t));
     return await transaction.then(resVal => {return true;}, rejVal => {console.log(rejVal); return false});
 }
 

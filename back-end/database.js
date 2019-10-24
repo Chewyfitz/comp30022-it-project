@@ -17,23 +17,22 @@ const tags = require('./database/tags');
 
 
 /**
- * Retrieves the image references and captions of the Photos that are in the
- * range of specified positions within an Album of a User. - BETTER FOR GETTING
- * A LARGE AMOUNT OF DOCS
+ * Retrieves the Photo IDs, image references and captions of the Photos that are
+ * in the range of specified positions within an Album of a User. - BETTER FOR
+ * GETTING A LARGE AMOUNT OF DOCS
  *
- * @param {String} userID - The owner of the photo
- * @param {String} albumID - The key of the document in the Photos Collection
- *                           that we are getting the photo reference from
- * @param {Number} start - SHOULD BE NON NEGATIVE INT! The first position of the
- *                         range you want toget the photos from (inclusive).
- *                         Leave blank for start
- * @param {Number} end - SHOULD BE NON NEGATIVE INT! The last position of the
- *                         range you want to get the photos from (inclusive).
- *                         Leave blank for end
+ * @param {String} userID - The owner of the album
+ * @param {String} albumID - The album to get photos from
+ * @param {Number} start - !SHOULD BE NON NEGATIVE INT! The first position of the
+ *          range you want to get the photos from (inclusive). If left blank the
+ *          the range will start from the first photo in the album
+ * @param {Number} end - !SHOULD BE NON NEGATIVE INT! The last position of the
+ *          range you want to get the photos from (inclusive). If left blank the
+ *          range will end at the last photo in the album
  *
- * @return {Object.<Object>} - Basically a dictionary of dictionaries of the form
- *                    AlbumPosition:Field:Value where field is either reference
- *                    or caption
+ * @return {Object.<Object>} - Basically a dictionary of dictionaries of the
+ *          form AlbumPosition:Field:Value where field is either photoID,
+ *          reference, or caption.
  * */
 async function getAllAlbumPhotos(userID, albumID, start=undefined, end=undefined) {
     //Initialisation
@@ -80,23 +79,22 @@ async function getAllAlbumPhotos(userID, albumID, start=undefined, end=undefined
 }
 
 /**
- * Retrieves the image references and captions of the Photos that are in the
- * range of specified positions within an Album of a User. - BETTER FOR
+ * Retrieves the Photo IDs, image references and captions of the Photos that are
+ * in the range of specified positions within an Album of a User. - BETTER FOR
  * GETTING A 'SMALL' AMOUNT OF DOCS
  *
- * @param {String} userID - The owner of the photo
- * @param {String} albumID - The key of the document in the Photos Collection
- *                           that we are getting the photo reference from
- * @param {Number} start - SHOULD BE NON NEGATIVE INT! The first position of the
- *                         range you want toget the photos from (inclusive).
- *                         Leave blank for start
- * @param {Number} end - SHOULD BE NON NEGATIVE INT! The last position of the
- *                         range you want to get the photos from (inclusive).
- *                         Leave blank for end
+ * @param {String} userID - The owner of the album
+ * @param {String} albumID - The album to get photos from
+ * @param {Number} start - !SHOULD BE NON NEGATIVE INT! The first position of the
+ *          range you want to get the photos from (inclusive). If left blank the
+ *          the range will start from the first photo in the album
+ * @param {Number} end - !SHOULD BE NON NEGATIVE INT! The last position of the
+ *          range you want to get the photos from (inclusive). If left blank the
+ *          range will end at the last photo in the album
  *
- * @return {Object.<Object>} - Basically a dictionary of dictionaries of the form
- *                    AlbumPosition:Field:Value where field is either reference
- *                    or caption
+ * @return {Object.<Object>} - Basically a dictionary of dictionaries of the
+ *          form AlbumPosition:Field:Value where field is either photoID,
+ *          reference, or caption.
  * */
 async function getSomeAlbumPhotos(userID, albumID, start=undefined, end=undefined) {
     //If no start has been given, start from the very start

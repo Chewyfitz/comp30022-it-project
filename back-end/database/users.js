@@ -19,7 +19,7 @@ const userFields = {
  * @return {Boolean} - Key to the new Users Document only if the new user was
  *                     successfully added to the database, otherwise undefined
  * */
-function addUser(userID, email) {
+function addUser(userID, email=null) {
     //Initialisation
     let data = {};
     //Add the appropriate data to be stored in the database
@@ -58,17 +58,17 @@ async function getUserEmail(userID){
  *
  * @param {String} userID - The username of the user being deleted
  *
- * @return {Boolean} - True only if the User was successfully deleted.
+ * @return {Boolean} - True only if the User at all of its asociated data was
+ *          successfully deleted.
  * */
 async function deleteUser(userID) {
     return general.deleteDoc(general.usersPath(), userID);
 }
 
 /**
- * Updates the stored Email for a Document in the Users Collection
+ * Updates the stored Email for a User
  *
- * @param {String} userID - The username of the new user who's email address is
- *          being updated
+ * @param {String} userID - The User that is having the Email Address updated
  * @param {String} email - The new email address of the user
  *
  * @return {Boolean} - True only if the user's email address was successfully

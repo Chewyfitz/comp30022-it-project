@@ -16,14 +16,11 @@ const albumFields = {
  * Adds a new album owned by a user to the database
  *
  * @param {String} userID - The username of the owner of the album
- * @param {String} name - The name of the album that's being added to the
- *                        database CAUTION: CURRENTLY USED AS DOCUMENT
- *                        KEY FOR TESTING PURPOSES
+ * @param {String} name - The name of the new album
  *
  * @return {Boolean} - True only if the new album was successfully added to the
- *                     database
+ *          database
  * */
-
 function addAlbum(userID, name, override=undefined) {
     //Initialisation
     let data = {};
@@ -40,14 +37,13 @@ function addAlbum(userID, name, override=undefined) {
  * !CAUTION!
  * !COULD POTENTIALLY RESULT IN A LARGE STACK!
  * !!DOES NOT DELETE REFERENCES TO THE ALBUM!!
- * Deletes the Album and ALL of its associated data.
+ * Deletes the Album and all of its associated data.
  *
  * @param {String} userID - The username of the new user who owns the album
- * @param {String} albumID - The key of the document in the Albums Collection
- *                           that we are updating the name in
+ * @param {String} albumID - The Album to be deleted
  *
- * @return {Boolean} - True only if the photo's DateTime was successfully
- *                     updated in the database
+ * @return {Boolean} - True only if the Album and all its asociated date was
+ *          deleted, Otherwise it returns undefined.
  * */
 async function deleteAlbum(userID, albumID) {
     return await general.deleteDoc(general.albumsPath(userID), albumID);
@@ -57,12 +53,11 @@ async function deleteAlbum(userID, albumID) {
  * Updates the stored name for an album owned by a user
  *
  * @param {String} userID - The username of the new user who owns the album
- * @param {String} albumID - The key of the document in the Albums Collection
- *                           that we are updating the name in
+ * @param {String} albumID - The Album you're updating the name of
  * @param {String} [name=undefined] - The new name of the album
  *
  * @return {Boolean} - True only if the albums name was successfully
- *                     updated in the database
+ *          updated in the database
  * */
 function updateAlbumName(userID, albumID, name=undefined) {
     //Initialisation
@@ -80,12 +75,11 @@ function updateAlbumName(userID, albumID, name=undefined) {
  * Updates the stored template for an album owned by a user
  *
  * @param {String} userID - The username of the new user who owns the album
- * @param {String} albumID - The key of the document in the Albums Collection
- *                           that we are updating the name in
- * @param {String} [template=undefined] - The new template of the album
+ * @param {String} albumID - The Album you want to update the Template of
+ * @param {Number} [template=undefined] - The new template of the album
  *
  * @return {Boolean} - True only if the albums template was successfully
- *                     updated in the database
+ *          updated in the database
  * */
 function updateAlbumTemplate(userID, albumID, template=0) {
     //Initialisation
@@ -103,9 +97,8 @@ function updateAlbumTemplate(userID, albumID, template=0) {
  * Updates the stored view for an album owned by a user
  *
  * @param {String} userID - The username of the new user who owns the album
- * @param {String} albumID - The key of the document in the Albums Collection
- *                           that we are updating the name in
- * @param {String} [view=undefined] - The new name of the album
+ * @param {String} albumID - The Album that's having its view updated
+ * @param {String} [view=undefined] - The new view of the album
  *
  * @return {Boolean} - True only if the albums view was successfully
  *                     updated in the database
@@ -126,13 +119,11 @@ function updateAlbumView(userID, albumID, view=undefined){
  * Gets the stored data of an album owned by a user
  *
  * @param {String} userID - The username of the new user who owns the album
- * @param {String} albumID - The key of the document in the Albums Collection
- *                           that we are getting the data from
+ * @param {String} albumID - The Album you're getting the data of
  *
  * @return {firebase.firestore.DocumentData} - If the Data was successfully
- *                                             retrieved it will return the
- *                                             Data, otherwise it will return
- *                                             undefined
+ *          retrieved it will return the Data, otherwise it will return
+ *          undefined
  * */
 async function getAlbumData(userID, albumID) {
     //Attempt to retrieve the Data for the the album and return it
@@ -144,11 +135,10 @@ async function getAlbumData(userID, albumID) {
  * Gets the stored name of an album owned by a user
  *
  * @param {String} userID - The username of the new user who owns the album
- * @param {String} albumID - The key of the document in the Albums Collection
- *                           that we are getting the name from
+ * @param {String} albumID - The Album you want the name of
  *
  * @return {String} - If the name was successfully retrieved it will return the
- *                    name as a String, otherwise it will return undefined
+ *          name as a String, otherwise it will return undefined
  * */
 async function getAlbumName (userID, albumID){
     let name = undefined;
@@ -168,11 +158,10 @@ async function getAlbumName (userID, albumID){
  * Gets the stored template of an album owned by a user
  *
  * @param {String} userID - The username of the new user who owns the album
- * @param {String} albumID - The key of the document in the Albums Collection
- *                           that we are getting the template from
+ * @param {String} albumID - The Album you are getting the template from
  *
- * @return {Number} - WILL BE A NON NEGATIVE INT! If the template was successfully retrieved it will return
- *                    the template as an int, otherwise it will return undefined
+ * @return {Number} - If the template was successfully retrieved it will return
+ *          the template as a Number, otherwise it will return undefined
  * */
 async function getAlbumTemplate (userID, albumID){
     let template = undefined;
@@ -192,11 +181,10 @@ async function getAlbumTemplate (userID, albumID){
  * Gets the stored view of an album owned by a user
  *
  * @param {String} userID - The username of the new user who owns the album
- * @param {String} albumID - The key of the document in the Albums Collection
- *                           that we are getting the view from
+ * @param {String} albumID - The Album you are getting the view from
  *
  * @return {String} - If the name was successfully retrieved it will return the
- *                    view as a String, otherwise it will return undefined
+ *          view as a String, otherwise it will return undefined
  * */
 async function getAlbumView (userID, albumID){
     let view = undefined;
@@ -215,10 +203,10 @@ async function getAlbumView (userID, albumID){
 /**
  * Gets all the names of the albums owned by a user
  *
- * @param {String} userID - The username of the new user who owns the album
+ * @param {String} userID - The username of the new user who owns the albums
  *
  * @return {Object} - basically a dictionary with the album ID as the key and
- *                    the album name as the value.
+ *          the album name as the value.
  * */
 async function getAllAlbumNames(userID) {
     let names = {};
