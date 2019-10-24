@@ -206,8 +206,32 @@ router.get   ('/:albumId/:pageId', (req, res) => {
 
 	// Get a page of an album
 	if( req.params.albumId && req.params.pageId ){
-		template = pageUtil.getAlbumPageTemplate(user, req.params.albumId, req.params.pageId);
-		res.send(template);
+		pageUtil.getAlbumPageTemplate(user, req.params.albumId, req.params.pageId).then(pageTemplate => {
+			//If the Page doesn't have a template then use the Album Template
+			if(pageTemplate === undefined){
+				pageTemplate = util.getAlbumTemplate(user, req.params.albumId).then(albumTemplate => {
+					//If the Album Page doesn't have a template 404 - can't find it
+					if(albumTemplate === undefined){
+						//Fail
+						res.sendStatus(404);
+					}
+					//Success
+					res.status(200);
+					res.send(albumTemplate);
+				//If the promise was rejected, there was probably something with the given values
+				}, rejV => {
+					//Fail
+					res.sendStatus(500);
+				});
+			}
+			//Success
+			res.status(200);
+			res.send(pageTemplate);
+		//If the promise was rejected, there was probably something with the given values
+		}, rejVal => {
+			//Fail
+			res.sendStatus(500);
+		});
 	} else {
 		res.sendStatus(400);
 	}
