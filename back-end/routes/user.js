@@ -68,6 +68,13 @@ router.post('/password', (req, res) => {
 		}).catch( (err) => {
 			res.send(err.toString());
 		});
+	} else if (req.headers.authorization){
+		const [email, p] = decode(authString);
+		util.send_password_reset_email(email).then(() => {
+			res.sendStatus(200);
+		}).catch( (err) => {
+			res.send(err.toString());
+		});
 	} else {
 		res.sendStatus(400);
 	}
