@@ -6,6 +6,8 @@ import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+require('dotenv').config()
+
 //first component: which class we want to render to DOM
 //second component: where we want to render it
 

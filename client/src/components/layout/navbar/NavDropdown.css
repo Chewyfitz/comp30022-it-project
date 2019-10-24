@@ -1,12 +1,12 @@
 .picky {
-    width: 100%;
+    width: 230px;
     position: relative;
   }
   .picky * {
     box-sizing: border-box;
   }
   .picky__input {
-    width: 100%;
+    width: 76%;
     background-color: #4C734E;
     border: 0;
     border-width: 1px;
@@ -18,10 +18,11 @@
     text-align: left;
     position: relative;
     box-sizing: border-box;
-    height: 46px;
-    top: -8px;
+    height: 50px;
+    top: -10px;
     
   }
+
 
 
   .picky__input--disabled,
@@ -115,8 +116,20 @@
   
   .navDropdownButton {
 	  position: relative;
-	  top: -8px;
+    top: -60px;
+    left: 175px;
+    height: 49px;
+    background-color: #4C734E !important;
+    color:#E2D5C8 !important;
+    z-index: 99;
   }
+  
+
+  .navDropdownButton:hover {
+    background-color: #E2D5C8 !important;
+    color:#4C734E !important;
+  }
+
 
   .custom-controltick{
     background-color: grey !important;

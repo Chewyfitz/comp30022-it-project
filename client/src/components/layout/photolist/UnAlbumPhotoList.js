@@ -31,7 +31,7 @@ class UnAlbumPhotoList extends Component {
     this.setState({ arrayImage : image });
   }
   
-  render(imageList) {
+  render() {
     return (
       <div className='main image_picker'>
         

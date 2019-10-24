@@ -59,7 +59,7 @@ class Sidebar extends Component {
 			<Menu id="Menu" customBurgerIcon={ <div> <button type="button" className="btn icon-text">Albums</button> </div>}>
 				<div>
 					<input type="text" onChange={this.textUpdate} placeholder="Enter Album Name"></input>
-					<button type="button" class="btn btn-primary" onClick={this.CreateNewAlbum}>Create New Album</button>
+					<button type="button" className="btn btn-primary" onClick={this.CreateNewAlbum}>Create New Album</button>
 				</div>
 				{this.props.rows}
 			</Menu>

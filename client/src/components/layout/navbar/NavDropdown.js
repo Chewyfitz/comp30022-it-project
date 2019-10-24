@@ -39,30 +39,33 @@ class NavDropdown extends React.Component {
   }
   uploadToAlbum() {
 	  if(this.props.photoList){
+    console.log(`${process.env.REACT_APP_API_URL}/api/album/album=${this.state.arrayValue[i]}`);
 		for(var i=0; i<this.state.arrayValue.length(); i++){
-			axios({method: "patch",
-			url: `https://robbiesapiteam.herokuapp.com/api/album/album=${this.state.arrayValue[i]}`,
-			//url: `https://itprojecttestapi.herokuapp.com/api/album/album=${this.state.arrayValue[i]}`, 
-			params: {loginToken: localStorage.getItem("loginToken"),
-					uid: localStorage.getItem("uid"),
-					photos: this.props.photoList}
+      axios({method: "patch",
+        url: `${process.env.REACT_APP_API_URL}/api/album/album=${this.state.arrayValue[i]}`,
+        params: {loginToken: localStorage.getItem("loginToken"),
+            uid: localStorage.getItem("uid"),
+            photos: this.props.photoList}
 			})
 			.then(res => {
-				this.alert("Added Photos");
-				console.log(res.statusText);
+        this.alert("Added Photos");
+        console.log(res.statusText);
+        console.log("UPLOADEDDDDDD")
+        window.location.reload();
+				
 			})				
 		}
 	  }
   }
   uploadToSelected() {
-      this.state.arrayValue.forEach(album =>
-                                AddImagesToAlbum(this.props.photoList, album.albumId)
-        )
+    this.state.arrayValue.forEach(album =>
+        AddImagesToAlbum(this.props.photoList, album.albumId)
+      )
   }
   render() {
     return (
 	<>
-            <button type="button" class="btn navDropdownButton btn-primary" onClick={this.uploadToSelected}>Upload to Selected</button>
+  
       <Picky
           value={this.state.arrayValue}
           options={this.props.albums}
@@ -73,13 +76,14 @@ class NavDropdown extends React.Component {
           multiple={true}
           includeSelectAll={false}
           includeFilter={true}
-          placeholder={"No albums selected"}
-          allSelectedPlaceholder={"All albums selected"}
-          manySelectedPlaceholder={"%s albums selected"}
+          placeholder={"Please select albums"}
+          manySelectedPlaceholder={"Add to %s albums"}
           filterPlaceholder={"search albums..."}
           dropdownHeight={200}
           keepOpen={true}
-          getFilterValue={this.getFilterValue}            
+          getFilterValue={this.getFilterValue}    
+
+          onClick={() => window.location.reload()}
 
           render={({
               style,
@@ -90,7 +94,7 @@ class NavDropdown extends React.Component {
               valueKey,
               multiple,
           }) => {
-              return ( 		  
+              return (	  
               <li
                   style={{ ...style}} // required
                   className={isSelected ? 'selected' : ''} // required to indicate is selected
@@ -113,12 +117,17 @@ class NavDropdown extends React.Component {
                     </label>
                   </div>
                 </form>
-
+                
+                
               </li>
+              
             );
         }}
+      
       />
+      <button type="button" className="btn btn-default navDropdownButton" onClick={this.uploadToSelected}>Add</button>
 	  </>
+    
     );
   }
 }

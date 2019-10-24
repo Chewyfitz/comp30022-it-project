@@ -5,7 +5,7 @@ const url = `${process.env.REACT_APP_API_URL}/api`;
 export async function getImagesfromAlbum(albumId, userId) {
 	
     // Set up the routes for stuff we're about to get
-    const albumImagesRoute = `${url}/album/${albumId}?user=${userId}`;
+    const albumImagesRoute = `${url}/album/${albumId}?user=${userId}&perPage=50`;
     const imagesRoute = `${url}/image`;
 
     // Get the list of images from the album
