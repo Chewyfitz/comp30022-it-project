@@ -37,7 +37,6 @@ async function addAlbumPosition(userID, albumID, photoID, caption=null) {
 }
 
 /**
- * USE AT OWN RISK - UNTESTED
  * Adds new album positions to an album that is owned by a user to the database
  *
  * @param {String} userID - The username of the owner of the album
@@ -52,19 +51,21 @@ async function addManyAlbumPosition(userID, albumID, photoInfoList) {
     let position = await query.getNumDocsInCollection(general.albumPositionsPath(userID, albumID));
     let promises = [];
     let success;
+    console.log(photoInfoList);
     for(i=0; i<photoInfoList.length; i++){
         let data = {};
+        console.log(photoInfoList[i].photoID);
         //Add the appropriate data to be stored in the database
         data[albumPositionFields.photo] = general.getDocRef(general.photosPath(userID), photoInfoList[i].photoID);
-        //TODO VALUE CHECK
-        data[albumPositionFields.caption] = photoInfoList[i].caption;
-        promises = general.addDataToDoc(data, general.albumPositionsPath(userID, albumID), (position+i).toString());
+        //if caption then caption=caption else caption=null
+        photoInfoList[i].caption ? data[albumPositionFields.caption] = photoInfoList[i].caption: data[albumPositionFields.caption] = null;
+        promises.push(general.addDataToDoc(data, general.albumPositionsPath(userID, albumID), (position+i).toString()));
     }
-    Promise.all(promises).then(resVal => {
+    await Promise.all(promises).then(resVal => {
         success = true;
     }, rejVal => {
+        console.log(rejVal);
         success = false;
-        //TODO error handling
     });
     return success;
 }
