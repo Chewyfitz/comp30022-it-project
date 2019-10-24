@@ -14,11 +14,6 @@ import ALBUMIFY from './ALBUMIFY';
 import axios from 'axios';
 import { thisExpression } from "@babel/types";
 
-
-
-
-
-
 async function makeAlbumList(albumId){
     var finalImageList = [];
     // Get the image list
@@ -28,7 +23,7 @@ async function makeAlbumList(albumId){
     for(var i=0; i<imageList.length; i++){
         finalImageList.push({src: imageList[i].src, width: 1, height: 1});
     }
-
+    console.log("FINALLLLLLLLLll" + finalImageList[0].src);
     // return it
     return finalImageList
 }
@@ -41,33 +36,93 @@ const SortableGallery = SortableContainer(({ items }) => (
     <Gallery photos={items} renderImage={props => <SortablePhoto {...props} />} />
 ));
 
-function AlbumPhotoList() {
-  
-  const [items, setItems] = useState(null);
 
-  if(items==null){
-    makeAlbumList(window.location.pathname.slice(7)).then(setItems);
+
+class AlbumPhotoList extends React.Component {
+  constructor() {
+      super();
+      this.state = {
+          items: [],
+          startitems:[],
+          onSortEnd: [],
+          loaded: false
+      };
+      console.log("HELOOOOOOOOOO");
+      this.displayPhotos = this.displayPhotos.bind(this);
+      this.afunction = this.afunction.bind(this);
+      this.render0 = this.render0.bind(this);
+
+      
   }
 
-  const photos = items;
+  setPhotos = (photos) => {
+    this.setState({items:photos})
+  }
 
-  console.log("PHOTOSSSSSSSS" + photos.src);
+ 
+  async afunction(){
+ 
+    await makeAlbumList(window.location.pathname.slice(7)).then((items)=>{
+      this.setState({items:items}); 
+      this.state.startitems=items; 
+      this.state.loaded=true; 
+      console.log(items); 
+      this.setState({ state: this.state }); 
+    });
+    
+  }
 
-  // items.foreach(item => {item.height = 1; item.width = 1});
+  displayPhotos(){
+    //const [items, setItems] = useState(photos);
+    
+    console.log("PHOTOSSSSSSSS" + this.state.items);
+    //console.log("PHOTOSSSSSSSS" + photos[0]);
   
-  console.log("set state-ish");
-  const onSortEnd = ({ oldIndex, newIndex }) => {
-      setItems(arrayMove(items, oldIndex, newIndex));    
-  };
+    // items.foreach(item => {item.height = 1; item.width = 1});
+    
+    console.log("set state-ish");
+    this.state.onSortEnd = ({ oldIndex, newIndex }) => {
+      this.setPhotos(arrayMove(this.state.items, oldIndex, newIndex));    
+    }
+    // this.setState({onSortEnd: 
+    //   ({ oldIndex, newIndex }) => {
+    //   this.setPhotos(arrayMove(this.state.items, oldIndex, newIndex));
+    // })}
+  }
 
-  return (
+  
+
+    
+  render(){
+    // if (this.state.loaded){
+    //   console.log("WOOOOOOOOOOOOOOOOOOORRKSSSSSSSSSSSSSSSSSSSSSsssss")
+    //   return(this.render0);
+    // }
+    // else{
+    //   return (<></>);
+    // }
+    console.log("HEEEEEEEEEEEEEEEEEEEEEEE");
+    return(      
       <div>
-          {items && <>
-              <ALBUMIFY albumName={window.location.pathname.slice(7)} items={items} photos={photos}/>
-                  <SortableGallery items={items} onSortEnd={onSortEnd} axis={"xy"} />
-              </>
-          }
-      </div>
-  )
+        
+        <>
+          <ALBUMIFY albumName={window.location.pathname.slice(7)} items={this.state.items} photos={this.startitems}/>
+              <SortableGallery updateBeforeSort={()=>this.afunction()} items={this.state.items} onSortEnd={this.state.onSortEnd} axis={"xy"} />
+        </>
+      
+    </div>);
+  }
+
+
+
+  render0 (){
+    
+    return(
+<></>
+    )
 }
+
+}
+
 export default AlbumPhotoList;
+/* {this.state.items &&  */
