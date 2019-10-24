@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios'
 
 //COMPONENTS
 import Navbar from '../components/layout/navbar/Navbar'

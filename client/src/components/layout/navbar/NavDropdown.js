@@ -61,6 +61,7 @@ class NavDropdown extends React.Component {
     this.state.arrayValue.forEach(album =>
         AddImagesToAlbum(this.props.photoList, album.albumId)
       )
+    window.location.reload();
   }
   render() {
     return (

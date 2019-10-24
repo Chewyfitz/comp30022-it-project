@@ -41,9 +41,8 @@ class MainPage extends Component {
 	this.setState({AlbumList: testAlbumList});
 	this.setState({FilteredAlbumList: testAlbumList});*/
 	axios({method: "get",
-			url: 'https://robbiesapiteam.herokuapp.com/api/album/',
+			url: `${process.env.REACT_APP_API_URL}/api/album/`,
 			params: {user: localStorage.getItem("uid")}
-			//url: `https://itprojecttestapi.herokuapp.com/api/album/`,
 			/*params: {loginToken: localStorage.getItem("loginToken"),
 					uid: localStorage.getItem("uid")}*/
 			})
@@ -85,7 +84,6 @@ class MainPage extends Component {
 		  var newAlbumName=this.state.searchText;
 		  console.log("creating album");
 		  axios({method: "post",
-			//url: 'https://robbiesapiteam.herokuapp.com/api/album/',
 			url: `${process.env.REACT_APP_API_URL}/api/album/`,
 			params: {albumName: newAlbumName,
 					user: localStorage.getItem("uid")}
@@ -102,18 +100,6 @@ class MainPage extends Component {
 				if(this.state.CurrentPhotoList){
 					AddImagesToAlbum(this.state.CurrentPhotoList, newAlbumName)
 				}
-				
-
-				
-				
-				/*try {
-					this.setState({
-						redirect: res.
-					})
-				}
-				} catch(err){
-					console.log(err);
-				}*/
 			})
 	  }
 	  

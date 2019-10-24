@@ -2,10 +2,10 @@
 //don't need to save state
 //TO DO put all stuff in navbar
 import React from 'react'
-import "./Navbar.css"
+import "./LoginPageNavbar.css"
 
 //COMPONENTs
-const Navbar = (a) => {
+const LoginPageNavbar = (a) => {
 
     const {pageName}=a;
 
@@ -22,4 +22,4 @@ const Navbar = (a) => {
         
 //so that we can use it in app.js, 
 //cause it's always going to be in app.js
-export default Navbar; 
+export default LoginPageNavbar; 

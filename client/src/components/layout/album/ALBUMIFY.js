@@ -7,6 +7,8 @@ import axios from 'axios';
 
 function handleClick(oldphotolist, newphotolist) {
 
+    console.log("ALBUMIFYYYYYYYYYY");
+
     var toSend = {};
 
     //TO DO change src to id (albumposition) then SEND to front end
@@ -55,7 +57,7 @@ const ALBUMIFY = ({photos, items}) => { //functional component, equal to arrow f
     return(
         <nav className="navbar navbar-expand-sm navbar-dark fixed-top2" style={{backgroundColor:'#F4F6F8'}}>
             {/*Sub navbar*/}
-            <a href='./albumify' class="btn btn-default btn-block ALBUMIFY-text" onClick={() => handleClick(oldphotolist,newphotolist)}>
+            <a href='../albumify' class="btn btn-default btn-block ALBUMIFY-text" onClick={() => handleClick(oldphotolist,newphotolist)}>
                 ALBUMIFY
             </a>
         </nav>

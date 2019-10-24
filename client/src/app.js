@@ -8,7 +8,7 @@ import MainPage from './pages/MainPage'
 import SearchPage from './pages/SearchPage'
 import AlbumPreview from './pages/AlbumPreview'
 import PhotoPreview from './pages/PhotoPreview'
-import LoginPage from './pages/auth/LoginPage'
+import LoginPage from './pages/LoginPage'
 
 //ROUTES
 import PrivateRoute from './components/auth/PrivateRoute'
