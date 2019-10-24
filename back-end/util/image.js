@@ -70,9 +70,9 @@ async function uploadPhotos(files){
  * @return {DocumentID} if successful, otherwise 
  * @return {bool} if failure
  */
-async function addPhotoToUser(user, image, album = undefined, photoDateTime = null){
+async function addPhotoToUser(user, image, height=undefined, width=undefined, album = undefined, photoDateTime = null){
     // ... pretty much just call the database function
-    var albumPosition = await database.addPhoto(user, image, photoDateTime).then((success) => {
+    var albumPosition = await database.addPhoto(user, image, height, width, photoDateTime).then((success) => {
         console.log(success);
         if(success){
             docId = database.addAlbumPosition(user, 'un' || album, success);
