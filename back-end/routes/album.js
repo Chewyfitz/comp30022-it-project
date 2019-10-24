@@ -131,7 +131,7 @@ router.delete('/:albumId', (req, res) => {
 
 	// Optional - delete position
 	const position = req.query.position;
-	if(position){
+	if(!isNaN(position)){
 		util.deleteAlbumPosition(userId, albumId, position).then( (success) => {
 			if(success){
 				res.sendStatus(204);
