@@ -22,7 +22,8 @@ export async function getImagesfromAlbum(albumId, userId) {
         for(var photo in photos){
 			images.push({src: photos[photo].reference,
 						 imageId: photos[photo].photoID,
-						 albumPos: photo});
+						 albumPos: photo,
+						 caption: photos[photo].caption});
         }
         // Wait for all of the URLs
         //return await Promise.all(images);
