@@ -18,10 +18,13 @@ export async function getImagesfromAlbum(albumId, userId) {
         // For each photo, get the URL for its ID
 		console.log("photos = ", photos);
         for(var photo in photos){
-			images.push(photos[photo].reference);
+			images.push({src: photos[photo].reference,
+						 imageId: photos[photo].photoID,
+						 albumPos: photo});
         }
         // Wait for all of the URLs
         //return await Promise.all(images);
+		console.log("this is the images thingy", images);
 		return images
     });
 
@@ -32,18 +35,24 @@ export async function getImagesfromAlbum(albumId, userId) {
     return images;
 }
 
-export function AddImagesToAlbum(photos, albumName) {
+export async function AddImagesToAlbum(photos, albumName) {
 	if(photos.length>0 && albumName){
 		console.log("adding photos");
 		console.log(photos);
 		console.log(albumName);
 		axios({method: "put",
-			url: `${this.url}/album/${albumName}`,
+			url: `${url}/album/${albumName}`,
 			params: {user: localStorage.getItem("uid"),
-				imageId: photos[0].value}
+				imageId: photos[0].imageId}
 			})
-			.then(res => {
-				AddImagesToAlbum(photos.slice(1), albumName);
+			.then(async res => {
+				await AddImagesToAlbum(photos.slice(1), albumName);
+				axios({method: "delete",
+					   url: `${url}/album/un`,
+					   params: {user: localStorage.getItem("uid"),
+								position: photos[0].albumPos.toString()}
+				})
+								
 			})
 	}
   }

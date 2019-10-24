@@ -142,7 +142,7 @@ class MainPage extends Component {
             <div id="page-wrap">
                 <Navbar pageName={"Main Page"}/>
                 <SubNavbar photos={this.state.CurrentPhotoList} albums={this.state.AlbumList}/>
-                <UnAlbumPhotoList />
+                <UnAlbumPhotoList parentCallback = {this.callbackFunction}/>
             </div>
         </div>
 		
