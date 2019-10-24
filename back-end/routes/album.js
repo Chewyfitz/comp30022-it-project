@@ -93,6 +93,14 @@ router.put   ('/:albumId', (req, res) => {
 	})
 });
 
+router.post ('/:albumId/update', (req, res) => {
+	var user = req.query.user;
+	var albumId = req.params.albumId;
+	var updateObject = req.query;
+	console.log(updateObject);
+	res.sendStatus(200);
+})
+
 router.patch ('/:albumId', (req, res) => {
 	// Update an album
 	var user = req.query.user;
