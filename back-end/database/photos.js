@@ -17,7 +17,11 @@ const photoFields = {
  * @param {String} userID - The username of the owner of the photo
  * @param {String} photoReference - The reference to the photo that's being
  *                                  added to the database
+<<<<<<< HEAD
+ * @param {String} [photoDateTime=null] - The DateTime of when the photo was
+=======
  * @param {String} [photoDateTime=undefined] - The DateTime of when the photo was
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
  *                                        taken
  *
  * @return {Boolean} - True only if the new photo was successfully added to the

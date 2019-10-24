@@ -113,6 +113,10 @@
     height: 30px;
   }
   
+  .navDropdownButton {
+	  position: relative;
+	  top: -8px;
+  }
 
   .custom-controltick{
     background-color: grey !important;
@@ -126,7 +130,7 @@
   
   .checkbox .cr {
     position: relative;
-    display: inline-block;
+    /* display: inline-block; */
     border: 1px solid #a9a9a9;
     border-radius: .25em;
     width: 1.3em;

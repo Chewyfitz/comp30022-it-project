@@ -1,5 +1,6 @@
 import React,{ Component } from 'react'
-import './PhotoUpload.css'
+// import './PhotoUpload.css'
+import axios from 'axios'
 
 //based off: https://codepen.io/mrMetalWood/pen/XjXAAV
 

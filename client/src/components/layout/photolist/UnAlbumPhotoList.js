@@ -15,10 +15,11 @@ class UnAlbumPhotoList extends Component {
       imageList: [],
     }
     this.onPick = this.onPick.bind(this)
-    albumAPI.getImagesfromAlbum('un', 'test_user').then((imageList) => {
+    albumAPI.getImagesfromAlbum('un', localStorage.getItem("uid")).then((imageList) => {
       this.setState({
         imageList: imageList,
       })
+	  console.log(imageList);
     });
   }
   

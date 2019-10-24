@@ -1,29 +1,28 @@
-import axios from "axios";
+import axios from 'axios';
 
-const url = `${process.env.REACT_APP_API_URL}/api`
+const url = `https://robbiesdebugteam.herokuapp.com/api`;
 
 // Get all the images from a specified album
 export async function getImagesfromAlbum(albumId, userId) {
-	
     // Set up the routes for stuff we're about to get
-    const albumImagesRoute = `${url}/album/${albumId}?user=${userId}`;
+    const albumImagesRoute = `${url}/album/${albumId}`;
     const imagesRoute = `${url}/image`;
 
     // Get the list of images from the album
-    var imgs = axios.get(albumImagesRoute).then(async (res) => {
-		console.log(res.status);
-		console.log(albumImagesRoute);
-		console.log(res);
+    var imgs = axios.get(albumImagesRoute, {params: {user: userId}}).then(async (res) => {
+		console.log("gotAlbumImagesRoute");
         var images = [];
         const photos = res.data.photos
         // For each photo, get the URL for its ID
-		console.log(photos);
-        for(var photo in photos){
-			images.push(photos[photo].reference);
+        for(var i = 0; i < photos.length; i++){
+            var req = axios.get(`${imagesRoute}/${photos[i].id}?user=${userId}`).then( (res) => {
+                return res.data['Photo Reference'];
+            });
+            // Add the URL (promise) to the images array
+            images.push(req);
         }
         // Wait for all of the URLs
-        //return await Promise.all(images);
-		return images
+        return await Promise.all(images);
     });
 
     // Wait for the array to be done
@@ -31,7 +30,6 @@ export async function getImagesfromAlbum(albumId, userId) {
     
     // return the array of URLs
     return images;
-	//return []
 }
 
 export function AddImagesToAlbum(photos, albumName) {

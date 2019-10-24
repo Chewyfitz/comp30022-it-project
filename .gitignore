@@ -3,4 +3,7 @@ client/node_modules/
 node_modules/
 back-end/.env
 back-end/npm-debug.log
+<<<<<<< HEAD
+=======
 back-end/config/gcsToken.json
+>>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff

@@ -5,7 +5,7 @@ import arrayMove from "array-move";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 
 
-import photos from '../photolist/tmpimglist';
+import makeAlbumList from '../photolist/tmpimglist';
 import Photo from "./Photo";
 
 import ALBUMIFY from './ALBUMIFY';
@@ -27,18 +27,24 @@ const SortableGallery = SortableContainer(({ items }) => (
   <Gallery photos={items} renderImage={props => <SortablePhoto {...props} />} />
 ));
 
-function AlbumPhotoList() {
-  const [items, setItems] = useState(photos);
+function AlbumPhotoList(albumList) {
+  const [items, setItems] = useState(albumList);
+  console.log("items, setItems   ", items, setItems);
 
   const onSortEnd = ({ oldIndex, newIndex }) => {
-
     setItems(arrayMove(items, oldIndex, newIndex));    
   };
 
     return (
         <div>
-          <ALBUMIFY items={items} photos={photos}/>
+			{items?
+			<>
+			    <ALBUMIFY items={items} photos={photos}/>
           <SortableGallery items={items} onSortEnd={onSortEnd} axis={"xy"} />
+		  </>
+		  	:
+			<div></div>
+			}
         </div>
     )
 

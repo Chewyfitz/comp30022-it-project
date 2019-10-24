@@ -2,6 +2,8 @@ import React from "react";
 import { render } from "react-dom";
 import Picky from "react-picky";
 import "./NavDropdown.css";
+import axios from 'axios';
+import { AddImagesToAlbum } from '../../api/api';
 
 
 const bigList = [];
@@ -18,40 +20,55 @@ class NavDropdown extends React.Component {
       arrayValue: []
     };
     this.selectMultipleOption = this.selectMultipleOption.bind(this);
+	this.uploadToSelected = this.uploadToSelected.bind(this);
   }
 
   selectMultipleOption(value) {
     console.count('onChange')
     console.log("Val", value);
     this.setState({ arrayValue: value });
+	console.log("NavDropdown photolist");
+	console.log(this.props.photoList);
+	console.log(this.props);
   }
   selectOption(value) {
     console.log("Vals", value);
     this.setState({ value });
   }
-
-  // pushPhoto(value){
-  //   axios.post('/user', {
-  //     firstName: 'Fred',
-  //     lastName: 'Flintstone'
-  //   })
-  //   .then(function (response) {
-  //     console.log(response);
-  //   })
-  //   .catch(function (error) {
-  //     console.log(error);
-  //   });
-  // }
-  
+  getFilterValue(value){
+  }
+  uploadToAlbum() {
+	  if(this.props.photoList){
+		for(var i=0; i<this.state.arrayValue.length(); i++){
+			axios({method: "patch",
+			url: `https://robbiesapiteam.herokuapp.com/api/album/album=${this.state.arrayValue[i]}`,
+			//url: `https://itprojecttestapi.herokuapp.com/api/album/album=${this.state.arrayValue[i]}`, 
+			params: {loginToken: localStorage.getItem("loginToken"),
+					uid: localStorage.getItem("uid"),
+					photos: this.props.photoList}
+			})
+			.then(res => {
+				this.alert("Added Photos");
+				console.log(res.statusText);
+			})				
+		}
+	  }
+  }
+  uploadToSelected() {
+      this.state.arrayValue.forEach(album =>
+                                AddImagesToAlbum(this.props.photoList, album.albumId)
+        )
+  }
   render() {
     return (
-      
+	<>
+            <button type="button" class="btn navDropdownButton btn-primary" onClick={this.uploadToSelected}>Upload to Selected</button>
       <Picky
           value={this.state.arrayValue}
-          options={bigList}
+          options={this.props.albums}
           onChange={this.selectMultipleOption}
           open={true}
-          valueKey="id"
+          valueKey="albumId"
           labelKey="name"
           multiple={true}
           includeSelectAll={false}
@@ -73,7 +90,7 @@ class NavDropdown extends React.Component {
               valueKey,
               multiple,
           }) => {
-              return (                    
+              return ( 		  
               <li
                   style={{ ...style}} // required
                   className={isSelected ? 'selected' : ''} // required to indicate is selected
@@ -101,6 +118,7 @@ class NavDropdown extends React.Component {
             );
         }}
       />
+	  </>
     );
   }
 }
