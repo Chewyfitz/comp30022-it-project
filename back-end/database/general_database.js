@@ -131,7 +131,6 @@ async function addDataToDoc(data, path, doc=undefined) {
                 docID = doc;
                 success = true;
             }, rejValue => {
-                //TODO Do I need to handle this rejection?
                 console.log("\nERROR in general_database.js addDataToDoc: \n" +
                     "Tried to create a document: \n" + doc + '\n' +
                     "In collection: \n" + path + '\n' +
@@ -151,11 +150,6 @@ async function addDataToDoc(data, path, doc=undefined) {
             .then(resValue => {
                 docID = resValue.id;
             }, rejValue => {
-                //TODO Do I need to handle this rejection?
-                console.log("ERROR in general_database.js addDataToDoc: " +
-                    "Tried to add the data of " + data + " to " + path + '/' +
-                    "but the promise was rejected \n Rejection Value: " +
-                    rejValue);
                 console.log("\nERROR in general_database.js addDataToDoc: \n" +
                     "Tried to create a document with a random key in " +
                     "collection: \n" + path + '\n' +
