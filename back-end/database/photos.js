@@ -9,7 +9,9 @@ const photoFields = {
     reference: "Photo Reference",
     name: "Photo Name",
     dateTime: "Photo DateTime",
-    description: "Photo Description"
+    description: "Photo Description",
+    height: "Photo pixel height",
+    width: "Photo pixel width",
 };
 
 
@@ -18,49 +20,55 @@ const photoFields = {
  *
  * @param {String} userID - The username of the owner of the photo
  * @param {String} photoReference - The reference to the photo that's being
- *                                  added to the database
- * @param {String} [photoDateTime=undefined] - The DateTime of when the photo was
- *                                        taken
+ *          added to the database
+ * @param {Number} height - !SHOULD BE NON NEGATIVE INT! The pixel height of the
+ *          referenced image
+ * @param {Number} width - !SHOULD BE NON NEGATIVE INT! The pixel width of the
+ *          referenced image
+ * @param {firebase.Timestamp} [photoDateTime=undefined] - The Timestamp of when
+ *          the photo was taken
+ * @param {String} description - The description of the photo.
  *
- * @return {Boolean} - True only if the new photo was successfully added to the
- *                     database
+ * @return {String} - Returns the ID of the Photo Document if it was created
+ *          successfully. Otherwise it returns undefined
  * */
-function addPhoto(userID, photoReference, photoDateTime=null) {
+function addPhoto(userID, photoReference, height=1, width=1, photoDateTime=null, description=null) {
     //Initialisation
     let data = {};
     //Add the appropriate data to be stored in the database
     data[photoFields.reference] = photoReference;
     data[photoFields.dateTime] = photoDateTime;
-    data[photoFields.description] = "";
+    data[photoFields.description] = description;
+    data[photoFields.height] = height;
     data[photoFields.name] = "";
+    data[photoFields.width] = width;
     //Attempt to Create the Document and return its success
     let success = general.addDataToDoc(data, general.photosPath(userID));
     return success;
 }
 
 /**
- * !CAUTION! !!DOES NOT DELETE REFERENCES TO THE PHOTO!! Deletes the photo and
- * its associated information that is owned by a user
+ * !CAUTION!
+ * !!DOES NOT DELETE REFERENCES TO THE PHOTO!!
+ * Deletes the photo and its associated information
  *
- * @param {String} userID - The username of the user who owns the photo
- * @param {String} photoID - The key of the document in the Photos Collection
- *                           that we are updating the DateTime in
+ * @param {String} userID - The user who owns the photo
+ * @param {String} photoID - The photo to be deleted
  *
- * @return {Boolean} - True only if the photo was successfully deleted from the
- *                     database
+ * @return {Boolean} - True only if the photo and all its associated data was
+ *          successfully deleted from the database
  * */
 async function deletePhoto(userID, photoID) {
     return await general.deleteDoc(general.photosPath(userID), photoID);
 }
 
 /**
- * Gets all the data of the photos owned by a user
+ * Gets all the data of all the photos owned by a user
  *
  * @param {String} userID - The username of the new user who owns the photos
  *
- * @return {Object} - basically a dictionary with the Photos Key as the key and
- *                    the photo data (as another dictionary like object as the
- *                    value.
+ * @return {Object.<Object>} - Basically a dictionary of dictionaries of the
+ *          form PhotoID:Field:Value where field is a photo field
  * */
 async function getAllPhotoData(userID) {
     let data = {};
@@ -73,17 +81,13 @@ async function getAllPhotoData(userID) {
 }
 
 /**
- * Retrieves the stored Password for a user matches the provided one
+ * Retrieves the stored data of a Photo
  *
- * @param {String} userID - The username of the new user who's password is being
- *                          checked
- * @param {String} photoID - The key of the document in the Photos Collection
- *                           that we are getting the data from
+ * @param {String} userID - The owner of the Photo
+ * @param {String} photoID - The Photo you're getting the data of
  *
  * @return {firebase.firestore.DocumentData} - If the Data was successfully
- *                                             retrieved it will return the
- *                                             Data, otherwise it will return
- *                                             undefined
+ * retrieved it will return the Data, otherwise it will return undefined
  * */
 async function getPhotoData(userID, photoID){
     //Attempt to retrieve the Data for the the Photo and return it
@@ -92,22 +96,20 @@ async function getPhotoData(userID, photoID){
 }
 
 /**
- * Retrieves the stored DateTime of a photo
+ * Retrieves the stored Timestamp of a photo
  *
  * @param {String} userID - The owner of the photo
- * @param {String} photoID - The key of the document in the Photos Collection
- *                           that we are getting the DateTime from
+ * @param {String} photoID - The Photo you want the Timestamp of
  *
  * @return {firebase.firestore.Timestamp} - If the DateTime was successfully
- *                                         retrieved it will return the
- *                                         DateTime, otherwise it will return
- *                                         undefined\
+ *          retrieved it will return the DateTime, otherwise it will return
+ *          undefined
  * */
-function getPhotoDateTime(userID, photoID){
+async function getPhotoDateTime(userID, photoID){
     //Initialisation
     let dateTime = undefined;
     //Attempt to retrieve the Data for the User
-    let data = getPhotoData(userID, photoID);
+    let data = await getPhotoData(userID, photoID);
     try {
         //Try to retrieve the value from the data
         dateTime = data[photoFields.dateTime];
@@ -120,21 +122,43 @@ function getPhotoDateTime(userID, photoID){
 }
 
 /**
+ * Returns the pixel height and pixel width of the image referenced in the
+ * Photos Document
+ *
+ * @param {String} userID - The owner of the photo
+ * @param {String} photoID - The Photo you want the dimensions of
+ *
+ * @return {Object} - A dictionary with the dimensions stored in it of the form
+ *          {height:value, width:value}
+ */
+async function getPhotoDimensions(userID, photoID) {
+    let dimensions = {};
+    let data = await getPhotoData(userID, photoID);
+    try {
+        dimensions.height = data[photoFields.height];
+        dimensions.width = data[photoFields.width];
+    } catch (e) {
+        console.log("Error in Photos.js.getPhotoDimensions");
+        console.log(e);
+    }
+    return dimensions;
+}
+
+/**
  * Retrieves the stored description of a photo
  *
  * @param {String} userID - The owner of the photo
- * @param {String} photoID - The key of the document in the Photos Collection
- *                           that we are getting the description from
+ * @param {String} photoID - The Photo you want the description of
  *
  * @return {String} - If the description was successfully retrieved it will
- *                    return the description as a String, otherwise it will
- *                    return undefined
+ *          return the description as a String, otherwise it will return
+ *          undefined
  * */
-function getPhotoDescription(userID, photoID){
+async function getPhotoDescription(userID, photoID){
     //Initialisation
     let description = undefined;
     //Attempt to retrieve the Data for the User
-    let data = getPhotoData(userID, photoID);
+    let data = await getPhotoData(userID, photoID);
     try {
         //Try to retrieve the value from the data
         description = data[photoFields.description];
@@ -150,16 +174,16 @@ function getPhotoDescription(userID, photoID){
  * Retrieves the stored photo reference of a photo
  *
  * @param {String} userID - The owner of the photo
- * @param {String} photoID - The key of the document in the Photos Collection
- *                           that we are getting the photo reference from
+ * @param {String} photoID - The Photo you wan the Image reference of
  *
  * @return {String} - If the reference was successfully retrieved it will return
- *                    it as a string, otherwise it will return undefined*/
-function getPhotoReference(userID, photoID){
+ *          it as a string, otherwise it will return undefined
+ * */
+async function getPhotoReference(userID, photoID){
     //Initialisation
     let ref = undefined;
     //Attempt to retrieve the Data for the User
-    let data = getPhotoData(userID, photoID);
+    let data = await getPhotoData(userID, photoID);
     try {
         //Try to retrieve the value from the data
         ref = data[photoFields.reference];
@@ -175,13 +199,12 @@ function getPhotoReference(userID, photoID){
  * Updates the stored DateTime for a photo owned by a user
  *
  * @param {String} userID - The username of the new user who owns the photo
- * @param {String} photoID - The key of the document in the Photos Collection
- *                           that we are updating the DateTime in
- * @param {String} [dateTime=undefined] - The DateTime of when the photo was
- *                                        taken
+ * @param {String} photoID - The photo you are updating the Timestamp of
+ * @param {firebase.Timestamp} [dateTime=undefined] - The DateTime of when the
+ *          photo was taken
  *
  * @return {Boolean} - True only if the photo's DateTime was successfully
- *                     updated in the database
+ *          updated in the database
  * */
 function updatePhotoDateTime(userID, photoID, dateTime){
     //Initialisation
@@ -194,15 +217,38 @@ function updatePhotoDateTime(userID, photoID, dateTime){
 }
 
 /**
+ * Updates the stored dimension information about the referenced image in a
+ * Photos Document
+ *
+ * @param {String} userID - The username of the owner of the photo
+ * @param {String} photoID - The photo you want to update the Dimensions of
+ * @param {Number} height - The pixel height of the referenced image
+ * @param {Number} width - The pixel width of the referenced image
+ *
+ * @returns {Boolean} - True only if the photo's Dimensions were successfully
+ *          updated in the database
+ */
+function updatePhotoDimensions(userID, photoID, height=undefined, width=undefined) {
+    let data = {};
+    if(height){
+        data[photoFields.height] = height;
+    }
+    if(width){
+        data[photoFields.width] = width;
+    }
+    let success = general.updateDataInDoc(data, general.photosPath(userID), photoID);
+    return success;
+}
+
+/**
  * Updates the stored description for a photo owned by a user
  *
  * @param {String} userID - The username of the new user who owns the photo
- * @param {String} photoID - The key of the document in the Photos Collection
- *                           that we are updating the DateTime in
+ * @param {String} photoID - The photo you want to updated the description of
  * @param {String} description - The new description of the photo
  *
  * @return {Boolean} - True only if the photo's description was successfully
- *                     updated in the database
+ *          updated in the database
  * */
 function updatePhotoDescription(userID, photoID, description){
     //Initialisation
@@ -218,12 +264,11 @@ function updatePhotoDescription(userID, photoID, description){
  * Updates the stored reference for a photo owned by a user
  *
  * @param {String} userID - The username of the new user who owns the photo
- * @param {String} photoID - The key of the document in the Photos Collection
- *                           that we are updating the DateTime in
+ * @param {String} photoID - The photo you want to update the image reference of
  * @param {String} reference - The new reference for the photo
  *
- * @return {Boolean} - True only if the photo's description was successfully
- *                     updated in the database
+ * @return {Boolean} - True only if the photo's Image Reference was successfully
+ *          updated in the database
  * */
 function updatePhotoReference(userID, photoID, reference){
     //Initialisation
@@ -245,9 +290,11 @@ module.exports = {
     getAllPhotoData,
     getPhotoData,
     getPhotoDateTime,
+    getPhotoDimensions,
     getPhotoDescription,
     getPhotoReference,
     updatePhotoDateTime,
     updatePhotoDescription,
+    updatePhotoDimensions,
     updatePhotoReference,
 };

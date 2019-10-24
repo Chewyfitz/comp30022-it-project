@@ -1,6 +1,7 @@
 const database = require('../database.js');
 const firebase = require('firebase');
 require('firebase/auth');
+
 const UN = 'un' //Constant for UnAlbum
 
 
@@ -8,7 +9,6 @@ async function firebaseRegister(email, password){
     user = await firebase.auth().createUserWithEmailAndPassword(email, password);
     return user;
 }
-
 
 async function register(req){
     if(req.headers.authorization){

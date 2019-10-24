@@ -17,23 +17,22 @@ const tags = require('./database/tags');
 
 
 /**
- * Retrieves the image references and captions of the Photos that are in the
- * range of specified positions within an Album of a User. - BETTER FOR GETTING
- * A LARGE AMOUNT OF DOCS
+ * Retrieves the Photo IDs, image references and captions of the Photos that are
+ * in the range of specified positions within an Album of a User. - BETTER FOR
+ * GETTING A LARGE AMOUNT OF DOCS
  *
- * @param {String} userID - The owner of the photo
- * @param {String} albumID - The key of the document in the Photos Collection
- *                           that we are getting the photo reference from
- * @param {Number} start - SHOULD BE NON NEGATIVE INT! The first position of the
- *                         range you want toget the photos from (inclusive).
- *                         Leave blank for start
- * @param {Number} end - SHOULD BE NON NEGATIVE INT! The last position of the
- *                         range you want to get the photos from (inclusive).
- *                         Leave blank for end
+ * @param {String} userID - The owner of the album
+ * @param {String} albumID - The album to get photos from
+ * @param {Number} start - !SHOULD BE NON NEGATIVE INT! The first position of the
+ *          range you want to get the photos from (inclusive). If left blank the
+ *          the range will start from the first photo in the album
+ * @param {Number} end - !SHOULD BE NON NEGATIVE INT! The last position of the
+ *          range you want to get the photos from (inclusive). If left blank the
+ *          range will end at the last photo in the album
  *
- * @return {Object} - Basically a dictionary of dictionaries of the form
- *                    AlbumPosition:Field:Value where field is either reference
- *                    or caption
+ * @return {Object.<Object>} - Basically a dictionary of dictionaries of the
+ *          form AlbumPosition:Field:Value where field is either photoID,
+ *          reference, or caption.
  * */
 async function getAllAlbumPhotos(userID, albumID, start=undefined, end=undefined) {
     //Initialisation
@@ -42,11 +41,11 @@ async function getAllAlbumPhotos(userID, albumID, start=undefined, end=undefined
     //Gets all the documents in the Album
     let allDocsQuery = await query.getAllDocsInCollection(general.albumPositionsPath(userID, albumID));
     //If no start has been given, start from the very start
-    if (start == undefined) {
+    if (start === undefined) {
         start = 0;
     }
     //If no end has been given, end at the very end
-    if (end == undefined) {
+    if (end === undefined) {
         end = allDocsQuery.length - 1;
     }
     //For each of the albumPositions it gets the caption and, retrieves the image
@@ -57,7 +56,7 @@ async function getAllAlbumPhotos(userID, albumID, start=undefined, end=undefined
             //STORE ALL THE PROMISES OF GETTING PHOTO DOCS SO WE HAVE SOMETHING TO WAIT ON!
             promises.push(
                 //Get the Photos Doc that is referenced
-                albumPositionsDoc.data()[albumPositions.albumPositionFields.photo].get()
+                (albumPositionsDoc.data()[albumPositions.albumPositionFields.photo]).get()
                     .then(photosDoc => {
                         //Initialise the internal dictionary
                         data[albumPositionsDoc.id] = {};
@@ -65,6 +64,8 @@ async function getAllAlbumPhotos(userID, albumID, start=undefined, end=undefined
                         data[albumPositionsDoc.id].caption = albumPositionsDoc.data()[albumPositions.albumPositionFields.caption];
                         //Store the Image Reference from the Photos Doc
                         data[albumPositionsDoc.id].reference = photosDoc.data()[photos.photoFields.reference];
+                        //Store the Photo Document ID for future reference by the front end
+                        data[albumPositionsDoc.id].photoID = photosDoc.id;
                     })
             );
         }
@@ -78,23 +79,22 @@ async function getAllAlbumPhotos(userID, albumID, start=undefined, end=undefined
 }
 
 /**
- * Retrieves the image references and captions of the Photos that are in the
- * range of specified positions within an Album of a User. - BETTER FOR
+ * Retrieves the Photo IDs, image references and captions of the Photos that are
+ * in the range of specified positions within an Album of a User. - BETTER FOR
  * GETTING A 'SMALL' AMOUNT OF DOCS
  *
- * @param {String} userID - The owner of the photo
- * @param {String} albumID - The key of the document in the Photos Collection
- *                           that we are getting the photo reference from
- * @param {Number} start - SHOULD BE NON NEGATIVE INT! The first position of the
- *                         range you want toget the photos from (inclusive).
- *                         Leave blank for start
- * @param {Number} end - SHOULD BE NON NEGATIVE INT! The last position of the
- *                         range you want to get the photos from (inclusive).
- *                         Leave blank for end
+ * @param {String} userID - The owner of the album
+ * @param {String} albumID - The album to get photos from
+ * @param {Number} start - !SHOULD BE NON NEGATIVE INT! The first position of the
+ *          range you want to get the photos from (inclusive). If left blank the
+ *          the range will start from the first photo in the album
+ * @param {Number} end - !SHOULD BE NON NEGATIVE INT! The last position of the
+ *          range you want to get the photos from (inclusive). If left blank the
+ *          range will end at the last photo in the album
  *
- * @return {Object} - Basically a dictionary of dictionaries of the form
- *                    AlbumPosition:Field:Value where field is either reference
- *                    or caption
+ * @return {Object.<Object>} - Basically a dictionary of dictionaries of the
+ *          form AlbumPosition:Field:Value where field is either photoID,
+ *          reference, or caption.
  * */
 async function getSomeAlbumPhotos(userID, albumID, start=undefined, end=undefined) {
     //If no start has been given, start from the very start
@@ -150,7 +150,7 @@ async function getSomeAlbumPhotos(userID, albumID, start=undefined, end=undefine
         //If the document exists, get the image reference from its data
         if (photoDoc.exists) {
             data[i + start].reference = photoDoc.data()[photos.photoFields.reference];
-            data[i + start].id = photoDoc.id;
+            data[i + start].photoID = photoDoc.id;
         //TODO error handling for non existent Photos doc
         } else {
             continue;
@@ -173,9 +173,8 @@ module.exports = {
     addPhoto: photos.addPhoto,
     addAlbum: albums.addAlbum,
     addAlbumPosition: albumPositions.addAlbumPosition,
+    addManyAlbumPosition: albumPositions.addManyAlbumPosition,
     addAlbumPage: albumPages.addAlbumPage,
-    //The function to check a password
-    checkUserPassword: users.checkUserPassword,
     //The functions to Delete a Document from a Collection
     deleteUser: users.deleteUser,
     deletePhoto: photos.deletePhoto,
@@ -183,9 +182,11 @@ module.exports = {
     deleteAlbumPage: albumPages.deleteAlbumPage,
     deleteAlbumPosition: albumPositions.deleteAlbumPosition,
     //The functions to retrieve data from a Document in a Collection
+    getUserEmail: users.getUserEmail,
     getPhotoData: photos.getPhotoData,
     getPhotoDateTime: photos.getPhotoDateTime,
     getPhotoDescription: photos.getPhotoDescription,
+    getPhotoDimensions: photos.getPhotoDimensions,
     getPhotoReference: photos.getPhotoReference,
     getAllPhotoData: photos.getAllPhotoData,
     getAlbumData: albums.getAlbumData,
@@ -202,15 +203,17 @@ module.exports = {
     getAllAlbumPhotos,
     getSomeAlbumPhotos,
     //The functions to update the data of a Document in a Collection
-    updateUserPassword: users.updateUserPassword,
+    updateUserEmail: users.updateUserEmail,
     updatePhotoDateTime: photos.updatePhotoDateTime,
     updatePhotoDescription: photos.updatePhotoDescription,
+    updatePhotoDimensions: photos.updatePhotoDimensions,
     updatePhotoReference: photos.updatePhotoReference,
     updateAlbumName: albums.updateAlbumName,
     updateAlbumTemplate: albums.updateAlbumTemplate,
     updateAlbumView: albums.updateAlbumView,
     updateAlbumPageTemplate: albumPages.updateAlbumPageTemplate,
     updateAlbumPositionCaption: albumPositions.updateAlbumPositionCaption,
+    updateAlbumPositionOrder: albumPositions.updateAlbumPositionOrder,
     updateAlbumPositionPhoto: albumPositions.updateAlbumPositionPhoto,
 
 };

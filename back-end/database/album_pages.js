@@ -17,18 +17,18 @@ const albumPageFields = {
  *
  * @param {String} userID - The username of the owner of the album
  * @param {String} albumID - The key of the document for the album
- * @param {Number} pageNumber - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
- *                           Collection that we are creating
- * @param {Number} template - SHOULD BE NON NEGATIVE INT! The template specific to this album page
+ * @param {Number} pageNumber - !SHOULD BE NON NEGATIVE INT! The Page that is
+ *          being created to store template information
+ * @param {Number} template - The template specific to this album page
  *
- * @return {Boolean} - True only if the new album page was successfully added to
- *                     the database
+ * @return {String} - True Key of the AlbumPage if it was created successfully,
+ *          Otherwise it will return undefined
  * */
 async function addAlbumPage(userID, albumID, pageNumber, template) {
     //Initialisation
     let docID = undefined;
     //If the template is different to the albums
-    if(template != album.getAlbumTemplate(userID, albumID)) {
+    if(template !== await album.getAlbumTemplate(userID, albumID)) {
         //Add the appropriate data to be stored in the database
         let data = {};
         data[albumPageFields.template] = template;
@@ -48,30 +48,28 @@ async function addAlbumPage(userID, albumID, pageNumber, template) {
  * Deletes the Album Page and its associated data.
  *
  * @param {String} userID - The username of the user who owns the Album
- * @param {String} albumID - The ID of the album
- * @param {Number} pageNumber - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
- *                           Collection that is being deleted
+ * @param {String} albumID - The Album the Album Page is in
+ * @param {Number} pageNumber - !SHOULD BE NON NEGATIVE INT! The AlbumPage that
+ *          is being deleted
  *
- * @return {Boolean} - True only if the Album Page was successfully deleted from
- *                     the database
+ * @return {Boolean} - True only if the Album Page and its associated data was
+ *          successfully deleted from the database
  * */
 async function deleteAlbumPage(userID, albumID, pageNumber) {
-    return await general.DeleteAllFromDoc(general.albumPagesPath(userID, albumID), pageNumber);
+    return general.deleteDoc(general.albumPagesPath(userID, albumID), pageNumber);
 }
 
 /**
  * Gets the stored data of an album page in an album owned by a user
  *
  * @param {String} userID - The username of the new user who owns the album
- * @param {String} albumID - The key of the document in the Albums Collection
- *                           that we are getting the data from
- * @param {Number} pageNumber - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
- *                           Collection that we are getting the data of
+ * @param {String} albumID - The Album that has the Album Page
+ * @param {Number} pageNumber - !SHOULD BE NON NEGATIVE INT! The AlbumPage that
+ *          you are getting the data of
  *
  * @return {firebase.firestore.DocumentData} - If the Data was successfully
- *                                             retrieved it will return the
- *                                             Data, otherwise it will return
- *                                             undefined
+ *          retrieved it will return the Data, otherwise it will return
+ *          undefined
  * */
 async function getAlbumPageData(userID, albumID, pageNumber) {
     //Attempt to retrieve the Data for the the album page and return it
@@ -83,18 +81,18 @@ async function getAlbumPageData(userID, albumID, pageNumber) {
  * Gets the stored template of an album page in an album owned by a user
  *
  * @param {String} userID - The username of the new user who owns the album
- * @param {String} albumID - The key of the document in the Albums Collection
- *                           that we are getting the template from
- * @param {Number} pageNumber - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
- *                           Collection that we are getting the template of
+ * @param {String} albumID - The Album the Album Page is in
+ * @param {Number} pageNumber - !SHOULD BE NON NEGATIVE INT! The AlbumPage
+ *          that you are getting the template of
  *
- * @return {Number} - WILL BE A NON NEGATIVE INT! If the template was successfully retrieved it will return the
- *                 template, otherwise it will return undefined
+ * @return {Number} - !WILL BE A NON NEGATIVE INT! If the template was
+ *          successfully retrieved it will return the template, otherwise it
+ *          will return undefined
  * */
-function getAlbumPageTemplate(userID, albumID, pageNumber) {
+async function getAlbumPageTemplate(userID, albumID, pageNumber) {
     //Initialisation
     let template = undefined;
-    let data = getAlbumPageData(userID, userID, pageNumber);
+    let data = await getAlbumPageData(userID, albumID, pageNumber);
     try {
         //Try to retrieve the value from the data
         template = data[albumPageFields.template];
@@ -111,21 +109,21 @@ function getAlbumPageTemplate(userID, albumID, pageNumber) {
  * user in the database
  *
  * @param {String} userID - The username of the owner of the album
- * @param {String} albumID - The key of the document for the album
- * @param {Number} pageNumber - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPages
- *                           Collection that we are updating the template of
- * @param {Number} template - SHOULD BE NON NEGATIVE INT! The template specific to this album page
+ * @param {String} albumID - The Album that the Album Page is in
+ * @param {Number} pageNumber - !SHOULD BE NON NEGATIVE INT! The AlbumPage
+ *          that you are updating the template of
+ * @param {Number} template - The template specific to this album page
  *
  * @return {Boolean} - True only if the album page was successfully updated in
- *                     the database
+ *          the database
  * */
 async function updateAlbumPageTemplate(userID, albumID, pageNumber, template) {
     //Initialisation
     let success = false;
     //If the template is different to the albums
-    if(template != getAlbumTemplate(userId, albumID)) {
+    if(template !== await album.getAlbumTemplate(userID, albumID)) {
         //Add the appropriate data to be updated in the database
-        let data = {}
+        let data = {};
         data[albumPageFields.template] = template;
         //Attempt to Create the Document and record its success
         success = await general.updateDataInDoc(data, general.albumPagesPath(userID, albumID), pageNumber);
