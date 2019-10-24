@@ -27,9 +27,7 @@ class Login extends Component {
 		if(this.state.username!='' && this.state.psword!==''){
 			// this format is required to send params on get requests, strangely enough
 			axios({method: "post",
-			//url: 'https://robbiesapiteam.herokuapp.com/api/login',
-			//url: 'https://itprojecttestapi.herokuapp.com/api/user/login', 
-			url: 'https://robbiesdebugteam.herokuapp.com/api/login',
+			url: `${process.env.REACT_APP_API_URL}/api/login`,
 			auth: {username: this.state.email,
 					password: this.state.psword}
 			})
