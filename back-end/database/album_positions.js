@@ -85,7 +85,7 @@ async function addManyAlbumPosition(userID, albumID, photoInfoList) {
 async function deleteAlbumPosition(userID, albumID, position) {
     //TODO Carefully consider the logic used to delete and move this data
     let transaction = general.db.runTransaction(t => deleteAlbumPositionCallBack(userID, albumID, position, t));
-    return await transaction.then(v=>{console.log(v); return true}, v=>{console.log(v); return false});
+    return await transaction.then(resVal=>{return true}, rejVal=>{return false});
 }
 
 /**
@@ -104,7 +104,6 @@ async function deleteAlbumPositionCallBack(userID, albumID, position, t){
     let size;
 
     size = await query.getNumDocsInCollection(general.albumPositionsPath(userID, albumID));
-    console.log('size ' + size);
 
     for(let i=position; i<size; i++){
         docRefs.push(general.db.collection(general.albumPositionsPath(userID, albumID)).doc(i.toString()));
@@ -117,8 +116,6 @@ async function deleteAlbumPositionCallBack(userID, albumID, position, t){
     await Promise.all(docs);
 
     for(let i=0; i<docRefs.length-1; i++){
-        console.log(i+1);
-        console.log(docs[i+1].data());
         promises.push(t.update(docRefs[i], docs[i+1].data()));
     }
     promises.push(t.delete(docRefs[docRefs.length-1]));
