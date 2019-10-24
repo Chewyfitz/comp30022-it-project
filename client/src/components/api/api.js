@@ -16,7 +16,7 @@ export async function getImagesfromAlbum(albumId, userId) {
         var images = [];
         const photos = res.data.photos
         // For each photo, get the URL for its ID
-		console.log(photos);
+		console.log("photos = ", photos);
         for(var photo in photos){
 			images.push(photos[photo].reference);
         }
@@ -30,7 +30,6 @@ export async function getImagesfromAlbum(albumId, userId) {
     
     // return the array of URLs
     return images;
-	//return []
 }
 
 export function AddImagesToAlbum(photos, albumName) {
@@ -39,11 +38,9 @@ export function AddImagesToAlbum(photos, albumName) {
 		console.log(photos);
 		console.log(albumName);
 		axios({method: "put",
-		//url: `https://robbiesapiteam.herokuapp.com/api/album/${albumName}`,
 			url: `${this.url}/album/${albumName}`,
 			params: {user: localStorage.getItem("uid"),
 				imageId: photos[0].value}
-				//uid: localStorage.getItem("uid")}
 			})
 			.then(res => {
 				AddImagesToAlbum(photos.slice(1), albumName);

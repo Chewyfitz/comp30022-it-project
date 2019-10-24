@@ -92,9 +92,9 @@ export default tmpimglist;
 
 import { getImagesfromAlbum } from '../../api/api'
 
-export default function makeAlbumList(albumId){
+async function makeAlbumList(albumId){
 	var finalImageList = [];
-	getImagesfromAlbum(albumId, localStorage.getItem("uid")).then((imageList) => {
+	const imageList = await getImagesfromAlbum(albumId, localStorage.getItem("uid"));//.then((imageList) => {
 		console.log("found imagelist    ", imageList);
 		for(var url in imageList){
 			finalImageList.push({src: imageList[url],
@@ -104,7 +104,7 @@ export default function makeAlbumList(albumId){
 		}
 		console.log("finalImageList = ", finalImageList);
 		return finalImageList
-    })
-	
+    //})
 	
 }
+export default makeAlbumList;
