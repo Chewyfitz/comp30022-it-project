@@ -214,23 +214,29 @@ router.get   ('/:albumId/:pageId', (req, res) => {
 					if(albumTemplate === undefined){
 						//Fail
 						res.sendStatus(404);
+						return;
 					}
 					//Success
 					res.status(200);
 					res.send(albumTemplate);
+					return;
 				//If the promise was rejected, there was probably something with the given values
 				}, rejV => {
 					//Fail
 					res.sendStatus(500);
+					return;
 				});
+				return;
 			}
 			//Success
 			res.status(200);
 			res.send(pageTemplate);
+			return;
 		//If the promise was rejected, there was probably something with the given values
 		}, rejVal => {
 			//Fail
 			res.sendStatus(500);
+			return;
 		});
 	} else {
 		res.sendStatus(400);
