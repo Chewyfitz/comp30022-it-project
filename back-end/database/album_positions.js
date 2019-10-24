@@ -20,7 +20,7 @@ const albumPositionFields = {
  * @param {String} photoID - The photo to be stored in the album position
  * @param {String} caption - The caption of this position in the album
  *
- * @return {Boolean} - True only if the new album position was successfully
+ * @return {String} - True only if the new album position was successfully
  *                     added to the database
  * */
 async function addAlbumPosition(userID, albumID, photoID, caption=null) {
@@ -84,7 +84,42 @@ async function addManyAlbumPosition(userID, albumID, photoInfoList) {
  * */
 async function deleteAlbumPosition(userID, albumID, position) {
     //TODO Carefully consider the logic used to delete and move this data
-    return false;
+    let transaction = general.db.runTransaction(t => deleteAlbumPositionCallBack(userID, albumID, position, t));
+    return await transaction.then(resVal=>{return true}, rejVal=>{return false});
+}
+
+/**
+ *
+ * @param userID
+ * @param albumID
+ * @param position
+ * @param {firebase.firestore.Transaction} t
+ * @returns {Promise<unknown[]>}
+ */
+async function deleteAlbumPositionCallBack(userID, albumID, position, t){
+    let data;
+    let docRefs = [];
+    let docs = [];
+    let promises = [];
+    let size;
+
+    size = await query.getNumDocsInCollection(general.albumPositionsPath(userID, albumID));
+
+    for(let i=position; i<size; i++){
+        docRefs.push(general.db.collection(general.albumPositionsPath(userID, albumID)).doc(i.toString()));
+    }
+
+    for(let i=0; i<docRefs.length; i++){
+        docs.push(await t.get(docRefs[i]));
+    }
+
+    await Promise.all(docs);
+
+    for(let i=0; i<docRefs.length-1; i++){
+        promises.push(t.update(docRefs[i], docs[i+1].data()));
+    }
+    promises.push(t.delete(docRefs[docRefs.length-1]));
+    return Promise.all(promises);
 }
 
 /**
