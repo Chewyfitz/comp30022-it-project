@@ -17,7 +17,7 @@ router.post  ('/', (req, res) => {
 		return;
 	}
 
-	util.createAlbum(user, req.query.albumName).then( (album) => {
+	util.createAlbum(user, decodeURI(req.query.albumName)).then( (album) => {
 		if(album){
 			res.status(201);
 			res.send(album);
