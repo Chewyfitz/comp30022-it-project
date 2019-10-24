@@ -23,6 +23,7 @@ const albumFields = {
  * @return {Boolean} - True only if the new album was successfully added to the
  *                     database
  * */
+
 function addAlbum(userID, name, override=undefined) {
     //Initialisation
     let data = {};

@@ -2,6 +2,9 @@ const database = require('../database.js');
 const firebase = require('firebase');
 require('firebase/auth');
 
+const UN = 'un' //Constant for UnAlbum
+
+
 async function firebaseRegister(email, password){
     user = await firebase.auth().createUserWithEmailAndPassword(email, password);
     return user;
@@ -15,7 +18,13 @@ async function register(req){
         console.log(login);
         
         // Try to register the user with their details
-        return firebaseRegister(login, password)
+        var user = firebaseRegister(login, password).then((user) => {
+            console.log(user.user.uid);
+            database.addUser(user.user.uid, '').then((userKey) => {
+                database.addAlbum(userKey, UN, UN);
+            });
+        });
+        return user;
     } else if (req.params.email && req.params.psword) {
         // Try to register the user with param email and password
         return firebaseRegister(req.params.email, req.params.psword);
