@@ -6,7 +6,7 @@ const general = require('./general_database');
 /*Used to reference fields that are stored in the Documents that belong to the
 Users Collection*/
 const userFields = {
-    password: "Password Hash",
+    email: "Email Address",
 };
 
 /**

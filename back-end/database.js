@@ -31,7 +31,7 @@ const tags = require('./database/tags');
  *                         range you want to get the photos from (inclusive).
  *                         Leave blank for end
  *
- * @return {Object} - Basically a dictionary of dictionaries of the form
+ * @return {Object.<Object>} - Basically a dictionary of dictionaries of the form
  *                    AlbumPosition:Field:Value where field is either reference
  *                    or caption
  * */
@@ -94,7 +94,7 @@ async function getAllAlbumPhotos(userID, albumID, start=undefined, end=undefined
  *                         range you want to get the photos from (inclusive).
  *                         Leave blank for end
  *
- * @return {Object} - Basically a dictionary of dictionaries of the form
+ * @return {Object.<Object>} - Basically a dictionary of dictionaries of the form
  *                    AlbumPosition:Field:Value where field is either reference
  *                    or caption
  * */
@@ -175,6 +175,7 @@ module.exports = {
     addPhoto: photos.addPhoto,
     addAlbum: albums.addAlbum,
     addAlbumPosition: albumPositions.addAlbumPosition,
+    addManyAlbumPosition: albumPositions.addManyAlbumPosition,
     addAlbumPage: albumPages.addAlbumPage,
     //The function to check a password
     checkUserPassword: users.checkUserPassword,

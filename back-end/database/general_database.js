@@ -109,7 +109,8 @@ function albumPositionsPath(userID, albumID) {
  * @param {String} [doc=undefined] - The key the created document should have,
  *          leave blank/undefined for a randomly generated key
  *
- * @return {Boolean} - True only if the document was created successfully
+ * @return {String} - True docID if the new document was successfully created,
+ *
  * */
 async function addDataToDoc(data, path, doc=undefined) {
     //Initialisation
