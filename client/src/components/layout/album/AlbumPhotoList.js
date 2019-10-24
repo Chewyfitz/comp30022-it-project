@@ -23,7 +23,7 @@ async function makeAlbumList(albumId){
     
     // Put it in the format we want
     for(var i=0; i<imageList.length; i++){
-        finalImageList.push({src: imageList[i].src, width: 1, height: 1});
+        finalImageList.push({key: i.toString(), src: imageList[i].src, width: 1, height: 1});
     }
 
     // return it
