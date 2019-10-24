@@ -17,13 +17,7 @@ import { thisExpression } from "@babel/types";
 
 
 
-/* popout the browser and maximize to see more rows! -> */
-const SortablePhoto = SortableElement(item => <Photo {...item} />);
 
-const SortableGallery = SortableContainer(({ items }) => (
-    // <Gallery photos={items.map(image => {return image.src})} renderImage={props => <SortablePhoto {...props} />} />
-    <Gallery photos={items} renderImage={props => <SortablePhoto {...props} />} />
-));
 
 async function makeAlbumList(albumId){
     var finalImageList = [];
@@ -39,41 +33,41 @@ async function makeAlbumList(albumId){
     return finalImageList
 }
 
-const photos = [];
+/* popout the browser and maximize to see more rows! -> */
+const SortablePhoto = SortableElement(item => <Photo {...item} />);
 
-class AlbumPhotoList extends React.Component {
+const SortableGallery = SortableContainer(({ items }) => (
+    // <Gallery photos={items.map(image => {return image.src})} renderImage={props => <SortablePhoto {...props} />} />
+    <Gallery photos={items} renderImage={props => <SortablePhoto {...props} />} />
+));
+
+function AlbumPhotoList() {
   
-  
-  loadPhotos({photos}){
-    
-    console.log(`PHOTOS: ${photos}`) 
+  const [items, setItems] = useState(null);
 
-    const [items, setItems] = useState(photos);
-    
-
-    
-    const onSortEnd = ({ oldIndex, newIndex }) => {
-      setItems(arrayMove(items, oldIndex, newIndex));    
-    };
-
-      return (
-          <div>
-      {items && <>
-        <ALBUMIFY items={items} photos={photos}/>
-            <SortableGallery albumName={window.location.pathname.slice(7)} items={items} onSortEnd={onSortEnd} axis={"xy"} />
-        </>
-      }
-          </div>
-      )
+  if(items==null){
+    makeAlbumList(window.location.pathname.slice(7)).then(setItems);
   }
 
-  photos = makeAlbumList(window.location.pathname.slice(7)).then(
-    
-    console.log('PHOTOS:' + photos) 
-    //this.loadPhotos(photos)
+  const photos = items;
 
-  );
+  console.log("PHOTOSSSSSSSS" + photos.src);
+
+  // items.foreach(item => {item.height = 1; item.width = 1});
   
+  console.log("set state-ish");
+  const onSortEnd = ({ oldIndex, newIndex }) => {
+      setItems(arrayMove(items, oldIndex, newIndex));    
+  };
 
+  return (
+      <div>
+          {items && <>
+              <ALBUMIFY albumName={window.location.pathname.slice(7)} items={items} photos={photos}/>
+                  <SortableGallery items={items} onSortEnd={onSortEnd} axis={"xy"} />
+              </>
+          }
+      </div>
+  )
 }
 export default AlbumPhotoList;
