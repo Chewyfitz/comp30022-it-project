@@ -5,24 +5,24 @@ import React from 'react'
 import "../navbar/Navbar.css"
 import axios from 'axios';
 
-function handleClick(oldphotolist, newphotolist) {
+import AlbumPreview from './AlbumPreviewTemp' 
 
 
 
-    console.log("ALBUMIFYYYYYYYYYY" + newphotolist);
 
-    var toSend = {};
 
-    //TO DO change src to id (albumposition) then SEND to front end
+    // var toSend = {};
 
-    for (var i=0 ; i<oldphotolist.length ; i++){
-        if(oldphotolist[i].photoID != newphotolist[i].photoID){
-            toSend[oldphotolist[i].photoID] = newphotolist[i].photoID; 
-        }
+    // //TO DO change src to id (albumposition) then SEND to front end
+
+    // for (var i=0 ; i<oldphotolist.length ; i++){
+    //     if(oldphotolist[i].photoID != newphotolist[i].photoID){
+    //         toSend[oldphotolist[i].photoID] = newphotolist[i].photoID; 
+    //     }
         
-    }
-    console.log(oldphotolist);
-    console.log(toSend);
+    // }
+    // console.log(oldphotolist);
+    // console.log(toSend);
 
     // for (id in oldphotolist){
     //     if(oldphotolist[id] != newphotolist[id]){
@@ -47,22 +47,44 @@ function handleClick(oldphotolist, newphotolist) {
     //     // Print any errors from sending the files
     //     console.error(err.response);
     // });
-}
 
 
-const ALBUMIFY = ({albumName, photos, items}) => { //functional component, equal to arrow function
 
-    const oldphotolist=photos;
-    const newphotolist=items;
+class ALBUMIFY extends React.Component { //functional component, equal to arrow function
+    state = {
+        loadOverview: false
+    }
     //when clicked send photo list to backend (keep the order)
-    return(
-        <nav className="navbar navbar-expand-sm navbar-dark fixed-top2" style={{backgroundColor:'#F4F6F8'}}>
-            {/*Sub navbar*/}
-            <a href={'/albumify/'+ albumName} class="btn btn-default btn-block ALBUMIFY-text" onClick={() => handleClick(oldphotolist,newphotolist)}>
-                ALBUMIFY
-            </a>
-        </nav>
-    )
+
+    handleClick = (oldphotolist, newphotolist) => {
+
+        this.setState({loadOverview:true});
+
+
+    
+        console.log("ALBUMIFYYYYYYYYYY" + newphotolist);
+
+    }
+
+    render= () => {
+        return(
+            <>
+
+            {this.state.loadOverview?
+                <AlbumPreview photolist={this.props.items} albumName={this.props.albumName}/>
+                :
+                <nav className="navbar navbar-expand-sm navbar-dark fixed-top2" style={{backgroundColor:'#F4F6F8'}}>
+                {/*Sub navbar*/}
+                {/* <a href={'/albumify/'+ albumName} class="btn btn-default btn-block ALBUMIFY-text" onClick={() => handleClick(oldphotolist,newphotolist)}> */}
+                <a href='#' class="btn btn-default btn-block ALBUMIFY-text" onClick={() => this.handleClick()}>
+                    ALBUMIFY
+                </a>
+                </nav>
+            }
+            </>
+        )
+    }
+    
 }
  
 export default ALBUMIFY; 

@@ -5,38 +5,24 @@ import photos from '../photolist/tmpimglist';
 import PageLayout from './PageLayout'
 
 import { getImagesfromAlbum } from '../../api/api'
+import { thisExpression } from '@babel/types';
 
-//import axios from 'axios'
-async function makeAlbumList(albumId){
-    var finalImageList = [];
-    // Get the image list
-    const imageList = await getImagesfromAlbum(albumId, localStorage.getItem("uid"));
-    
-    // Put it in the format we want
-    for(var i=0; i<imageList.length; i++){
-        finalImageList.push({src: imageList[i].src, width: 1, height: 1});
-    }
-
-    // return it
-    return finalImageList
-}
 
 const albumAPI = require('../../api/api');
 
 class Pagination extends React.Component {
     constructor() {
         super();
-        this.state = {
-            //ImageList: ['a','b','c','d','e','f','g','h','i','j','k'],
-            ImageList: photos,
-            //ImageList: [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12],
-            CurrentPage: 1,
-            PhotosPerPage: 9
-        };
         this.handleClick = this.handleClick.bind(this);
 
     }
 
+    state = {
+        //ImageList: ['a','b','c','d','e','f','g','h','i','j','k'],
+        //ImageList: [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12],
+        CurrentPage: 1,
+        PhotosPerPage: 9
+    };
 
     handleClick(event) {
         this.setState({
@@ -76,7 +62,13 @@ class Pagination extends React.Component {
     }
 
     render() {
-        const { ImageList, CurrentPage, PhotosPerPage } = this.state;
+        const {ImageList} = this.props;
+
+        const {CurrentPage, PhotosPerPage } = this.state;
+
+        if(!ImageList){
+            return (<p>loading...</p>)
+        }
 
         // Logic for displaying current photos
         const indexOfLastPhoto = CurrentPage * PhotosPerPage;

@@ -1,29 +1,23 @@
+import React, { Component } from 'react';
 
-function loadAlbumPreview(){
-    import React, { Component } from 'react';
+//COMPONENTS
+import Navbar from '../navbar/Navbar'
+import Pagination from '../album/Pagination'
+import Sidebar from '../navbar/Sidebar'
 
-    //COMPONENTS
-    import Navbar from '../components/layout/navbar/Navbar'
-    import Pagination from '../components/layout/album/Pagination'
-    import Sidebar from '../components/layout/navbar/Sidebar'
-    
-    
-    import "../App.css";
-    
-    class AlbumPreview extends Component {
-        render() {
-            return (
-                <div className="albumprev">  
-                    <Sidebar pageWrapId={"page-wrap"} outerContainerId={"App"}/> 
-                    <div id="page-wrap">
-                        <Navbar pageName={"Album Name"}/>
-                        <Pagination />
-                    </div>
-                </div>
-            );
-          }
-    
-        
-    }
-    export default AlbumPreview;
+
+import "../../../App.css";
+import "./QUICKIE.css"
+
+function AlbumPreview({photolist,albumName}) {
+    console.log("ALBUMIFYYYYYYYYYY" + photolist);
+    return (
+        <div className="albumprev quickie">
+            <Sidebar pageWrapId={"page-wrap"} outerContainerId={"App"}/> 
+            <div id="page-wrap">
+                <Pagination photolist={photolist}/>
+            </div>
+        </div>
+    );
 }
+export default AlbumPreview;

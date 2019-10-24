@@ -6,7 +6,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 //PAGES
 import MainPage from './pages/MainPage'
 import SearchPage from './pages/SearchPage'
-import AlbumPreview from './pages/AlbumPreview'
+import AlbumPreview from './components/layout/album/AlbumPreviewTemp'
 import PhotoPreview from './pages/PhotoPreview'
 import LoginPage from './pages/LoginPage'
 
