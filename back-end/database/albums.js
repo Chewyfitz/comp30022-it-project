@@ -23,7 +23,6 @@ const albumFields = {
  * @return {Boolean} - True only if the new album was successfully added to the
  *                     database
  * */
-//TODO Add sneaky key overwrite
 function addAlbum(userID, name, override=undefined) {
     //Initialisation
     let data = {};
@@ -72,7 +71,7 @@ function updateAlbumName(userID, albumID, name=undefined) {
         data[albumFields.name] = name;
     }
     //Attempt to update the Document and return its success
-    let success = general.updateDataInDoc(data, albumsPath(userID), albumID);
+    let success = general.updateDataInDoc(data, general.albumsPath(userID), albumID);
     return success;
 }
 
@@ -95,7 +94,7 @@ function updateAlbumTemplate(userID, albumID, template=0) {
         data[albumFields.template] = template;
     }
     //Attempt to update the Document and return its success
-    let success = general.updateDataInDoc(data, albumsPath(userID), albumID);
+    let success = general.updateDataInDoc(data, general.albumsPath(userID), albumID);
     return success;
 }
 
@@ -150,9 +149,9 @@ async function getAlbumData(userID, albumID) {
  * @return {String} - If the name was successfully retrieved it will return the
  *                    name as a String, otherwise it will return undefined
  * */
-function getAlbumName (userID, albumID){
+async function getAlbumName (userID, albumID){
     let name = undefined;
-    let data = getAlbumData(userID, albumID);
+    let data = await getAlbumData(userID, albumID);
     try {
         //Try to retrieve the value from the data
         name = data[albumFields.name];
@@ -174,9 +173,9 @@ function getAlbumName (userID, albumID){
  * @return {Number} - WILL BE A NON NEGATIVE INT! If the template was successfully retrieved it will return
  *                    the template as an int, otherwise it will return undefined
  * */
-function getAlbumTemplate (userID, albumID){
+async function getAlbumTemplate (userID, albumID){
     let template = undefined;
-    let data = getAlbumData(userID, albumID);
+    let data = await getAlbumData(userID, albumID);
     try {
         //Try to retrieve the value from the data
         template = data[albumFields.template];
@@ -198,9 +197,9 @@ function getAlbumTemplate (userID, albumID){
  * @return {String} - If the name was successfully retrieved it will return the
  *                    view as a String, otherwise it will return undefined
  * */
-function getAlbumView (userID, albumID){
+async function getAlbumView (userID, albumID){
     let view = undefined;
-    let data = getAlbumData(userID, albumID);
+    let data = await getAlbumData(userID, albumID);
     try {
         //Try to retrieve the value from the data
         view = data[albumFields.view];

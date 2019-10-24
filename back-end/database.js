@@ -42,11 +42,11 @@ async function getAllAlbumPhotos(userID, albumID, start=undefined, end=undefined
     //Gets all the documents in the Album
     let allDocsQuery = await query.getAllDocsInCollection(general.albumPositionsPath(userID, albumID));
     //If no start has been given, start from the very start
-    if (start == undefined) {
+    if (start === undefined) {
         start = 0;
     }
     //If no end has been given, end at the very end
-    if (end == undefined) {
+    if (end === undefined) {
         end = allDocsQuery.length - 1;
     }
     //For each of the albumPositions it gets the caption and, retrieves the image
@@ -57,7 +57,7 @@ async function getAllAlbumPhotos(userID, albumID, start=undefined, end=undefined
             //STORE ALL THE PROMISES OF GETTING PHOTO DOCS SO WE HAVE SOMETHING TO WAIT ON!
             promises.push(
                 //Get the Photos Doc that is referenced
-                albumPositionsDoc.data()[albumPositions.albumPositionFields.photo].get()
+                (albumPositionsDoc.data()[albumPositions.albumPositionFields.photo]).get()
                     .then(photosDoc => {
                         //Initialise the internal dictionary
                         data[albumPositionsDoc.id] = {};
@@ -177,8 +177,6 @@ module.exports = {
     addAlbumPosition: albumPositions.addAlbumPosition,
     addManyAlbumPosition: albumPositions.addManyAlbumPosition,
     addAlbumPage: albumPages.addAlbumPage,
-    //The function to check a password
-    checkUserPassword: users.checkUserPassword,
     //The functions to Delete a Document from a Collection
     deleteUser: users.deleteUser,
     deletePhoto: photos.deletePhoto,
@@ -186,6 +184,7 @@ module.exports = {
     deleteAlbumPage: albumPages.deleteAlbumPage,
     deleteAlbumPosition: albumPositions.deleteAlbumPosition,
     //The functions to retrieve data from a Document in a Collection
+    getUserEmail: users.getUserEmail,
     getPhotoData: photos.getPhotoData,
     getPhotoDateTime: photos.getPhotoDateTime,
     getPhotoDescription: photos.getPhotoDescription,
@@ -206,7 +205,7 @@ module.exports = {
     getAllAlbumPhotos,
     getSomeAlbumPhotos,
     //The functions to update the data of a Document in a Collection
-    updateUserPassword: users.updateUserPassword,
+    updateUserEmail: users.updateUserEmail,
     updatePhotoDateTime: photos.updatePhotoDateTime,
     updatePhotoDescription: photos.updatePhotoDescription,
     updatePhotoDimensions: photos.updatePhotoDimensions,

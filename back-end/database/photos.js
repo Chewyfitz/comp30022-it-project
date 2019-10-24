@@ -29,13 +29,13 @@ const photoFields = {
  * @return {Boolean} - True only if the new photo was successfully added to the
  *                     database
  * */
-function addPhoto(userID, photoReference, height=1, width=1, photoDateTime=null) {
+function addPhoto(userID, photoReference, height=1, width=1, photoDateTime=null, description=null) {
     //Initialisation
     let data = {};
     //Add the appropriate data to be stored in the database
     data[photoFields.reference] = photoReference;
     data[photoFields.dateTime] = photoDateTime;
-    data[photoFields.description] = "";
+    data[photoFields.description] = description;
     data[photoFields.height] = height;
     data[photoFields.name] = "";
     data[photoFields.width] = width;
@@ -109,11 +109,11 @@ async function getPhotoData(userID, photoID){
  *                                         DateTime, otherwise it will return
  *                                         undefined\
  * */
-function getPhotoDateTime(userID, photoID){
+async function getPhotoDateTime(userID, photoID){
     //Initialisation
     let dateTime = undefined;
     //Attempt to retrieve the Data for the User
-    let data = getPhotoData(userID, photoID);
+    let data = await getPhotoData(userID, photoID);
     try {
         //Try to retrieve the value from the data
         dateTime = data[photoFields.dateTime];
@@ -135,9 +135,9 @@ function getPhotoDateTime(userID, photoID){
  *
  * @return {Object} - A dictionary with the dimensions stored in it.
  */
-function getPhotoDimensions(userID, photoID) {
+async function getPhotoDimensions(userID, photoID) {
     let dimensions = {};
-    let data = getPhotoData(userID, photoID);
+    let data = await getPhotoData(userID, photoID);
     try {
         dimensions.height = data[photoFields.height];
         dimensions.width = data[photoFields.width];
@@ -159,11 +159,11 @@ function getPhotoDimensions(userID, photoID) {
  *                    return the description as a String, otherwise it will
  *                    return undefined
  * */
-function getPhotoDescription(userID, photoID){
+async function getPhotoDescription(userID, photoID){
     //Initialisation
     let description = undefined;
     //Attempt to retrieve the Data for the User
-    let data = getPhotoData(userID, photoID);
+    let data = await getPhotoData(userID, photoID);
     try {
         //Try to retrieve the value from the data
         description = data[photoFields.description];
@@ -184,11 +184,11 @@ function getPhotoDescription(userID, photoID){
  *
  * @return {String} - If the reference was successfully retrieved it will return
  *                    it as a string, otherwise it will return undefined*/
-function getPhotoReference(userID, photoID){
+async function getPhotoReference(userID, photoID){
     //Initialisation
     let ref = undefined;
     //Attempt to retrieve the Data for the User
-    let data = getPhotoData(userID, photoID);
+    let data = await getPhotoData(userID, photoID);
     try {
         //Try to retrieve the value from the data
         ref = data[photoFields.reference];

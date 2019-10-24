@@ -28,7 +28,7 @@ async function addAlbumPage(userID, albumID, pageNumber, template) {
     //Initialisation
     let docID = undefined;
     //If the template is different to the albums
-    if(template != album.getAlbumTemplate(userID, albumID)) {
+    if(template !== await album.getAlbumTemplate(userID, albumID)) {
         //Add the appropriate data to be stored in the database
         let data = {};
         data[albumPageFields.template] = template;
@@ -56,7 +56,7 @@ async function addAlbumPage(userID, albumID, pageNumber, template) {
  *                     the database
  * */
 async function deleteAlbumPage(userID, albumID, pageNumber) {
-    return await general.DeleteAllFromDoc(general.albumPagesPath(userID, albumID), pageNumber);
+    return general.deleteDoc(general.albumPagesPath(userID, albumID), pageNumber);
 }
 
 /**
@@ -91,10 +91,10 @@ async function getAlbumPageData(userID, albumID, pageNumber) {
  * @return {Number} - WILL BE A NON NEGATIVE INT! If the template was successfully retrieved it will return the
  *                 template, otherwise it will return undefined
  * */
-function getAlbumPageTemplate(userID, albumID, pageNumber) {
+async function getAlbumPageTemplate(userID, albumID, pageNumber) {
     //Initialisation
     let template = undefined;
-    let data = getAlbumPageData(userID, userID, pageNumber);
+    let data = await getAlbumPageData(userID, albumID, pageNumber);
     try {
         //Try to retrieve the value from the data
         template = data[albumPageFields.template];
@@ -123,9 +123,9 @@ async function updateAlbumPageTemplate(userID, albumID, pageNumber, template) {
     //Initialisation
     let success = false;
     //If the template is different to the albums
-    if(template != getAlbumTemplate(userId, albumID)) {
+    if(template !== await album.getAlbumTemplate(userID, albumID)) {
         //Add the appropriate data to be updated in the database
-        let data = {}
+        let data = {};
         data[albumPageFields.template] = template;
         //Attempt to Create the Document and record its success
         success = await general.updateDataInDoc(data, general.albumPagesPath(userID, albumID), pageNumber);

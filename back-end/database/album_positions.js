@@ -137,7 +137,7 @@ async function deleteAlbumPositionCallBack(userID, albumID, position, t){
 async function getAlbumPositionCaption(userID, albumID, position) {
     //Initialisation
     let caption = undefined;
-    let data = getAlbumPositionData(userID, albumID, position);
+    let data = await getAlbumPositionData(userID, albumID, position);
     try {
         //Try to retrieve the value from the data
         caption = data[albumPositionFields.caption];
@@ -190,10 +190,10 @@ async function getAlbumPositionData(userID, albumID, position) {
 async function getAlbumPositionPhotoDocRef(userID, albumID, position) {
     //Initialisation
     let caption = undefined;
-    let data = getAlbumPositionData(userID, albumID, position);
+    let data = await getAlbumPositionData(userID, albumID, position);
     try {
         //Try to retrieve the value from the data
-        caption = data[albumPositionFields.caption];
+        caption = data[albumPositionFields.photo];
     } catch (e) {
         console.log("Error in AlbumPositions.js.getAlbumPageCaption, - " +
             "probably trying to get the caption of an album position that " +
@@ -223,7 +223,7 @@ async function updateAlbumPositionCaption(userID, albumID, position, caption=und
     //Add the appropriate data to be updated in the database
     data[albumPositionFields.caption] = caption;
     //Attempt to Create the Document and return its success
-    success = await general.updateDataInDoc(data, general.albumPositionsPath(userID, albumsID), position);
+    success = await general.updateDataInDoc(data, general.albumPositionsPath(userID, albumID), position);
     return success;
 }
 
@@ -235,20 +235,19 @@ async function updateAlbumPositionCaption(userID, albumID, position, caption=und
  * @param {String} albumID - The key of the document for the album
  * @param {Number} position - SHOULD BE NON NEGATIVE INT! The key of the document in the AlbumPositions
  *                          Collection that we are updating the caption of
- * @param {firebase.firestore.DocumentReference} photoDocRef - The new reference to
- *                                                          the photo
+ * @param {String} photoID - The ID of the new photo for this position
  *
  * @return {Boolean} - True only if the album position was successfully updated
- *                     in the database
+ *          in the database
  * */
-function updateAlbumPositionPhoto(userID, albumID, position, photoDocRef) {
+function updateAlbumPositionPhoto(userID, albumID, position, photoID) {
     //Initialisation
     let success = false;
     let data = {};
     //Add the appropriate data to be updated in the database
-    data[albumPositionFields.photo] = photoDocRef;
+    data[albumPositionFields.photo] = general.db.collection(general.photosPath(userID)).doc(photoID);
     //Attempt to Create the Document and return its success
-    success = general.updateDataInDoc(data, general.albumPositionsPath(userID, albumsID), position);
+    success = general.updateDataInDoc(data, general.albumPositionsPath(userID, albumID), position.toString());
     return success;
 }
 
@@ -261,7 +260,7 @@ function updateAlbumPositionPhoto(userID, albumID, position, photoDocRef) {
  */
 async function updateAlbumPositionOrder(userID, albumID, permutaion){
     let transaction = general.db.runTransaction(t => updateAlbumPositionOrderCallBack(userID, albumID, permutaion, t));
-    return await transaction.then(resVal => {console.log(resVal); return true;}, rejVal => {console.log(rejVal); return false});
+    return await transaction.then(resVal => {return true;}, rejVal => {console.log(rejVal); return false});
 }
 
 /**

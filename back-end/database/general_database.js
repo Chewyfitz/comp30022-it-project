@@ -1,7 +1,7 @@
 /**This file contains all the core functionalities needed to interact with the
  * database and is used by all other database related js files*/
 
-/**Needed requirements to communicate with the database*/
+/* Needed requirements to communicate with the database*/
 const firebase = require("firebase/app");
 const admin = require("firebase-admin");
 require("firebase/firestore");
@@ -35,7 +35,7 @@ const albumPageCollection = 'Album Page';
 //const categoryCollection = 'Categories';
 //const TagCollection = 'Tags';
 
-/**Function that generates the path to a particular Collection of Documents
+/* Function that generates the path to a particular Collection of Documents
  * allowing for nesting differences*/
 
 /**
@@ -70,7 +70,7 @@ function albumsPath(userID) {
 
 /**
  * Generates the Path to the AlbumPages SubCollection owned by the User and
- * found withing the given Album.
+ * found within the given Album.
  *
  * @param {String} userID - The owner of the Albums Collection
  * @param {String} albumID - The Album the AlbumPages SubCollection is in
@@ -83,7 +83,7 @@ function albumPagesPath(userID, albumID) {
 
 /**
  * Generates the Path to the AlbumPositions SubCollection owned by the User and
- * found withing the given Album.
+ * found within the given Album.
  *
  * @param {String} userID - The owner of the Albums Collection
  * @param {String} albumID - The Album the AlbumPositions SubCollection is in
@@ -100,16 +100,18 @@ function albumPositionsPath(userID, albumID) {
  * General use Document Creator, currently creates a new Document in the
  * specified collection and stores the given data in it. If a document key is
  * given, then a Document with that key will be created if none other exists.
+ * Otherwise the Document key will be randomly generated.
  *
  * @param {Object} data - Basically a dictionary of key-value pairs where the
- *                        key represents the field represents the value will be
- *                        added to in the Document
+ *          key represents the field represents the value will be added to in
+ *          the Document
  * @param {String} path - The path to the Collection the Document will be
  *          created in
  * @param {String} [doc=undefined] - The key the created document should have,
  *          leave blank/undefined for a randomly generated key
  *
- * @return {String} - True docID if the new document was successfully created,
+ * @return {String} - The Document key if the Document was successfully created
+ *          otherwise it will return undefined.
  *
  * */
 async function addDataToDoc(data, path, doc=undefined) {
@@ -130,11 +132,15 @@ async function addDataToDoc(data, path, doc=undefined) {
                 success = true;
             }, rejValue => {
                 //TODO Do I need to handle this rejection?
-                console.log("ERROR in general_database.js addDataToDoc: " +
-                    "Tried to add the data of " + data + " to " + path + '/' +
-                    doc + "but the promise was rejected \n Rejection Value: " +
-                    rejValue);
-        });
+                console.log("\nERROR in general_database.js addDataToDoc: \n" +
+                    "Tried to create a document: \n" + doc + '\n' +
+                    "In collection: \n" + path + '\n' +
+                    "With data: ");
+                console.log(data);
+                console.log("But the Promise was rejected. \n" +
+                    "Rejection Value: \n" +
+                    rejValue + '\n');
+            });
     }
     //Else created the doc with a randomly generated key
     else{
@@ -150,6 +156,14 @@ async function addDataToDoc(data, path, doc=undefined) {
                     "Tried to add the data of " + data + " to " + path + '/' +
                     "but the promise was rejected \n Rejection Value: " +
                     rejValue);
+                console.log("\nERROR in general_database.js addDataToDoc: \n" +
+                    "Tried to create a document with a random key in " +
+                    "collection: \n" + path + '\n' +
+                    "With data: ");
+                console.log(data);
+                console.log("But the Promise was rejected. \n" +
+                    "Rejection Value: \n" +
+                    rejValue + '\n');
             });
     }
     //Wait for the promise to be resolved/rejected
@@ -284,16 +298,22 @@ async function getDataInDoc(path, doc) {
                 data = resValue.data();
             } else {
                 //There is no data to get from a Document that doesn't exist
-                console.log("ERROR in general_database.js getDataInDoc: " +
-                    "Tried to get the data of " + path + '/' + doc + "but the" +
-                    " Document does not exist");
+                console.log("\nERROR in general_database.js getDataInDoc: \n" +
+                    "Tried to get the data of Document: \n" + doc + '\n' +
+                    "In collection: \n" + path + '\n' +
+                    "but the data does not exist \n" +
+                    "Resolution Value:");
+                console.log(resValue);
+                console.log();
             }
         //On rejection of the promise
         }, rejValue => {
-            //TODO Do I need to handle this rejection?
-            console.log("ERROR in general_database.js getDataInDoc: " +
-                "Tried to get the data of " + path + '/' + doc + "but the" +
-                " promise was rejected \n Rejection Value: " + rejValue);
+            console.log("\nERROR in general_database.js getDataInDoc: \n" +
+                "Tried to get the data of Document: \n" + doc + '\n' +
+                "In collection: \n" + path + '\n' +
+                "but the Promise was rejected \n" +
+                "Rejection Value: \n"  + rejValue);
+            console.log();
         });
     //Wait for the promise to be resolved/rejected
     await document;
