@@ -51,10 +51,8 @@ async function addManyAlbumPosition(userID, albumID, photoInfoList) {
     let position = await query.getNumDocsInCollection(general.albumPositionsPath(userID, albumID));
     let promises = [];
     let success;
-    console.log(photoInfoList);
     for(i=0; i<photoInfoList.length; i++){
         let data = {};
-        console.log(photoInfoList[i].photoID);
         //Add the appropriate data to be stored in the database
         data[albumPositionFields.photo] = general.getDocRef(general.photosPath(userID), photoInfoList[i].photoID);
         //if caption then caption=caption else caption=null
@@ -64,7 +62,7 @@ async function addManyAlbumPosition(userID, albumID, photoInfoList) {
     await Promise.all(promises).then(resVal => {
         success = true;
     }, rejVal => {
-        console.log(rejVal);
+        console.log("addManyAlbumPositions rejected Promise val: \n" + rejVal);
         success = false;
     });
     return success;
