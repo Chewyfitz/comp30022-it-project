@@ -66,6 +66,10 @@ async function addImageToAlbum(image, album, user, caption = ''){
     return database.addAlbumPosition(user, album, image, caption)
 }
 
+async function addManyImagesToAlbum(userId, albumId, photoInfoList){
+    return database.addManyAlbumPosition(userId, albumId, photoInfoList);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //                                   DELETE                                   //
 ////////////////////////////////////////////////////////////////////////////////
@@ -87,6 +91,7 @@ module.exports = {
     // UPDATE
     updateAlbumAttributes,
     addImageToAlbum,
+    addManyImagesToAlbum,
     // DELETE
     deleteAlbum,
     deleteAlbumPosition,

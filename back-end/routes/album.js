@@ -75,6 +75,18 @@ router.put   ('/:albumId', (req, res) => {
 	var albumId = req.params.albumId;
 	var user = req.query.user;
 	var caption = req.query.caption || '';
+	var imageList = req.query.imageList;
+	
+	if(imageList) {
+		util.addManyImagesToAlbum(user, albumId, imageList).then( (success) => {
+			if(success){
+				res.sendStatus(201);
+			} else {
+				res.sendStatus(500);
+			}
+			return;
+		});
+	}
 
 	if(!user){
 		res.sendStatus(401);
