@@ -43,7 +43,7 @@ router.post('/', /*cors(),*/ upload.array('file'), (req, res) => {
 	// variables of interest here are req.files, req.params, and req.query
 
 	// TODO: Add user auth check
-	var album = req.query.album || 'un';
+	var album = decodeURI(req.query.album) || 'un';
 	if(req.query.user && req.query.image){
 		console.log(`user: ${req.query.user} | image: ${req.query.image}`);
     // Add the URL to the user.

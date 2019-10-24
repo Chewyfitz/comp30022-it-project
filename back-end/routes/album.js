@@ -74,7 +74,7 @@ router.put   ('/:albumId', (req, res) => {
 	var imageId = req.query.imageId;
 	var albumId = req.params.albumId;
 	var user = req.query.user;
-	var caption = req.query.caption || '';
+	var caption = decodeURI(req.query.caption) || '';
 
 	if(!user){
 		res.sendStatus(401);
