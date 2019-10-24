@@ -150,6 +150,7 @@ async function getSomeAlbumPhotos(userID, albumID, start=undefined, end=undefine
         //If the document exists, get the image reference from its data
         if (photoDoc.exists) {
             data[i + start].reference = photoDoc.data()[photos.photoFields.reference];
+            data[i + start].id = photoDoc.id;
         //TODO error handling for non existent Photos doc
         } else {
             continue;
