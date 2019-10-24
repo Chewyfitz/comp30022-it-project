@@ -1,4 +1,4 @@
-/*//import images from local
+//import images from local
 import img1 from '../photolist/temp_images/1.png'
 
 import img2 from '../photolist/temp_images/2.png'
@@ -86,24 +86,3 @@ const tmpimglist = [
 ];
 
 export default tmpimglist;
-*/
-
-
-import { getImagesfromAlbum } from '../../api/api'
-
-async function makeAlbumList(albumId){
-	var finalImageList = [];
-	const imageList = await getImagesfromAlbum(albumId, localStorage.getItem("uid"));//.then((imageList) => {
-		console.log("found imagelist    ", imageList);
-		for(var url in imageList){
-			finalImageList.push({src: imageList[url],
-								width: 1,
-								height: 1}
-			)
-		}
-		console.log("finalImageList = ", finalImageList);
-		return finalImageList
-    //})
-	
-}
-export default makeAlbumList;

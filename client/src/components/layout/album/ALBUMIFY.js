@@ -48,16 +48,15 @@ function handleClick(oldphotolist, newphotolist) {
 }
 
 
-const ALBUMIFY = ({photos, items}) => { //functional component, equal to arrow function
+const ALBUMIFY = ({albumName, photos, items}) => { //functional component, equal to arrow function
 
     const oldphotolist=photos;
     const newphotolist=items;
-    
     //when clicked send photo list to backend (keep the order)
     return(
         <nav className="navbar navbar-expand-sm navbar-dark fixed-top2" style={{backgroundColor:'#F4F6F8'}}>
             {/*Sub navbar*/}
-            <a href='../albumify' class="btn btn-default btn-block ALBUMIFY-text" onClick={() => handleClick(oldphotolist,newphotolist)}>
+            <a href={'/albumify/'+ albumName} class="btn btn-default btn-block ALBUMIFY-text" onClick={() => handleClick(oldphotolist,newphotolist)}>
                 ALBUMIFY
             </a>
         </nav>

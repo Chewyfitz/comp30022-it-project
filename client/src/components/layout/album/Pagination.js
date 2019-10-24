@@ -13,7 +13,7 @@ class Pagination extends React.Component {
         super();
         this.state = {
             //ImageList: ['a','b','c','d','e','f','g','h','i','j','k'],
-            ImageList: Array.from(photos),
+            ImageList: photos,
             //ImageList: [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12],
             CurrentPage: 1,
             PhotosPerPage: 9
