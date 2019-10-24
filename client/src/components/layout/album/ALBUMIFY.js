@@ -7,7 +7,9 @@ import axios from 'axios';
 
 function handleClick(oldphotolist, newphotolist) {
 
-    console.log("ALBUMIFYYYYYYYYYY");
+
+
+    console.log("ALBUMIFYYYYYYYYYY" + newphotolist);
 
     var toSend = {};
 

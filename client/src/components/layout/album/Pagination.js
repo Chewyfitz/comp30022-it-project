@@ -4,7 +4,22 @@ import photos from '../photolist/tmpimglist';
 //COMPONENTS
 import PageLayout from './PageLayout'
 
+import { getImagesfromAlbum } from '../../api/api'
+
 //import axios from 'axios'
+async function makeAlbumList(albumId){
+    var finalImageList = [];
+    // Get the image list
+    const imageList = await getImagesfromAlbum(albumId, localStorage.getItem("uid"));
+    
+    // Put it in the format we want
+    for(var i=0; i<imageList.length; i++){
+        finalImageList.push({src: imageList[i].src, width: 1, height: 1});
+    }
+
+    // return it
+    return finalImageList
+}
 
 const albumAPI = require('../../api/api');
 
@@ -18,7 +33,6 @@ class Pagination extends React.Component {
             CurrentPage: 1,
             PhotosPerPage: 9
         };
-        console.log(photos);
         this.handleClick = this.handleClick.bind(this);
 
     }

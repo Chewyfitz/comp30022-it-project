@@ -16,9 +16,6 @@ import { thisExpression } from "@babel/types";
 
 
 
-
-
-
 async function makeAlbumList(albumId){
     var finalImageList = [];
     // Get the image list
@@ -51,7 +48,7 @@ function AlbumPhotoList() {
 
   const photos = items;
 
-  console.log("PHOTOSSSSSSSS" + photos.src);
+  //console.log("PHOTOSSSSSSSS" + photos.src);
 
   // items.foreach(item => {item.height = 1; item.width = 1});
   
@@ -63,7 +60,7 @@ function AlbumPhotoList() {
   return (
       <div>
           {items && <>
-              <ALBUMIFY albumName={window.location.pathname.slice(7)} items={items} photos={photos}/>
+              <ALBUMIFY albumName={window.location.pathname.slice(7)} photos={photos} items={items} />
                   <SortableGallery items={items} onSortEnd={onSortEnd} axis={"xy"} />
               </>
           }
