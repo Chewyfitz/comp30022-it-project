@@ -8,7 +8,7 @@ class UploadButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedFile: null,
+      selectedFile: [],
       fileText: "Choose File",
       loaded: 0,
     } 
@@ -21,6 +21,8 @@ class UploadButton extends React.Component {
       loaded: this.state.loaded +1,
     });
     // Add the filenames to the text so it looks pretty
+
+
     var filenames;
     if(event.target.files.length > 1){
       // For multiple files
@@ -55,10 +57,12 @@ class UploadButton extends React.Component {
     // Set the send values
     this.state.user=localStorage.getItem("uid"); // For testing purposes
     //const url = `${process.env.REACT_APP_API_URL}/api/image?user=${this.state.user}`;
-	const url = `https://robbiesapiteam.herokuapp.com/api/image?user=${this.state.user}`;
+  	const url = `${process.env.REACT_APP_API_URL}/api/image?user=${this.state.user}`;
 
     // Send the files
     var files = this.state.selectedFile;
+    
+
     // Add files to the FormData
     for(var i = 0; i < files.length; i++) {
       data.append('file', files[i]);

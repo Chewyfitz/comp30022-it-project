@@ -13,9 +13,24 @@
 
 .my-btn {
 	width: 20%;
+	color: #F4F6F8 !important;
+	background-color:#7488A3 !important;
+}
+
+
+.my-btn:hover {
+    background-color: #F4F6F8 !important;
+    color:#7488A3 !important;
 }
 
 .loginAlert {
 	width: 50%;
-	align: center;
+	align-items: center;
 }
+
+.goodAlert {
+	background-color: #F4F6F8 !important;
+    color:#7488A3 !important;
+}
+
+

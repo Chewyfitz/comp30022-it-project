@@ -9,7 +9,7 @@ class SignoutButton extends Component {
     }
     render() {
         return(
-        <Link to='/login'><button type="button" class="btn btn-outline-light" onClick={this.SignoutUser}>Signout</button></Link>
+        <Link to='/login'><button type="button" className="btn btn-outline-light" onClick={this.SignoutUser}>Signout</button></Link>
         )
     }
 }

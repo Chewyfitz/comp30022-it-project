@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import Login from "../../components/auth/Login";
-import Navbar from "../../components/layout/auth/Navbar";
-import "../../App.css";
+import Login from "../components/auth/Login";
+import Navbar from "../components/auth/LoginPageNavbar";
+import "../App.css";
 
 class LoginPage extends Component {
   render() {

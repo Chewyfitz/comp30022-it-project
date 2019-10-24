@@ -8,7 +8,7 @@ import MainPage from './pages/MainPage'
 import SearchPage from './pages/SearchPage'
 import AlbumPreview from './pages/AlbumPreview'
 import PhotoPreview from './pages/PhotoPreview'
-import LoginPage from './pages/auth/LoginPage'
+import LoginPage from './pages/LoginPage'
 
 //ROUTES
 import PrivateRoute from './components/auth/PrivateRoute'
@@ -16,7 +16,6 @@ import LoginPageRoute from './components/auth/LoginPageRoute'
 import AlbumOverview from './pages/AlbumOverview'
 
 import "./App.css";
-import backgroundpic from './components/layout/photolist/images/fav.jpg'
 
 class App extends Component {
 	
@@ -25,9 +24,7 @@ class App extends Component {
 	  // in order to disable Private Router (to access pages without needing to be logged in), edit the PrivateRoute file as directed in the file
 	return (
       <div className="App main-format">
-        <div id="background">
-          <img src={backgroundpic} className="stretch" alt="" />
-        </div>
+
         <BrowserRouter>
           <Switch>
             <PrivateRoute exact path='/'> 

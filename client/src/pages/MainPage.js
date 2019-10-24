@@ -19,17 +19,9 @@ class MainPage extends Component {
   state = { CurrentPhotoList: [],
 			AlbumList: [],
 			FilteredAlbumList: [],
-			searchText: '',
-            redirect: false, 
-            selectedAlbum: ''}
+			searchText: ''
+			}
             
-    renderRedirect = () => {
-        if (this.state.redirect && this.state.selectedAlbum) {
-            console.log("selected album");
-            console.log(this.state.selectedAlbum);
-          return <Redirect to={`/album/${this.state.selectedAlbum}`} />
-        }
-    }
   callbackFunction = (childData) => {
       this.setState({CurrentPhotoList: childData})
 	  console.log("callback called");
@@ -49,9 +41,8 @@ class MainPage extends Component {
 	this.setState({AlbumList: testAlbumList});
 	this.setState({FilteredAlbumList: testAlbumList});*/
 	axios({method: "get",
-			url: 'https://robbiesapiteam.herokuapp.com/api/album/',
+			url: `${process.env.REACT_APP_API_URL}/api/album/`,
 			params: {user: localStorage.getItem("uid")}
-			//url: `https://itprojecttestapi.herokuapp.com/api/album/`,
 			/*params: {loginToken: localStorage.getItem("loginToken"),
 					uid: localStorage.getItem("uid")}*/
 			})
@@ -75,7 +66,7 @@ class MainPage extends Component {
 					console.log(err);
 				}
 			})
-  }
+  	}
   
   SearchAlbums = (event) => {
 	  console.log(event);
@@ -87,14 +78,13 @@ class MainPage extends Component {
 		  
 	  }
 	  this.setState({searchText: event.target.value});
-  }
+}
   CreateNewAlbum = () => {
 	  if(this.state.searchText){
 		  var newAlbumName=this.state.searchText;
 		  console.log("creating album");
 		  axios({method: "post",
-			//url: 'https://robbiesapiteam.herokuapp.com/api/album/',
-			url: 'https://robbiesdebugteam.herokuapp.com/api/album/',
+			url: `${process.env.REACT_APP_API_URL}/api/album/`,
 			params: {albumName: newAlbumName,
 					user: localStorage.getItem("uid")}
 					//uid: localStorage.getItem("uid")}
@@ -102,19 +92,14 @@ class MainPage extends Component {
 		.then(res => { // then print response status
 				console.log(res.statusText);
 				console.log(res.data);
+
 				newAlbumName=res.data;
-				AddImagesToAlbum(this.state.CurrentPhotoList, newAlbumName);
-                this.setState({selectedAlbum: newAlbumName});
-                this.setState({redirect: true});
-				
-				/*try {
-					this.setState({
-						redirect: res.
-					})
+
+				window.location.reload();
+
+				if(this.state.CurrentPhotoList){
+					AddImagesToAlbum(this.state.CurrentPhotoList, newAlbumName)
 				}
-				} catch(err){
-					console.log(err);
-				}*/
 			})
 	  }
 	  
@@ -143,9 +128,8 @@ class MainPage extends Component {
             <div id="page-wrap">
                 <Navbar pageName={"Main Page"}/>
                 <SubNavbar photos={this.state.CurrentPhotoList} albums={this.state.AlbumList}/>
-                <UnAlbumPhotoList />
+                <UnAlbumPhotoList parentCallback = {this.callbackFunction}/>
             </div>
-			{this.renderRedirect()}
         </div>
 		
     );

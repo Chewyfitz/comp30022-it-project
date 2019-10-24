@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import axios from 'axios'
 
 //COMPONENTS
 import Navbar from '../components/layout/navbar/Navbar'
-import PageView from '../components/layout/album/PageView'
+import Pagination from '../components/layout/album/Pagination'
 import Sidebar from '../components/layout/navbar/Sidebar'
 
 
@@ -16,7 +15,7 @@ class AlbumPreview extends Component {
                 <Sidebar pageWrapId={"page-wrap"} outerContainerId={"App"}/> 
                 <div id="page-wrap">
                     <Navbar pageName={"Album Name"}/>
-                    <PageView />
+                    <Pagination />
                 </div>
             </div>
         );

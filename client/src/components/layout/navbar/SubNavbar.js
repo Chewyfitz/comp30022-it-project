@@ -29,8 +29,7 @@ const SubNavbar = ({photos, albums}) => { //functional component, equal to arrow
                                 Add to Album
                             </button>
                             <div className="dropdown-menu">
-                                <NavDropdown photoList={photos}
-											 albums={albums}/>
+                                <NavDropdown photoList={photos} albums={albums}/>
                             </div>                            
                         </li>
 

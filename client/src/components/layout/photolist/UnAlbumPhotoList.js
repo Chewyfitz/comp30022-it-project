@@ -12,7 +12,7 @@ class UnAlbumPhotoList extends Component {
     this.state = {
       image: null,
       arrayImage: [],
-      imageList: [],
+      imageList: []
     }
     this.onPick = this.onPick.bind(this)
     albumAPI.getImagesfromAlbum('un', localStorage.getItem("uid")).then((imageList) => {
@@ -28,20 +28,28 @@ class UnAlbumPhotoList extends Component {
   onPick(image) {
     console.count('onChange');
     console.log("Image", image);
+	console.log(this.state.imageList);
     this.setState({ arrayImage : image });
-    //this.setState({image});
-    
-    //todo: connect to backend: 
-    //axios.post("./api/image",{})
+	var tempList = []
+	for(var index in image){
+		console.log("index = ", index)
+		console.log(image[index])
+		
+		tempList.push({albumPos: this.state.imageList[image[index].value].albumPos,
+					  imageId: this.state.imageList[image[index].value].imageId});
+	}
+	console.log(tempList);
+	
+	this.props.parentCallback(tempList)
   }
   
-  render(imageList) {
+  render() {
     return (
       <div className='main image_picker'>
         
         <ImagePicker 
           multiple={true}
-          images={this.state.imageList.map((image, i) => ({src: image, value: i}))}
+          images={this.state.imageList.map((image, i) => ({src: image.src, value: i}))}
           onPick={this.onPick}
         />
       </div>

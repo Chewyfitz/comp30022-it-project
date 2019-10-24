@@ -1,4 +1,6 @@
+//import images from local
 /*import img1 from '../photolist/temp_images/1.png'
+
 import img2 from '../photolist/temp_images/2.png'
 import img3 from '../photolist/temp_images/3.png'
 import img4 from '../photolist/temp_images/4.png'
@@ -11,6 +13,9 @@ import img10 from '../photolist/temp_images/10.png'
 import img11 from '../photolist/temp_images/11.png'
 import img12 from '../photolist/temp_images/12.png'
 import img13 from '../photolist/temp_images/13.png'
+//import axios from 'axios'
+const imageList = [img1, img2, img3, img4, img5, img6]
+const imageList2 = [img7, img8, img9, img10, img11, img12]
 
 const tmpimglist = [
   {
@@ -87,9 +92,9 @@ export default tmpimglist;
 
 import { getImagesfromAlbum } from '../../api/api'
 
-export default function makeAlbumList(albumId){
+async function makeAlbumList(albumId){
 	var finalImageList = [];
-	getImagesfromAlbum(albumId, localStorage.getItem("uid")).then((imageList) => {
+	const imageList = await getImagesfromAlbum(albumId, localStorage.getItem("uid"));//.then((imageList) => {
 		console.log("found imagelist    ", imageList);
 		for(var url in imageList){
 			finalImageList.push({src: imageList[url],
@@ -99,7 +104,7 @@ export default function makeAlbumList(albumId){
 		}
 		console.log("finalImageList = ", finalImageList);
 		return finalImageList
-    })
-	
+    //})
 	
 }
+export default makeAlbumList;

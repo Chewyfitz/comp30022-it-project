@@ -14,7 +14,10 @@ class Login extends Component {
 					  redirect: false,
 					  failedLogin: false,
 					  userForgotPassword: false,
-					  noEmail: false};
+					  noEmail: false,
+					  wrongPassword: false,
+					  takenEmail: false
+					};
 	}
 	renderRedirect = () => {
 		if (this.state.redirect) {
@@ -22,6 +25,13 @@ class Login extends Component {
 		}
 	}  
 	LoginSubmitHandler = (event) => {
+		//reset variables
+		this.state.failedLogin = false;
+		this.state.noEmail= false;
+		this.state.wrongPassword= false;
+		this.state.userForgotPassword = false;
+		this.state.takenEmail= false;
+
 		event.preventDefault();
 		// if valid username/password, send it to back end and store the login token to indicate we're logged in
 		if(this.state.username!='' && this.state.psword!==''){
@@ -48,20 +58,27 @@ class Login extends Component {
 				} catch(err){
 					console.log(err);
 				}
-			})
+			}, rej=>{this.setState({wrongPassword: true})})
 		}
 		//otherwise display error message
 		else{
 			this.setState({failedLogin: true});
+			
 		}
 	}
 	//works exactly the same as for logging in, but sends request to the account creation route instead
 	AccountCreateSubmitHandler = (event) => {
+		//reset variables
+		this.state.failedLogin = false;
+		this.state.noEmail= false;
+		this.state.wrongPassword= false;
+		this.state.userForgotPassword = false;
+		this.state.takenEmail= false;
+
 		event.preventDefault();
 		if(this.state.email!='' && this.state.psword!='' && this.state.psword.length>=6){
 			console.log(`${this.state.email}:${this.state.psword}`);
-			//axios.post('https://robbiesapiteam.herokuapp.com/api/register', null, {auth: {username: this.state.email,
-			axios.post('https://robbiesdebugteam.herokuapp.com/api/register', null, {auth: {username: this.state.email,
+			axios.post(`${process.env.REACT_APP_API_URL}/api/register`, null, {auth: {username: this.state.email,
 																					password: this.state.psword}})
 				//headers: {"authorization": "Basic ".concat(btoa(`${this.state.email}:${this.state.psword}`))}})
 			//axios.post('https://itprojecttestapi.herokuapp.com/api/user/register', null, {headers: {"authorization": "Basic ".concat(btoa(`${this.state.email}:${this.state.psword}`))}})
@@ -83,11 +100,13 @@ class Login extends Component {
 				} catch(err){
 					console.log(err);
 				}
-			})
+			}, rej=>{this.setState({takenEmail: true})})
 		}
 		else{
 			this.setState({failedLogin: true});
 		}
+
+
 	}
 	EmailChangeHandler = (event) => {
 		this.setState({email: event.target.value});
@@ -96,82 +115,73 @@ class Login extends Component {
 		this.setState({psword: event.target.value});
 	}
 	forgotPassword = () => {
+		//reset variables
+		this.state.failedLogin = false;
+		this.state.noEmail= false;
+		this.state.wrongPassword= false;
+		this.state.userForgotPassword = false;
+		this.state.takenEmail= false;
+
 		if(!this.state.email){
 			this.setState({noEmail: true});
 		}
 		else{
-			axios.post('https://robbiesapiteam.herokuapp.com/api/user/password', null, {params: {email: this.state.email}})
+			axios.post(`${process.env.REACT_APP_API_URL}/api/user/password`, null, {params: {email: this.state.email}})
 			.then(res => {this.setState({userForgotPassword: true})})
 		}
 	}
+	AlertMessage() {
+
+		if(this.state.failedLogin){ return "Please input a valid email and password" }
+		if(this.state.wrongPassword){ return "Incorrect email or password" }
+		if(this.state.userForgotPassword){ return "Recovery email sent. Please check your inbox" }
+		if(this.state.noEmail){ return "Please input a valid email" }
+		if(this.state.takenEmail){ return "Email already taken" }
+		else { return false }
+
+	}
+
 	render() {		
 		return (  
-			<div class="loginPage">
-				<div class="container logincontainer">
+			<div className="loginPage">
+				<div className="container logincontainer">
 					<form>
-						
-						<div class="form-group row d-flex justify-content-center">
-							<div class="col-xl-6">
+						<div className="form-group row d-flex justify-content-center">
+							<div className="col-xl-6">
 								<label for="formGroupExampleInput">Email</label>
-								<input type="text" class="form-control" id="email" placeholder="Email" onChange={this.EmailChangeHandler}/>
+								<input type="text" className="form-control" id="email" placeholder="Email" onChange={this.EmailChangeHandler}/>
 							</div>
 						</div>
-						<div class="form-group row d-flex justify-content-center">
-							<div class="col-xl-6">
+						<div className="form-group row d-flex justify-content-center">
+							<div className="col-xl-6">
 								<label for="formGroupExampleInput2">Password</label>
-								<input type="password" class="form-control" id="password" placeholder="Password (at least 6 characters)" onChange={this.PasswordChangeHandler}/>
-								<small id="passwordHelpBlock" class="form-text text-muted">
+								<input type="password" className="form-control" id="password" placeholder="Password (at least 6 characters)" onChange={this.PasswordChangeHandler}/>
+								<small id="passwordHelpBlock" className="form-text text-muted">
 									<a href="#" onClick={this.forgotPassword.bind(this)}>Forgot Password?</a>
 								</small>
 							</div>
 						</div>
 						
 						<br />
-						<div class="row d-flex justify-content-center">
+						<div className="row d-flex justify-content-center">
 						{this.renderRedirect()}
-								<button type="button" class="btn my-btn btn-primary" onClick={this.LoginSubmitHandler.bind(this)}>Login</button>
+								<button type="button" className="btn my-btn" onClick={this.LoginSubmitHandler.bind(this)}>Login</button>
 							
-								<div class="midText">&emsp; OR &emsp;</div>   
+								<div className="midText">&emsp; OR &emsp;</div>   
 							
-								<button type="button" class="btn my-btn btn-primary" onClick={this.AccountCreateSubmitHandler.bind(this)}>Create an Account</button>
+								<button type="button" className="btn my-btn" onClick={this.AccountCreateSubmitHandler.bind(this)}>Create an Account</button>
 				
 						</div>
 					</form>
 					<br />
 					{
-					  this.state.failedLogin?
-					  <div class="row d-flex justify-content-center">
-						  <div class="alert alert-danger loginAlert">
-							  Please input a valid email and password
+					  this.AlertMessage()?
+					  <div className="row d-flex justify-content-center">
+						  <div className="alert alert-danger loginAlert">
+							  {this.AlertMessage()}
 						  </div>
 					  </div>
-
 					  :
-
-					  <div></div>
-					}
-					{
-					  this.state.userForgotPassword?
-					  <div class="row d-flex justify-content-center">
-						  <div class="alert alert-danger loginAlert">
-							  Recovery email sent. Please check your inbox
-						  </div>
-					  </div>
-
-					  :
-
-					  <div></div>
-					}
-					{
-					  this.state.noEmail?
-					  <div class="row d-flex justify-content-center">
-						  <div class="alert alert-danger loginAlert">
-							  Please input a valid email
-						  </div>
-					  </div>
-
-					  :
-
 					  <div></div>
 					}
 				</div>

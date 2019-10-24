@@ -36,9 +36,8 @@ class Page extends Component {
 	}
 	componentDidMount(){
 		console.log(this.state);
-		axios({method: "get",
-			//url: 'https://robbiesapiteam.herokuapp.com/api/album=${this.state.albumID}/page=${this.state.pageLeft}',
-			url: `https://itprojecttestapi.herokuapp.com/api/album=${this.state.albumID}/page=${this.state.pageLeft}`, 
+    axios({method: "get",
+			url: `${process.env.REACT_APP_API_URL}/api/album=${this.state.albumID}/page=${this.state.pageLeft}`, 
 			params: {loginToken: localStorage.getItem("loginToken"),
 					uid: localStorage.getItem("uid")}
 			})

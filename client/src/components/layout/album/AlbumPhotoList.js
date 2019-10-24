@@ -6,49 +6,42 @@ import { SortableContainer, SortableElement } from "react-sortable-hoc";
 
 
 import makeAlbumList from '../photolist/tmpimglist';
+
 import Photo from "./Photo";
 
-import ALBUMIFY from '../navbar/ALBUMIFY'
+import ALBUMIFY from './ALBUMIFY';
+import axios from 'axios';
 
-//DO MAPPING
-// const photos = [
-//   {
-//     src: img1,
-//     width: 1,
-//     height: 1
-//   }
-// ]
+
 
 
 /* popout the browser and maximize to see more rows! -> */
 const SortablePhoto = SortableElement(item => <Photo {...item} />);
 
 const SortableGallery = SortableContainer(({ items }) => (
-  <Gallery photos={items} renderImage={props => <SortablePhoto {...props} />} />
+
+  <Gallery photos={items.map(image => {return image.src})} renderImage={props => <SortablePhoto {...props} />} />
 ));
 
-function AlbumPhotoList(albumList) {
-  const [items, setItems] = useState(albumList);
-  console.log("items, setItems   ", items, setItems);
 
+function AlbumPhotoList() {
+	const [items, setItems] = useState(null);
+	if(items==null){
+	makeAlbumList(window.location.pathname.slice(7)).then(setItems);
+	}
+console.log("set state-ish");
   const onSortEnd = ({ oldIndex, newIndex }) => {
-    setItems(arrayMove(items, oldIndex, newIndex));
+    setItems(arrayMove(items, oldIndex, newIndex));    
   };
-	
 
     return (
         <div>
-			{items?
-			<>
-			Hello World!
+		{items && <>
 			<ALBUMIFY items={items}/>
           <SortableGallery items={items} onSortEnd={onSortEnd} axis={"xy"} />
 		  </>
-		  	:
-			<div></div>
-			}
+		}
         </div>
     )
-
 }
 export default AlbumPhotoList;
