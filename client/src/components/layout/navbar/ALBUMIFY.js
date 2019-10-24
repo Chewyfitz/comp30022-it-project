@@ -7,9 +7,6 @@ import axios from 'axios';
 
 function handleClick(oldphotolist, newphotolist) {
 
-
-    console.log(oldphotolist);
-    console.log(oldphotolist);
     var toSend = {};
 
     //TO DO change src to albumposition then SEND to front end
@@ -18,10 +15,8 @@ function handleClick(oldphotolist, newphotolist) {
         if(oldphotolist[i].src != newphotolist[i].src){
             toSend[oldphotolist[i].src] = newphotolist[i].src; 
         }
-        console.log(oldphotolist[i]);
+        
     }
-
-    console.log(toSend);
     
     // //const updatedItems = items.map(item => {return {old, item.index}});
 
@@ -47,8 +42,7 @@ function handleClick(oldphotolist, newphotolist) {
 
 
 const ALBUMIFY = ({photos, items}) => { //functional component, equal to arrow function
-    console.log(photos);
-    console.log(items);
+
     const oldphotolist=photos;
     const newphotolist=items;
     

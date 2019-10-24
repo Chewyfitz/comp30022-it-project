@@ -17,9 +17,8 @@ function PageView({currentPhotos}) {
     <div className='album-format'>        
 
       <div className= "album-page-left">
-        <div>
-          <PageLayout photolist={leftPagePhotos}/>
-        </div>
+        
+        <PageLayout className="album" photolist={leftPagePhotos}/>
 
       </div>   
 
