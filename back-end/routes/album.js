@@ -117,14 +117,14 @@ router.patch ('/:albumId', (req, res) => {
 
 router.delete('/:albumId', (req, res) => {
 	// You have to specify which user's album you want to delete.
-	if(!req.query.userId){
+	if(!req.query.user){
 		res.sendStatus (400);
 		return;
 	}
-	const userId = req.query.userId;
+	const user = req.query.user;
 	const albumId = req.params.albumId;
 
-	if(!userId){
+	if(!user){
 		res.sendStatus(401);
 		return;
 	}
@@ -132,7 +132,7 @@ router.delete('/:albumId', (req, res) => {
 	// Optional - delete position
 	const position = req.query.position;
 	if(!isNaN(position)){
-		util.deleteAlbumPosition(userId, albumId, position).then( (success) => {
+		util.deleteAlbumPosition(user, albumId, position).then( (success) => {
 			if(success){
 				res.sendStatus(204);
 			} else {
@@ -143,7 +143,7 @@ router.delete('/:albumId', (req, res) => {
 			res.send(err.toString());
 		});
 	} else {
-		util.deleteAlbum(userId, albumId).then((success) => {
+		util.deleteAlbum(user, albumId).then((success) => {
 			if(success){
 				res.sendStatus(204);
 			} else {
