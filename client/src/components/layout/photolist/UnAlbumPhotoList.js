@@ -29,10 +29,6 @@ class UnAlbumPhotoList extends Component {
     console.count('onChange');
     console.log("Image", image);
     this.setState({ arrayImage : image });
-    //this.setState({image});
-    
-    //todo: connect to backend: 
-    //axios.post("./api/image",{})
   }
   
   render(imageList) {

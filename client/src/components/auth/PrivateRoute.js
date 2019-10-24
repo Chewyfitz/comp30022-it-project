@@ -14,8 +14,8 @@ export default function PrivateRoute({ children, ...rest }) {
       {...rest}
       render={({ location }) =>
 	  //in order to disable, replace the next line with true
-        //localStorage.getItem('loginToken') 
-		true
+        localStorage.getItem('loginToken') 
+		//true
 		? (
           children
         ) : (
