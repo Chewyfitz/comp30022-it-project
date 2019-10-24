@@ -1,7 +1,7 @@
 import axios from "axios";
 
-//const url = `${process.env.REACT_APP_API_URL}/api`;
-const url = `https://robbiesapiteam.herokuapp.com/api`;
+const url = `${process.env.REACT_APP_API_URL}/api`;
+// const url = "localhost:3001/api";
 
 // Get all the images from a specified album
 export async function getImagesfromAlbum(albumId, userId) {
@@ -37,24 +37,32 @@ export async function getImagesfromAlbum(albumId, userId) {
     return images;
 }
 
-export async function AddImagesToAlbum(photos, albumName) {
-	if(photos.length>0 && albumName){
-		console.log("adding photos");
-		console.log(photos);
-		console.log(albumName);
-		axios({method: "put",
-			url: `${url}/album/${albumName}`,
-			params: {user: localStorage.getItem("uid"),
-				imageId: photos[0].imageId}
-			})
-			.then(async res => {
-				await AddImagesToAlbum(photos.slice(1), albumName);
-				axios({method: "delete",
-					   url: `${url}/album/un`,
-					   params: {user: localStorage.getItem("uid"),
-								position: photos[0].albumPos.toString()}
-				})
-								
-			})
+export async function DeletePositionFromAlbum(position, albumId) {
+	axios.delete(`${url}/album/${albumId}`, {params: {
+		user: localStorage.getItem('uid'),
+		position: position,
+	}}).then(status => {
+		return status;
+	});
+}
+
+export async function AddImagesToAlbum(photos, toAlbum, fromAlbum='un') {
+	console.log(`Adding images to album ${toAlbum} from ${fromAlbum}.`);
+	// Add a bunch of images to an album
+	if(photos.length > 0 && toAlbum){
+		for(var photo in photos){
+			// Define the route to the album
+			const sendRoute = `${url}/album/${toAlbum}?imageId=${photos[photo].imageId}&user=${localStorage.getItem('uid')}`;
+
+			// Send the imageId
+			await axios.put(sendRoute).then( async () => {
+				// If we're going from the 'un'-album
+				if( fromAlbum === 'un' ){
+					await DeletePositionFromAlbum(photos[photo].albumPos, fromAlbum);
+				}
+			});
+		}
+		console.log("done");
+		window.location.reload();
 	}
-  }
+}

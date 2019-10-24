@@ -39,25 +39,25 @@ class NavDropdown extends React.Component {
   }
   uploadToAlbum() {
 	  if(this.props.photoList){
-		for(var i=0; i<this.state.arrayValue.length(); i++){
-			axios({method: "patch",
-			url: `https://robbiesapiteam.herokuapp.com/api/album/album=${this.state.arrayValue[i]}`,
-			//url: `https://itprojecttestapi.herokuapp.com/api/album/album=${this.state.arrayValue[i]}`, 
-			params: {loginToken: localStorage.getItem("loginToken"),
-					uid: localStorage.getItem("uid"),
-					photos: this.props.photoList}
-			})
-			.then(res => {
-				this.alert("Added Photos");
-				console.log(res.statusText);
-			})				
-		}
+      for(var i=0; i<this.state.arrayValue.length(); i++){
+        axios({method: "patch",
+        url: `${process.env.REACT_APP_API_URL}/api/album/album=${this.state.arrayValue[i]}`,
+        params: {loginToken: localStorage.getItem("loginToken"),
+            uid: localStorage.getItem("uid"),
+            photos: this.props.photoList}
+        })
+        .then(res => {
+          window.location.reload();
+          this.alert("Added Photos");
+          console.log(res.statusText);
+        })				
+      }
 	  }
   }
   uploadToSelected() {
-      this.state.arrayValue.forEach(album =>
-                                AddImagesToAlbum(this.props.photoList, album.albumId)
-        )
+      this.state.arrayValue.forEach(album => {
+        AddImagesToAlbum(this.props.photoList, album.albumId, 'un');
+      });
   }
   render() {
     return (
@@ -97,12 +97,6 @@ class NavDropdown extends React.Component {
                   key={item[valueKey]} // required
                   onClick={() => selectValue(item)}
               >
-                {/* <input type="checkbox" className=" button-format" checked={isSelected} readOnly />
-
-                <span style={{fontWeight: isSelected ? "bold" : "normal", fontSize: '16px'}}>
-                  {item[labelKey]}
-                </span> */}
-
                 <form>
                   <div className="custom-control custom-checkbox">
                     <input type="checkbox" className="custom-control-input" checked={isSelected} name="checkthis" readOnly/>
