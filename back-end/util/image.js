@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-const database = require('../database.js');
-
-=======
 // ============================================================================
 // Libraries
 const database = require('../database.js');
@@ -19,7 +15,6 @@ const gcs = new Storage(config());
 // ============================================================================
 // Functions
 
->>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
 async function getImageById(user, imageId){
     console.log("getImageById: "+imageId);
     photoData = await database.getPhotoData(user, imageId);
@@ -41,16 +36,11 @@ async function getImageRefById(user, imageId){
  * @param {String} photoDateTime - datetime as string
  */
 async function addPhotoToUser(user, image, photoDateTime = null){
-<<<<<<< HEAD
-=======
     // ... pretty much just call the database function
->>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
     success = database.addPhoto(user, image, photoDateTime);
     return success;
 }
 
-<<<<<<< HEAD
-=======
 // TODO: add photoDateTimes
 // TODO: change successes to document IDs
 async function addPhotosToUser(user, images){
@@ -68,19 +58,11 @@ async function addPhotosToUser(user, images){
     return successes;
 }
 
->>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
 // TODO: Implement Deletions
 async function deletePhotoById(user, image){
     console.log("Err: Incomplete Function deletePhotoById");
 }
 
-<<<<<<< HEAD
-module.exports = {
-    getImageById,
-    getImageRefById,
-    addPhotoToUser,
-    deletePhotoById
-=======
 // Thanks to Rowan for figuring out how all this works!
 async function uploadPhotos(files){
     // Set the information for the uploaded file
@@ -128,5 +110,4 @@ module.exports = {
     getImageById,
     getImageRefById,
     uploadPhotos
->>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
 }
