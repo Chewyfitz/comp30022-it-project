@@ -74,11 +74,11 @@ class ALBUMIFY extends React.Component { //functional component, equal to arrow 
                 <AlbumPreview photolist={this.props.items} albumName={this.props.albumName}/>
                 :
                 <nav className="navbar navbar-expand-sm navbar-dark fixed-top2" style={{backgroundColor:'#F4F6F8'}}>
-                {/*Sub navbar*/}
-                {/* <a href={'/albumify/'+ albumName} class="btn btn-default btn-block ALBUMIFY-text" onClick={() => handleClick(oldphotolist,newphotolist)}> */}
-                <a href='#' class="btn btn-default btn-block ALBUMIFY-text" onClick={() => this.handleClick()}>
-                    ALBUMIFY
-                </a>
+                    {/*Sub navbar*/}
+                    {/* <a href={'/albumify/'+ albumName} class="btn btn-default btn-block ALBUMIFY-text" onClick={() => handleClick(oldphotolist,newphotolist)}> */}
+                    <a href='#' class="btn btn-default btn-block ALBUMIFY-text" onClick={() => this.handleClick(this.props.items,this.props.items)}>
+                        ALBUMIFY
+                    </a>
                 </nav>
             }
             </>

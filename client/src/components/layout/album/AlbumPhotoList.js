@@ -10,10 +10,12 @@ import tmpimglist from '../photolist/tmpimglist'
 
 import Photo from "./Photo";
 
-import ALBUMIFY from './ALBUMIFY';
 import axios from 'axios';
 import { thisExpression } from "@babel/types";
 
+
+import "../navbar/Navbar.css"
+import AlbumPreview from './AlbumPreviewTemp' 
 
 
 async function makeAlbumList(albumId){
@@ -38,33 +40,62 @@ const SortableGallery = SortableContainer(({ items }) => (
     <Gallery photos={items} renderImage={props => <SortablePhoto {...props} />} />
 ));
 
-function AlbumPhotoList() {
-  
-  const [items, setItems] = useState(null);
 
-  if(items==null){
-    makeAlbumList(window.location.pathname.slice(7)).then(setItems);
-  }
+class AlbumPhotoList extends React.Component{  
+    state = {
+        loadOverview: false,
+        items: null,
+        setItems: null
+    }
+    
+    handleClick = (oldphotolist, newphotolist) => {
 
-  const photos = items;
+        this.setState({loadOverview:true});
+        console.log("ALBUMIFYYYYYYYYYY" + newphotolist);
+    
+    }
 
-  //console.log("PHOTOSSSSSSSS" + photos.src);
+    render(){
+        //const [items, setItems] = useState(null);
+        if(this.state.items==null){
+            makeAlbumList(window.location.pathname.slice(7)).then(this.state.setItems);
+        }
 
-  // items.foreach(item => {item.height = 1; item.width = 1});
-  
-  console.log("set state-ish");
-  const onSortEnd = ({ oldIndex, newIndex }) => {
-      setItems(arrayMove(items, oldIndex, newIndex));    
-  };
+        const photos = this.state.items;
 
-  return (
-      <div>
-          {items && <>
-              <ALBUMIFY albumName={window.location.pathname.slice(7)} photos={photos} items={items} />
-                  <SortableGallery items={items} onSortEnd={onSortEnd} axis={"xy"} />
-              </>
-          }
-      </div>
-  )
+        //console.log("PHOTOSSSSSSSS" + photos.src);
+
+        // items.foreach(item => {item.height = 1; item.width = 1});
+        
+        console.log("set state-ish");
+        const onSortEnd = ({ oldIndex, newIndex }) => {
+            this.state.setItems(arrayMove(this.state.items, oldIndex, newIndex));    
+        };
+
+
+        return (
+            <div>
+                {this.state.items && 
+                    <>
+                    {this.state.loadOverview?
+                        <AlbumPreview photolist={this.state.items} albumName={window.location.pathname.slice(7)}/>
+                        :
+                        <>
+                            {/* <ALBUMIFY albumName={window.location.pathname.slice(7)} photos={photos} items={items} /> */}
+                            <nav className="navbar navbar-expand-sm navbar-dark fixed-top2" style={{backgroundColor:'#F4F6F8'}}>
+                                {/*Sub navbar*/}
+                                {/* <a href={'/albumify/'+ albumName} class="btn btn-default btn-block ALBUMIFY-text" onClick={() => handleClick(oldphotolist,newphotolist)}> */}
+                                <a href='#' class="btn btn-default btn-block ALBUMIFY-text" onClick={() => this.handleClick(photos, this.state.items)}>
+                                    ALBUMIFY
+                                </a>
+                            </nav>
+                            <SortableGallery items={this.state.items} onSortEnd={onSortEnd} axis={"xy"} />
+                        </>
+                    }
+                    </>
+                }
+            </div>
+        )
+    }
 }
 export default AlbumPhotoList;
