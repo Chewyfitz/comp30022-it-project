@@ -3,8 +3,6 @@ const router = express.Router();
 const util = require('../util/image');
 
 // ============================================================================
-<<<<<<< HEAD
-=======
 // Middleware
 
 // Cors enables cross-origin resource sharing
@@ -16,7 +14,6 @@ var storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // ============================================================================
->>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
 // '/api/image' routes
 
 router.get('/:imageId/view', (req, res) => {
@@ -42,23 +39,6 @@ router.get('/:imageId', (req, res) => {
 	});
 });
 
-<<<<<<< HEAD
-/**
- * Currently only allows URL-based "upload"
- * will add actual image upload... when I can figure out how
- */
-router.post('/', (req, res) =>{
-	// Add a new image - Likely will need upload or some kind of url
-	console.log("POST /image/");
-	// TODO: Add user auth check
-	console.log(req.params);
-	console.log(req.query);
-	if(req.query.user && req.query.image){
-		util.addPhotoToUser(req.query.user, req.query.image).then(responseStatus => {
-			responseStatus?res.sendStatus(200) : res.sendStatus(500);
-		});
-	} else{
-=======
 router.post('/', cors(), upload.array('file'), (req, res) => {
 	// variables of interest here are req.files, req.params, and req.query
 
@@ -85,7 +65,6 @@ router.post('/', cors(), upload.array('file'), (req, res) => {
     });
   } else {
     // Something weird happened
->>>>>>> 93a203b22c6fcce9939e45f942874bc9ec78f1ff
 		res.sendStatus(400);
 	}
 });
