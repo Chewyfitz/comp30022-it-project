@@ -20,7 +20,9 @@ async function register(req){
         // Try to register the user with their details
         var user = firebaseRegister(login, password).then((user) => {
             console.log(user.user.uid);
-            database.addUser(user.user.uid, 'abc@123.com').then((userKey) => {
+            // Add the user with their returned username and provided email.
+            database.addUser(user.user.uid, login).then((userKey) => {
+                // Create the UN album.
                 database.addAlbum(userKey, UN, UN);
             });
         });
