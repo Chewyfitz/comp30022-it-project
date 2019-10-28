@@ -6,3 +6,4 @@ back-end/npm-debug.log
 back-end/config/gcsToken.json
 *.env(project)
 back-end/test.js
+back-end/.env(mine)

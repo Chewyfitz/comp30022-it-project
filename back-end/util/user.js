@@ -1,6 +1,8 @@
 const database = require('../database.js');
 //const firebase = require('firebase');
-const auth = require('firebase/auth');
+const firebase = require('firebase/app');
+require('firebase/auth');
+const auth = firebase.auth();
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                   CREATE                                   //
