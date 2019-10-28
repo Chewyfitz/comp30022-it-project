@@ -59,7 +59,13 @@ async function updateAlbumAttributes(user, album, attributes){
         // update view
         view_success = await database.updateAlbumView(user, album, attributes.view);
     }
-    return name_success && template_success && view_success;
+    if('position' in attributes){
+        if('caption' in attributes){
+            // update album position caption
+            caption_success = await database.updateAlbumPositionCaption(user, album, attributes.position, decodeURI(attributes.caption));
+        }
+    }
+    return name_success && template_success && view_success && caption_success;
 }
 
 async function addImageToAlbum(image, album, user, caption = ''){
