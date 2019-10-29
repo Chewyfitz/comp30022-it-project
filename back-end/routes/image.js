@@ -44,10 +44,15 @@ router.post('/', /*cors(),*/ upload.array('file'), (req, res) => {
 
 	// TODO: Add user auth check
 	var album = req.query.album || 'un';
+
+	//I have a feeling back end should actually try to get this info somehow?
+	let height = req.query.height;
+	let width = req.query.width;
+
 	if(req.query.user && req.query.image){
 		console.log(`user: ${req.query.user} | image: ${req.query.image}`);
     // Add the URL to the user.
-		util.addPhotoToUser(req.query.user, req.query.image, album).then(responseStatus => {
+		util.addPhotoToUser(req.query.user, req.query.image, height, width, album).then(responseStatus => {
 			// If you've never seen this format before, it's just an if/then/else in 
 			// a different form (that I think looks clean).
 			// Read it similarly to a normal english sentence: 

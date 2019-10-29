@@ -1,6 +1,8 @@
 const database = require('../database.js');
-const firebase = require('firebase');
+//const firebase = require('firebase');
+const firebase = require('firebase/app');
 require('firebase/auth');
+const auth = firebase.auth();
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                   CREATE                                   //
@@ -13,13 +15,13 @@ require('firebase/auth');
 ////////////////////////////////////////////////////////////////////////////////
 
 async function checkToken(token){
-    success = await firebase.auth().checkToken(token);
+    success = await auth.checkToken(token);
     return success;
 }
 
 async function getUserInfo(token, userId){
     if(checkToken(token)){
-        userinfo = await firebase.auth().getUserInfo(userId);
+        userinfo = await auth.getUserInfo(userId);
         return userinfo;
     } else {
         throw new Error("Invalid token");
@@ -31,12 +33,12 @@ async function getUserInfo(token, userId){
 ////////////////////////////////////////////////////////////////////////////////
 
 async function send_password_reset_email(email){
-    success = await firebase.auth().sendPasswordResetEmail(email);
+    success = await auth.sendPasswordResetEmail(email);
     return success;
 }
 
 async function reset_password(code, newPassword){
-    success = await firebase.auth().confirmPasswordReset(code, newPassword);
+    success = await auth.confirmPasswordReset(code, newPassword);
     return success;
 }
 

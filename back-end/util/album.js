@@ -39,6 +39,10 @@ async function getAllAlbumNames(user){
     return await database.getAllAlbumNames(user);
 }
 
+async function getAlbumTemplate(user, albumID){
+    return await database.getAlbumTemplate(user, albumID);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //                                   UPDATE                                   //
 ////////////////////////////////////////////////////////////////////////////////
@@ -88,6 +92,7 @@ module.exports = {
     // READ
     getAlbumById,
     getAllAlbumNames,
+    getAlbumTemplate,
     // UPDATE
     updateAlbumAttributes,
     addImageToAlbum,

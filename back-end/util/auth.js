@@ -1,12 +1,12 @@
 const database = require('../database.js');
-const firebase = require('firebase');
+//const firebase = require('firebase');
+const firebase = require('firebase/app');
 require('firebase/auth');
-
-const UN = 'un' //Constant for UnAlbum
-
+const auth = firebase.auth();
+const UN = 'un'; //Constant for UnAlbum
 
 async function firebaseRegister(email, password){
-    user = await firebase.auth().createUserWithEmailAndPassword(email, password);
+    user = await auth.createUserWithEmailAndPassword(email, password);
     return user;
 }
 
@@ -42,7 +42,7 @@ function decode(authString){
 }
 
 async function firebaseSignIn(email, password){
-    user = await firebase.auth().signInWithEmailAndPassword(email, password)
+    user = await auth.signInWithEmailAndPassword(email, password)
     return user;
 }
 
