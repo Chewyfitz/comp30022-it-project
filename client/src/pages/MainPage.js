@@ -10,7 +10,7 @@ import Navbar from '../components/layout/navbar/Navbar'
 import SubNavbar from '../components/layout/navbar/SubNavbar'
 import UnAlbumPhotoList from '../components/layout/photolist/UnAlbumPhotoList'
 import Sidebar from '../components/layout/navbar/Sidebar'
-import PhotoUpload from '../components/layout/navbar/PhotoUpload'
+// import PhotoUpload from '../components/layout/navbar/PhotoUpload'
 import SignoutButton from '../components/auth/SignoutButton'
 
 import "../App.css";
