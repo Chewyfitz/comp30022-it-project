@@ -18,8 +18,8 @@ class Pagination extends React.Component {
     }
 
     state = {
-        //ImageList: ['a','b','c','d','e','f','g','h','i','j','k'],
-        //ImageList: [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12],
+        //photolist: ['a','b','c','d','e','f','g','h','i','j','k'],
+        //photolist: [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12],
         CurrentPage: 1,
         PhotosPerPage: 9
     };
@@ -62,20 +62,20 @@ class Pagination extends React.Component {
     }
 
     render() {
-        const {ImageList} = this.props;
+        const { photolist } = this.props;
 
         const {CurrentPage, PhotosPerPage } = this.state;
 
-        if(!ImageList){
+        if(!photolist){
             return (<p>loading...</p>)
         }
 
         // Logic for displaying current photos
         const indexOfLastPhoto = CurrentPage * PhotosPerPage;
         const indexOfFirstPhoto = indexOfLastPhoto - PhotosPerPage;
-        const currentPhotos = ImageList.slice(indexOfFirstPhoto, indexOfLastPhoto);
+        const currentPhotos = photolist.slice(indexOfFirstPhoto, indexOfLastPhoto);
 
-        const UltimatePhotoIndex = Math.ceil(ImageList.length/ PhotosPerPage);
+        const UltimatePhotoIndex = Math.ceil(photolist.length/ PhotosPerPage);
 
         //slice photos into 2 separate lists
         const leftPagePhotos = currentPhotos.slice(0, Math.floor((currentPhotos.length)/2));
@@ -95,7 +95,7 @@ class Pagination extends React.Component {
 
                 </div>   
 
-                {/* <ImagePicker images={imageList2.map((image, i) => ({src: image, value: i}))} /> */}
+                {/* <ImagePicker images={photolist2.map((image, i) => ({src: image, value: i}))} /> */}
                 <div className=" album-page-right">
                     <div className="album-page-photos">
                         <PageLayout photolist={rightPagePhotos}/>
