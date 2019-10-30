@@ -117,14 +117,17 @@ class UploadButton extends React.Component {
           onClick={this.onClickHandler}>Upload Photos</button>
       </div>
       { this.state.uploading &&
-        <div className="alert alert-info" role="alert"
-             style={{
-                position:'absolute',
-                top:'58px', // so it appears below the upload button
-                right:'0',  // stick it to the right
-                left: '0',  // stick it to the left
-                'z-index': '999', // ensure it's always on top 
-                }}>
+        <div className="alert alert-info uploading-alert" role="alert"
+        style={{
+          position:'absolute',
+          top: '58px', /* so it appears below the upload button*/
+          right:'0',  /* stick it to the right */
+          left: '0',  /* stick it to the left*/
+          'z-index': '999', /* ensure it's always on top */
+          'background-color': '#F4F6F8',
+          color: '#4C734E',
+          'border-color': '#C1893F',
+        }}>
           Uploading...
         </div>
       }
