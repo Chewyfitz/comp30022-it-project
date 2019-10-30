@@ -62,10 +62,10 @@ class Pagination extends React.Component {
     }
 
     render() {
-        const ImageList = this.props.photolist;
+        const {ImageList} = this.props;
 
         const {CurrentPage, PhotosPerPage } = this.state;
-        console.log("ALBUMIFYYYYYYYYYY" + ImageList);
+
         if(!ImageList){
             return (<p>loading...</p>)
         }
