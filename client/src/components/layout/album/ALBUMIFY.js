@@ -5,7 +5,7 @@ import React from 'react'
 import "../navbar/Navbar.css"
 import axios from 'axios';
 
-function handleClick(oldphotolist, newphotolist) {
+function handleClick(oldphotolist, newphotolist, onclick) {
 
     console.log("ALBUMIFYYYYYYYYYY");
 
@@ -21,6 +21,7 @@ function handleClick(oldphotolist, newphotolist) {
     }
     console.log(oldphotolist);
     console.log(toSend);
+    onclick(1);
 
     // for (id in oldphotolist){
     //     if(oldphotolist[id] != newphotolist[id]){
@@ -48,16 +49,16 @@ function handleClick(oldphotolist, newphotolist) {
 }
 
 
-const ALBUMIFY = ({photos, items}) => { //functional component, equal to arrow function
+const ALBUMIFY = ({oldItems, newItems, onclick}) => { //functional component, equal to arrow function
 
-    const oldphotolist=photos;
-    const newphotolist=items;
+    const oldphotolist=oldItems;
+    const newphotolist=newItems;
     
     //when clicked send photo list to backend (keep the order)
     return(
         <nav className="navbar navbar-expand-sm navbar-dark fixed-top2" style={{backgroundColor:'#F4F6F8'}}>
             {/*Sub navbar*/}
-            <a href='../albumify' class="btn btn-default btn-block ALBUMIFY-text" onClick={() => handleClick(oldphotolist,newphotolist)}>
+            <a href='#' className="btn btn-default btn-block ALBUMIFY-text" onClick={() => handleClick(oldphotolist,newphotolist, onclick)}>
                 ALBUMIFY
             </a>
         </nav>
