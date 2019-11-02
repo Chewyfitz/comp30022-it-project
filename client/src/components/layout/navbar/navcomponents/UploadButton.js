@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import axios from 'axios';
-import "./Navbar.css"
-import UnAlbumPhotoList from "../photolist/UnAlbumPhotoList"
+import "../Navbar.css"
 
 class UploadButton extends React.Component {
   constructor(props) {

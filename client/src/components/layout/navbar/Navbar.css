@@ -49,3 +49,33 @@
     font-size:25px;
     font-weight: bold;
 }
+
+@media (min-width: 768px) {
+    .navbar-brand.abs
+        {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top: 10;
+            text-align: center;
+            z-index: 99;
+        }
+}
+
+.btn-outline-light {
+    color: #F4F6F8;
+}
+
+.btn-outline-light:hover {
+    background-color: #F4F6F8;
+    color:#7488A3
+}
+
+/* for subnavbar position */
+.fixed-top-2 {
+    margin-top: 56px;
+}
+
+.collapse-colour {
+    background-color: #7488A3 !important;
+}

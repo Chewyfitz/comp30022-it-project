@@ -1,11 +1,11 @@
 import React from 'react'
-import './Page.css'
+import '../Album.css'
 //COMPONENTS
-import PageLayout from './PageLayout'
+import PageLayout from './SinglePageLayout'
 
 //import axios from 'axios'
 
-const albumAPI = require('../../api/api');
+const albumAPI = require('../../../api/api');
 
 class Pagination extends React.Component {
     constructor(props) {

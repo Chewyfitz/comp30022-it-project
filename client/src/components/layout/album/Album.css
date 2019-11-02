@@ -5,6 +5,7 @@
 .album-page-left{
     box-shadow: 5px 5px rgba(116, 136, 163, 0.7);
     top:75px;
+    bottom:75px !important;
     border-right-color: rgb(61, 94, 62) !important;
     border:1px solid #4C734E;
     background-image: linear-gradient(to right, rgba(240, 227, 215, 0), 

@@ -3,7 +3,7 @@ import ImagePicker from 'react-image-picker'
 import './UnAlbumPhotoList.css'
 
 
-const albumAPI = require('../../api/api');
+const albumAPI = require('../api/api');
 
 class UnAlbumPhotoList extends Component {
   
