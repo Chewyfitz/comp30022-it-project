@@ -5,7 +5,7 @@ import React from 'react'
 import "../navbar/Navbar.css"
 import axios from 'axios';
 
-import reorderImages from '../../api/api';
+import { reorderImages } from '../../api/api';
 
 function handleClick(albumId, oldphotolist, newphotolist, onclick) {
 
