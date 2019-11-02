@@ -30,6 +30,26 @@ export async function getImagesfromAlbum(albumId, userId) {
     return images;
 }
 
+export async function getAlbumList(){
+	// Get the albums
+	console.log(`Getting Albums`);
+	return await axios.get(`${process.env.REACT_APP_API_URL}/api/album/`,{ params: {
+		user: localStorage.getItem("uid")
+	}}).then(res => { // then print response status
+		console.log(`response: ${res.data}`);
+		var newList = [];
+		for(var key in res.data){
+			if (res.data.hasOwnProperty(key)) {
+				newList.push({name: res.data[key],
+							albumId: key});
+			}
+		}
+		return newList;
+	}).catch((err) => {
+		console.error(err);
+	});
+}
+
 export async function CreateNewAlbum(albumName, photos) {
 	var albumId;
 	if(albumName){
@@ -38,11 +58,11 @@ export async function CreateNewAlbum(albumName, photos) {
 			axios.post(`${process.env.REACT_APP_API_URL}/api/album/`, null, { params: {
 				albumName: albumName,
 				user: localStorage.getItem("uid"),
-			}}).then( res => {
+			}}).then(async res => {
 				// Then if we've got any photos to add to the album, do so
 				var albumId = res.data;
 				if(photos && photos.length > 0){
-					AddImagesToAlbum(photos, albumId);
+					await AddImagesToAlbum(photos, albumId);
 				}
 				return albumId;
 			});
@@ -50,7 +70,7 @@ export async function CreateNewAlbum(albumName, photos) {
 	}
 }
 
-export async function AddImagesToAlbum(photos, albumId) {
+export async function AddImagesToAlbum(photos, albumId, remove=true, removeAlbum='un') {
 	if(!albumId){ // How else do we know where to put them?
 		throw "album ID not defined!";
 	}
@@ -69,17 +89,24 @@ export async function AddImagesToAlbum(photos, albumId) {
 				user: localStorage.getItem("uid"),
 				imageId: photos[i].imageId
 			}
-		})
-		// then once it's been put in the new album,
-		// DELETE it from the old album (un - to be generalised)
-		var delreq = axios.delete(`${url}/album/un`, { params:
-			{
-				user: localStorage.getItem("uid"),
-				position: photos[i].albumPos.toString()
-			}
-		})
+		});
+
+		if(remove){
+			// then once it's been put in the new album,
+			// DELETE it from the old album (un - to be generalised)
+			var delreq = axios.delete(`${url}/album/${removeAlbum}`, { params:
+				{
+					user: localStorage.getItem("uid"),
+					position: photos[i].albumPos.toString()
+				}
+			});
+		} else {
+			// Give it any value so it doesn't wait
+			var delreq = 0;
+		}
 		await putreq;
 		await delreq;
 	}
 
+	return;
 }

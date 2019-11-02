@@ -17,26 +17,10 @@ class Sidebar extends Component {
 	}
 
 	componentDidMount() {
-		// Get the albums
-		console.log(`Getting Albums`);
-		axios.get(`${process.env.REACT_APP_API_URL}/api/album/`,{ params: {
-			user: localStorage.getItem("uid")
-		}}).then(res => { // then print response status
-			console.log(`response: ${res.data}`);
-			var newList = [];
-			for(var key in res.data){
-				if (res.data.hasOwnProperty(key)) {
-					newList.push({name: res.data[key],
-								albumId: key});
-				}
-			}
-			this.setState({AlbumList: newList});
-			this.setState({FilteredAlbumList: newList});
-
-			console.log(`set state: ${JSON.stringify(this.state)}`);
-		}).catch((err) => {
-			console.error(err);
-		});
+		api.getAlbumList().then(albumList => {
+			this.setState({AlbumList: albumList});
+			this.setState({FilteredAlbumList: albumList});
+		})
 	}
 	
 	SearchAlbums = (event) => {
@@ -63,7 +47,10 @@ class Sidebar extends Component {
 			console.log(`photos: ${this.props.photos()}`);
 			api.CreateNewAlbum(newAlbumName, this.props.photos()).then( albumId => {
 				console.log(`Got ${albumId} from api.CreateNewAlbum.`);
-				//window.location.reload();
+				this.setState({
+					AlbumList: [...this.state.AlbumList, {name: newAlbumName, albumId: albumId}],
+					FilteredAlbumList: [...this.state.FilteredAlbumList, {name: newAlbumName, albumId: albumId}],
+				});
 			});
 		}
 	  

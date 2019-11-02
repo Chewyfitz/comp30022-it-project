@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import ReactDOM from 'react-dom';
 import { Redirect } from 'react-router-dom';
-import { AddImagesToAlbum } from '../components/api/api'
 
 //COMPONENTS
 import Navbar from '../components/layout/navbar/Navbar'
@@ -43,7 +42,7 @@ class MainPage extends Component {
 				/> 
 				<div id="page-wrap">
 					<Navbar pageName={"Main Page"}/>
-					<SubNavbar updatedPhotos={this.state.CurrentPhotoList} albums={this.state.AlbumList}/>
+					<SubNavbar photos={this.getCurrentPhotoList} albums={this.state.AlbumList}/>
 					<UnAlbumPhotoList parentCallback = {this.updatePhotoList}/>
 				</div>
 			</div>
