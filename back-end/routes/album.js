@@ -78,7 +78,8 @@ router.put   ('/:albumId', (req, res) => {
 	var imageList = req.query.imageList;
 	
 	if(imageList) {
-		util.addManyImagesToAlbum(user, albumId, imageList).then( (success) => {
+		console.log(imageList);
+		util.addManyImagesToAlbum(user, albumId, JSON.parse(imageList)).then( (success) => {
 			if(success){
 				res.sendStatus(201);
 			} else {
@@ -86,6 +87,7 @@ router.put   ('/:albumId', (req, res) => {
 			}
 			return;
 		});
+		return;
 	}
 
 	if(!user){
@@ -143,7 +145,22 @@ router.delete('/:albumId', (req, res) => {
 
 	// Optional - delete position
 	const position = req.query.position;
-	if(!isNaN(position)){
+	// Multiple position deletion does not currently work.
+	/*const positions = req.query.positionList;
+	console.log(positions);
+	console.log(JSON.parse(positions));
+	if(positions){
+		util.deleteManyAlbumPositions(user, albumId, JSON.parse(positons)).then( (success) => {
+			if(success){
+				res.sendStatus(204);
+			} else {
+				res.sendStatus(400);
+			}
+		}).catch( (err) => {
+			res.status(500);
+			res.send(err.toString());
+		})
+	} else*/ if(!isNaN(position)){
 		util.deleteAlbumPosition(user, albumId, position).then( (success) => {
 			if(success){
 				res.sendStatus(204);
