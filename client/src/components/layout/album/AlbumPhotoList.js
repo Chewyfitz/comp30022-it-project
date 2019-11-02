@@ -38,26 +38,45 @@ async function makeAlbumList(albumId){
     return finalImageList
 }
 
-function AlbumPhotoList() {
-    const [items, setItems] = useState(null);
-    if(items==null){
-        makeAlbumList(window.location.pathname.slice(7)).then(setItems);
+class AlbumPhotoList extends React.Component {
+    // Build an AlbumPhotoList
+    constructor(props) {
+        super(props);
+        console.log(props);
+        this.state = {
+            firstItems: null,
+            items: null,
+        }
+        this.props.updateItems.bind(this);
+        this.props.changeView.bind(this);
+        // Run the function to populate the album
+        if(this.state.items == null){
+            makeAlbumList(props.match.params.albumId).then(items => {
+                this.setState({items: items});
+                this.setState({firstItems: items});
+                this.props.updateItems(items);
+            });
+        }
+
     }
-    // items.foreach(item => {item.height = 1; item.width = 1});
     
-    console.log("set state-ish");
-    const onSortEnd = ({ oldIndex, newIndex }) => {
-        setItems(arrayMove(items, oldIndex, newIndex));    
+    // What happens when you finish sorting
+    onSortEnd = ({ oldIndex, newIndex }) => {
+        var newItems = arrayMove(this.state.items, oldIndex, newIndex)
+        this.setState({items: newItems});
+        this.props.updateItems(newItems);
     };
 
-    return (
-        <div>
-            {items && <>
-                <ALBUMIFY items={items}/>
-                    <SortableGallery items={items} onSortEnd={onSortEnd} axis={"xy"} />
-                </>
-            }
-        </div>
-    )
+    render () {
+        return(
+            <div>
+                {this.state.items && <>
+                    <ALBUMIFY onclick={this.props.changeView} albumId={this.props.match.params.albumId} newItems={this.state.items} oldItems={this.state.firstItems}/>
+                        <SortableGallery items={this.state.items} onSortEnd={this.onSortEnd} axis={"xy"} />
+                    </>
+                }
+            </div>
+        );
+    }
 }
 export default AlbumPhotoList;
