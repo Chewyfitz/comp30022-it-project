@@ -6,12 +6,12 @@ import axios from 'axios';
 import { AddImagesToAlbum } from '../../api/api';
 
 
-const bigList = [];
+/*const bigList = [];
 
 
 for (var i = 1; i <= 50; i++) {
   bigList.push({ id: i, name: `Item ${i}` });
-}
+}*/
 class NavDropdown extends React.Component {
   constructor(props) {
     super(props);
@@ -61,7 +61,7 @@ class NavDropdown extends React.Component {
     this.state.arrayValue.forEach(album =>
         AddImagesToAlbum(this.props.photoList, album.albumId)
       )
-    window.location.reload();
+    this.props.renderDeleteFunction();
   }
   render() {
     return (

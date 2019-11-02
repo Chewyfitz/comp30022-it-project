@@ -19,7 +19,8 @@ class MainPage extends Component {
   state = { CurrentPhotoList: [],
 			AlbumList: [],
 			FilteredAlbumList: [],
-			searchText: ''
+			searchText: '',
+			renderDelete: false
 			}
             
   callbackFunction = (childData) => {
@@ -28,23 +29,14 @@ class MainPage extends Component {
 	  console.log(childData);
 	  console.log(this.state);
   }
+  renderDeleteCallback = () => {
+	  this.setState({renderDelete: true});
+  }
   
   componentDidMount() {
-	/*const album1={ AlbumID: 1,
-				   Name: "Test1"}
-	const album2={ AlbumID: 2,
-				   Name: "Test2"}
-	const album3={ AlbumID: 3,
-				   Name: "Test3"}
-	const testAlbumList = [album1, album2, album3]		   
-	
-	this.setState({AlbumList: testAlbumList});
-	this.setState({FilteredAlbumList: testAlbumList});*/
 	axios({method: "get",
 			url: `${process.env.REACT_APP_API_URL}/api/album/`,
 			params: {user: localStorage.getItem("uid")}
-			/*params: {loginToken: localStorage.getItem("loginToken"),
-					uid: localStorage.getItem("uid")}*/
 			})
 			.then(res => { // then print response status
 				console.log(res.statusText);
@@ -90,17 +82,32 @@ class MainPage extends Component {
 					//uid: localStorage.getItem("uid")}
 		})
 		.then(res => { // then print response status
+			console.log("res stuff");
 				console.log(res.statusText);
 				console.log(res.data);
 
 				newAlbumName=res.data;
 
-				window.location.reload();
+				//window.location.reload();
 
 				if(this.state.CurrentPhotoList){
-					AddImagesToAlbum(this.state.CurrentPhotoList, newAlbumName)
+					AddImagesToAlbum(this.state.CurrentPhotoList, newAlbumName).then(res => {
+						//window.location.reload();
+						console.log("images be added bruh");
+						console.log(res);
+					});
 				}
-			})
+				else{
+					console.log("else'd it");
+					//window.location.reload();
+				}
+				this.setState({renderDelete: true});
+				this.setState({AlbumList: this.state.AlbumList.concat(newAlbumName)});
+				if(newAlbumName.toLowerCase().includes(this.state.searchText.toLowerCase())){
+					this.setState({FilteredAlbumList: this.state.FilteredAlbumList.concat(newAlbumName)});
+				}
+		  });
+			
 	  }
 	  
   }
@@ -127,8 +134,8 @@ class MainPage extends Component {
 			 /> 
             <div id="page-wrap">
                 <Navbar pageName={"Main Page"}/>
-                <SubNavbar photos={this.state.CurrentPhotoList} albums={this.state.AlbumList}/>
-                <UnAlbumPhotoList parentCallback = {this.callbackFunction}/>
+                <SubNavbar photos={this.state.CurrentPhotoList} albums={this.state.AlbumList} renderDeleteCallback={this.renderDeleteCallback} />
+                <UnAlbumPhotoList parentCallback = {this.callbackFunction} renderDelete = {this.state.renderDelete}/>
             </div>
         </div>
 		

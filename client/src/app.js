@@ -43,7 +43,7 @@ class App extends Component {
               <AlbumPreview />
             </PrivateRoute>
 
-            <PrivateRoute exact path='/photo'> 
+            <PrivateRoute path='/photo'> 
               <PhotoPreview />
             </PrivateRoute>
                   

@@ -20,7 +20,8 @@ export async function getImagesfromAlbum(albumId, userId) {
         for(var photo in photos){
 			images.push({src: photos[photo].reference,
 						 imageId: photos[photo].photoID,
-						 albumPos: photo});
+						 albumPos: photo,
+						 caption: photos[photo].caption});
         }
         // Wait for all of the URLs
         //return await Promise.all(images);
@@ -36,6 +37,9 @@ export async function getImagesfromAlbum(albumId, userId) {
 }
 
 export async function AddImagesToAlbum(photos, albumName) {
+	photos.sort(function(a, b){
+		return b.albumPos - a.albumPos
+	});
 	if(photos.length>0 && albumName){
 		console.log("adding photos");
 		console.log(photos);
@@ -55,4 +59,20 @@ export async function AddImagesToAlbum(photos, albumName) {
 								
 			})
 	}
-  }
+}
+
+export async function UpdateCaption(photoPos, albumName, caption){
+	console.log("photoPos", photoPos, "albumName", albumName, "caption", caption);
+	var newRes = axios({method: "patch",
+		url: `${url}/album/${albumName}`,
+		params: {user: localStorage.getItem("uid"),
+				position: photoPos,
+				caption: caption}
+		}).then(async (res) => {
+			console.log(res);
+			return res
+		});
+	var res = await newRes;
+	
+	return res
+}
