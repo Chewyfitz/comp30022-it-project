@@ -110,3 +110,24 @@ export async function AddImagesToAlbum(photos, albumId, remove=true, removeAlbum
 
 	return;
 }
+
+/** Reorder the images on the back-end so that the state is consistent between
+ *  page sessions.
+ * 
+ *  @param album - the album which is being rearranged
+ * 
+ *  @param subset_permutation - an object mapping initial to final arrangement
+ * 	eg {1: 3, 3: 2, 2: 0, 0: 1}
+ * 	Must be a proper permutation.
+ */
+export async function reorderImages(albumId, subset_permutation){
+	// This functionality isn't implemented yet, but should be soon.
+	var updatereq = axios.patch(`${url}/album/${albumId}`, {
+		params: {
+			user: localStorage.getItem("uid"),
+			permutation: JSON.stringify(subset_permutation),
+		}
+	})
+
+	return await updatereq;
+}

@@ -71,7 +71,7 @@ class AlbumPhotoList extends React.Component {
         return(
             <div>
                 {this.state.items && <>
-                    <ALBUMIFY onclick={this.props.changeView} newItems={this.state.items} oldItems={this.state.firstItems}/>
+                    <ALBUMIFY onclick={this.props.changeView} albumId={this.props.match.params.albumId} newItems={this.state.items} oldItems={this.state.firstItems}/>
                         <SortableGallery items={this.state.items} onSortEnd={this.onSortEnd} axis={"xy"} />
                     </>
                 }

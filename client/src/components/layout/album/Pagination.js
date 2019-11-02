@@ -1,6 +1,5 @@
 import React from 'react'
 import './Page.css'
-import photos from '../photolist/tmpimglist';
 //COMPONENTS
 import PageLayout from './PageLayout'
 
@@ -9,16 +8,13 @@ import PageLayout from './PageLayout'
 const albumAPI = require('../../api/api');
 
 class Pagination extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            //ImageList: ['a','b','c','d','e','f','g','h','i','j','k'],
-            ImageList: Array.from(photos),
-            //ImageList: [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12],
+            ImageList: this.props.items,
             CurrentPage: 1,
-            PhotosPerPage: 9
+            PhotosPerPage: 8
         };
-        console.log(photos);
         this.handleClick = this.handleClick.bind(this);
 
     }
@@ -32,22 +28,22 @@ class Pagination extends React.Component {
 
     PaginationSelected(number){
         return(
-            <li class="pagination-selected page-item active"  aria-current="page">
-                <button class="page-link pagination-selected"> {number}</button>
+            <li className="pagination-selected page-item active"  aria-current="page">
+                <button className="page-link pagination-selected"> {number}</button>
             </li>
         )
     }
     PaginationDisabled(number){
         return(
-            <li class="page-item disabled">
-                <button class="page-link pagination-disabled" tabindex="-1" aria-disabled="true">{number}</button>
+            <li className="page-item disabled">
+                <button className="page-link pagination-disabled" tabIndex="-1" aria-disabled="true">{number}</button>
             </li>
         )
     }
     PaginationActive(number){
         return(
-            <li class="page-item">
-                <button class="page-link pagination-button" key={number} id={number} onClick={this.handleClick} href="#">
+            <li className="page-item">
+                <button className="page-link pagination-button" key={number} id={number} onClick={this.handleClick} href="#">
                     {number}
                 </button>
             </li>
@@ -98,10 +94,10 @@ class Pagination extends React.Component {
 
                 
                 {/* Pagination */}
-                <nav id="page-numbers" class="pagination pagination-location">
+                <nav id="page-numbers" className="pagination pagination-location">
                     
-                    <li class="page-item">
-                        <button class="page-link pagination-button" key={1} id={1} onClick={this.handleClick}>
+                    <li className="page-item">
+                        <button className="page-link pagination-button" key={1} id={1} onClick={this.handleClick}>
                             First
                         </button>
                     </li>
@@ -110,8 +106,8 @@ class Pagination extends React.Component {
                     {this.PaginationSelected(CurrentPage)}
                     {this.PaginationNormal(CurrentPage+1, UltimatePhotoIndex)}
 
-                    <li class="page-item">
-                        <button class="page-link pagination-button" key={UltimatePhotoIndex} id={UltimatePhotoIndex} onClick={this.handleClick}>
+                    <li className="page-item">
+                        <button className="page-link pagination-button" key={UltimatePhotoIndex} id={UltimatePhotoIndex} onClick={this.handleClick}>
                             Last
                         </button>
                     </li>
