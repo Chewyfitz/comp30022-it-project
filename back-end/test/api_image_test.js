@@ -1,0 +1,67 @@
+var assert = require('assert');
+const chai = require('chai');
+var chaiHttp = require('chai-http');
+const app = require('../server');
+chai.use(chaiHttp);
+
+const imageId_exists = 'BdOTCk3lhxp8bwkZqGiF';
+const url_empty = '';
+const url_nonempty = 'https://i.imgur.com/y2BjmpE.jpg';
+
+// image integration tests
+describe("/api/image/", function () {
+    // Create
+    describe("POST", function () {
+        it("returns 201 CREATED if a URL is added successfully", (done) => {
+            chai.request(app)
+                .post(`/api/image/?image=${url_nonempty}`)
+                .end((err, res) => {
+                    chai.expect(res).to.have.status(201);
+                    done();
+                });
+        });
+        it("returns 201 CREATED if a file is uploaded successfully");
+        it("returns 400 BAD REQUEST if ?user={userId} is not specified");
+        it("returns 400 BAD REQUEST if ?image={URL} is not specified and an image is not supplied", (done) => {
+            chai.request(app)
+                .post(`/api/image/?image=${url_empty}`)
+                .end((err, res) => {
+                    chai.expect(res).to.have.status(400);
+                    done();
+                });
+        });
+    });
+    // Read
+    describe("GET", function () {
+        it("returns an image URL for an /{imageId}/view that exists", (done) => {
+            chai.request(app)
+                .get(`/api/image/${imageId_exists}/view`)
+                .end((err, res) => {
+                    console.log(res.body);
+                    chai.expect(res).to.have.status(200);
+                    chai.expect(res.body).to.not.be.empty;
+                    done();
+                });
+        });
+        it("returns an image object for a /{imageId} that exists", (done) => {
+            chai.request(app)
+                .get(`/api/image/${imageId_exists}`)
+                .end((err, res) => {
+                    chai.expect(res).to.have.status(200);
+                    chai.expect(res.body).to.not.be.empty;
+                    chai.expect(res.body).to.have.property('Photo DateTime');
+                    chai.expect(res.body).to.have.property('Photo Description');
+                    chai.expect(res.body).to.have.property('Photo Name');
+                    chai.expect(res.body).to.have.property('Photo Reference');
+                    done();
+                });
+        });
+        it("returns 404 for an image that does not exist");
+    });
+    // Update
+    // Delete
+    describe("DELETE", function() {
+        it("returns 200 OK for a successfully deleted image");
+        it("returns 404 NOT FOUND for an invalid image id");
+    });
+});

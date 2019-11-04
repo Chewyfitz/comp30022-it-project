@@ -9,6 +9,7 @@ class UploadButton extends React.Component {
       selectedFile: [],
       fileText: "Choose File",
       loaded: 0,
+      uploading: false,
     } 
   }
 
@@ -48,6 +49,9 @@ class UploadButton extends React.Component {
   }
 
   onClickHandler = () => {
+    // Display the uploading message
+    this.setState({uploading: true});
+
     let data = new FormData() 
     const config = {
       headers: { 'content-type': 'multipart/form-data'}
@@ -74,6 +78,7 @@ class UploadButton extends React.Component {
         selectedFile: null,
         fileText: "Choose File",
         loaded: 0,
+        uploading: false, // remove the "uploading" message
       });
 	  window.location.reload()
     }).catch(err => {
@@ -108,6 +113,21 @@ class UploadButton extends React.Component {
           id="upload-addon" 
           onClick={this.onClickHandler}>Upload Photos</button>
       </div>
+      { this.state.uploading &&
+        <div className="alert alert-info uploading-alert" role="alert"
+        style={{
+          position:'absolute',
+          top: '58px', /* so it appears below the upload button*/
+          right:'0',  /* stick it to the right */
+          left: '0',  /* stick it to the left*/
+          'z-index': '999', /* ensure it's always on top */
+          'background-color': '#F4F6F8',
+          color: '#4C734E',
+          'border-color': '#C1893F',
+        }}>
+          Uploading...
+        </div>
+      }
     </div>
     );
   }

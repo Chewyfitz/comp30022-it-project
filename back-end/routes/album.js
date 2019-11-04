@@ -1,89 +1,328 @@
 const express = require('express');
 const router = express.Router();
 const util = require('../util/album');
+const pageUtil = require('../util/albumPage');
 
 // ============================================================================
 // '/api/album' routes 
 
+// Create
+
+router.post  ('/', (req, res) => {
+	// Create a new album, and return its ID
+	var user = req.query.user;
+
+	if(!user){
+		res.sendStatus(401);
+		return;
+	}
+
+	util.createAlbum(user, req.query.albumName).then( (album) => {
+		if(album){
+			res.status(201);
+			res.send(album);
+		} else {
+			res.sendStatus(500);
+		}
+	}).catch(() => {
+		res.sendStatus(500);
+	});
+});
+
+// Read
+
 // '/api/album/:albumId'
 router.get   ('/:albumId?', (req, res) => {
 	// Get an album with a specified ID
-	console.log("GET /album/:albumId");
-	console.log("params: "+req.params);
-	console.log("query: "+req.query);
-	// console.log(req.headers.authorization);
+	var user = req.query.user;
+	const albumId = req.params.albumId;
+	const page_num = req.query.page;
+	const perPage = req.query.perPage;
 
-	util.getAlbumById('test_user', req.params.albumId).then((album) =>{
-		res.send(album);
-	});
+	if(!user){
+		res.sendStatus(401);
+		return;
+	}
 
-	// TODO: Fix album not found exceptions
-	// Catch Notfound
-	/*.catch(() => {
-		res.sendStatus(404);
-		console.log('Not Found');
-	});*/
-	// res.sendStatus(200);
+	if(req.params.albumId){
+		util.getAlbumById(user, albumId, page_num, perPage).then((album) =>{
+			if(album){
+				res.status(201);
+				res.send(album);
+			} else {
+				res.sendStatus(500);
+			}
+		}).catch((err) => {
+			res.send(err.toString());
+			// res.sendStatus(404);
+		});
+	} else {
+		util.getAllAlbumNames(user).then((names) => {
+			res.status(200);
+			res.send(names);
+		}).catch((err) => {
+			res.send(err.toString());
+		});
+	}
 });
-router.post  ('/', (req, res) => {
-	// Create a new album, and return its ID
-	console.log("POST /album/:albumID");
-	console.log(req.params);
-	console.log(req.query);
-	res.sendStatus(200);
-});
+
+// Update
+
+// Add a Photo to an album
 router.put   ('/:albumId', (req, res) => {
 	// Update an album (May be removed in preference to PATCH)
-	console.log("PUT /album/:albumID");
-	console.log(req.params);
-	res.sendStatus(200);
+	var imageId = req.query.imageId;
+	var albumId = req.params.albumId;
+	var user = req.query.user;
+	var caption = req.query.caption || '';
+	var imageList = req.query.imageList;
+	
+	if(imageList) {
+		console.log(imageList);
+		util.addManyImagesToAlbum(user, albumId, JSON.parse(imageList)).then( (success) => {
+			if(success){
+				res.sendStatus(201);
+			} else {
+				res.sendStatus(500);
+			}
+			return;
+		});
+		return;
+	}
+
+	if(!user){
+		res.sendStatus(401);
+		return;
+	}
+
+	util.addImageToAlbum(imageId, albumId, user, caption).then( (success) => {
+		// Album add succeeded
+		if(success !== undefined){
+			res.sendStatus(201);
+		} else {
+			res.sendStatus(500);
+		}
+	}).catch((err) => {
+		res.send(err.toString());
+	})
 });
+
 router.patch ('/:albumId', (req, res) => {
 	// Update an album
-	console.log("PATCH /album/:albumID");
-	console.log(req.params);
-	res.sendStatus(200);
+	var user = req.query.user;
+
+	if(!user){
+		res.sendStatus(401);
+		return;
+	}
+
+	util.updateAlbumAttributes(user, req.params.albumId, req.query).then((truth_val) => {
+		if(truth_val){
+			res.sendStatus(200);
+		} else {
+			res.sendStatus(404);
+		}
+	}).catch(() => {
+		res.sendStatus(500);
+	});
 });
+
+// Delete
+
 router.delete('/:albumId', (req, res) => {
-	// Delete an album
-	console.log("DELETE /album/:albumID");
-	console.log(req.params);
-	res.sendStatus(200);
+	// You have to specify which user's album you want to delete.
+	if(!req.query.user){
+		res.sendStatus (400);
+		return;
+	}
+	const user = req.query.user;
+	const albumId = req.params.albumId;
+
+	if(!user){
+		res.sendStatus(401);
+		return;
+	}
+
+	// Optional - delete position
+	const position = req.query.position;
+	// Multiple position deletion does not currently work.
+	/*const positions = req.query.positionList;
+	console.log(positions);
+	console.log(JSON.parse(positions));
+	if(positions){
+		util.deleteManyAlbumPositions(user, albumId, JSON.parse(positons)).then( (success) => {
+			if(success){
+				res.sendStatus(204);
+			} else {
+				res.sendStatus(400);
+			}
+		}).catch( (err) => {
+			res.status(500);
+			res.send(err.toString());
+		})
+	} else*/ if(!isNaN(position)){
+		util.deleteAlbumPosition(user, albumId, position).then( (success) => {
+			if(success){
+				res.sendStatus(204);
+			} else {
+				res.sendStatus(400);
+			}
+		}).catch( (err) => {
+			res.status(500);
+			res.send(err.toString());
+		});
+	} else {
+		util.deleteAlbum(user, albumId).then((success) => {
+			if(success){
+				res.sendStatus(204);
+			} else {
+				res.sendStatus(400);
+			}
+		}).catch( (err) => {
+			res.status(500);
+			res.send(err.toString());
+		});
+	}
+
 });
 
 // ============================================================================
 // '/api/album/:albumId/:pageId' routes
 
-// '/api/album/:albumId/:pageId'
-router.get   ('/:albumId/:pageId', (req, res) => {
-	// Get a page of an album
-	console.log("GET /album/:albumID/:pageId");
-	console.log(req.params);
-	res.sendStatus(200);
-});
+// Create
+
 router.post  ('/:albumId/:pageId', (req, res) => {
 	// Create a new album page
-	console.log("POST /album/:albumID/:pageId");
-	console.log(req.params);
-	res.sendStatus(200);
+	var user = req.query.user;
+
+	if(!user){
+		res.sendStatus(401);
+		return;
+	}
+
+	if( req.params.albumId && req.params.pageId 
+		&& req.query.template){
+
+		pageUtil.createAlbumPage(user, req.params.albumId, req.params.pageId, req.query.template);
+		res.sendStatus(201);
+	} else {
+		res.sendStatus(400);
+	}
 });
+
+// Read
+
+// '/api/album/:albumId/:pageId'
+router.get   ('/:albumId/:pageId', (req, res) => {
+	var user = req.query.user;
+
+	if(!user){
+		res.sendStatus(401);
+		return;
+	}
+
+	// Get a page of an album
+	if( req.params.albumId && req.params.pageId ){
+		pageUtil.getAlbumPageTemplate(user, req.params.albumId, req.params.pageId).then(pageTemplate => {
+			//If the Page doesn't have a template then use the Album Template
+			if(pageTemplate === undefined){
+				pageTemplate = util.getAlbumTemplate(user, req.params.albumId).then(albumTemplate => {
+					//If the Album Page doesn't have a template 404 - can't find it
+					if(albumTemplate === undefined){
+						//Fail
+						res.sendStatus(404);
+						return;
+					}
+					//Success
+					res.status(200);
+					res.send(albumTemplate);
+					return;
+				//If the promise was rejected, there was probably something with the given values
+				}, rejV => {
+					//Fail
+					res.sendStatus(500);
+					return;
+				});
+				return;
+			}
+			//Success
+			res.status(200);
+			res.send(pageTemplate);
+			return;
+		//If the promise was rejected, there was probably something with the given values
+		}, rejVal => {
+			//Fail
+			res.sendStatus(500);
+			return;
+		});
+	} else {
+		res.sendStatus(400);
+	}
+});
+
+// Update
+
 router.put   ('/:albumId/:pageId', (req, res) => {
+	var user = req.query.user;
+	if(!user){
+		res.sendStatus(401);
+		return;
+	}
 	// Update an album page (might be useful eg. for copy/paste)
-	console.log("PUT /album/:albumID/:pageId");
-	console.log(req.params);
-	res.sendStatus(200);
+	if( req.params.albumId && req.params.pageId && req.query.template ){
+		pageUtil.updateAlbumPageAttributes(user, req.params.albumId, req.params.pageId, req.query.template).then((success) => {
+			if(success){
+				res.sendStatus(204);
+			} else {
+				res.sendStatus(500);
+			}
+		});
+	} else {
+		res.sendStatus(400);
+	}
 });
 router.patch ('/:albumId/:pageId', (req, res) => {
-	// Update an album page (just a small part)
-	console.log("PATCH /album/:albumID/:pageId");
-	console.log(req.params);
-	res.sendStatus(200);
+	var user = req.query.user;
+	if(!user){
+		res.sendStatus(401);
+		return;
+	}
+	// Update an album page (might be useful eg. for copy/paste)
+	if( req.params.albumId && req.params.pageId && req.query.template ){
+		pageUtil.updateAlbumPageAttributes(user, req.params.albumId, req.params.pageId, req.query.template).then( (success) => {
+			if(success){
+				res.sendStatus(204);
+			} else {
+				res.sendStatus(500);
+			}
+		});
+	} else {
+		res.sendStatus(400);
+	}
 });
+
+// Delete
+
 router.delete('/:albumId/:pageId', (req, res) => {
-	// Delete an album page
-	console.log("DELETE /album/:albumID/:pageId");
-	console.log(req.params);
-	res.sendStatus(200);
+	const user = req.query.user;
+	const album = req.params.albumId;
+	const page = req.params.pageId;
+
+	if(!user){
+		res.sendStatus(401);
+		return;
+	}
+
+	pageUtil.deleteAlbumPage(user, album, page).then( (success) => {
+		if(success){
+			res.sendStatus(204);
+		} else {
+			res.sendStatus(400);
+		}
+	}).catch( (error) => {
+		res.status(500);
+		res.send( error.toString() );
+	});
 });
 
 module.exports = router;
