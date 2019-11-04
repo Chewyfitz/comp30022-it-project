@@ -10,6 +10,13 @@
         }
 }
 
+p.navbar-brand {
+    margin-bottom: 0px;
+}
+p.navbar-brand:hover {
+    cursor: pointer;
+}
+
 .btn-outline-light {
     color: #F4F6F8;
 }
@@ -44,6 +51,7 @@
 
 .ALBUMIFY-text:hover {
     color: #F4F6F8 !important;
+    cursor: pointer;
     background-color:#4C734E;
     font-style: oblique;
     font-size:25px;

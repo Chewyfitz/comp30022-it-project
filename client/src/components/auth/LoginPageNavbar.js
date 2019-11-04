@@ -13,7 +13,7 @@ const LoginPageNavbar = (a) => {
         //"navbar-expand-lg ensures we’re not doubling up on padding unnecessarily on lower viewports when your navbar is collapsed.
         <nav className="navbar navbar-expand-lg navbar-dark" style={{backgroundColor:'#7488A3'}}>
             <div className="mx-auto order-0">
-                <a className="navbar-brand mx-auto" href="#">{pageName}</a>
+                <p className="navbar-brand mx-auto">{pageName}</p>
             </div>            
         </nav> 
     )     

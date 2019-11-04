@@ -57,7 +57,7 @@ class AlbumView extends Component {
     }
 
     render(){
-        if(this.state.view == 1) {
+        if(this.state.view === 1) {
             return this.renderPreview();
         } else {
             return this.renderOverview();

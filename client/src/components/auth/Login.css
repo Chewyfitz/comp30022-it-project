@@ -6,6 +6,18 @@
 	
 }
 
+button.forgotPassword {
+	background: none!important;
+	border: none;
+	padding: 0!important;
+	color: #007bff; 
+	text-decoration: none;
+}
+button.forgotPassword:hover {
+	color: #0056b3; 
+	text-decoration: underline;
+}
+
 .midText {
 	position: relative;
     top: 6px;

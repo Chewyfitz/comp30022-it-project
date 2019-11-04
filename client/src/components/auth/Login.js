@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import './Login.css'
-import App from '../../app.js'
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 
@@ -26,15 +25,17 @@ class Login extends Component {
 	}  
 	LoginSubmitHandler = (event) => {
 		//reset variables
-		this.state.failedLogin = false;
-		this.state.noEmail= false;
-		this.state.wrongPassword= false;
-		this.state.userForgotPassword = false;
-		this.state.takenEmail= false;
+		this.setState({
+			failedLogin: false,
+			noEmail: false,
+			wrongPassword: false,
+			userForgotPassword: false,
+			takenEmail: false,
+		});
 
 		event.preventDefault();
 		// if valid username/password, send it to back end and store the login token to indicate we're logged in
-		if(this.state.username!='' && this.state.psword!==''){
+		if(this.state.username !== '' && this.state.psword !== ''){
 			// this format is required to send params on get requests, strangely enough
 			axios({method: "post",
 			url: `${process.env.REACT_APP_API_URL}/api/login`,
@@ -69,14 +70,16 @@ class Login extends Component {
 	//works exactly the same as for logging in, but sends request to the account creation route instead
 	AccountCreateSubmitHandler = (event) => {
 		//reset variables
-		this.state.failedLogin = false;
-		this.state.noEmail= false;
-		this.state.wrongPassword= false;
-		this.state.userForgotPassword = false;
-		this.state.takenEmail= false;
+		this.setState({
+			failedLogin: false,
+			noEmail: false,
+			wrongPassword: false,
+			userForgotPassword: false,
+			takenEmail: false,
+		});
 
 		event.preventDefault();
-		if(this.state.email!='' && this.state.psword!='' && this.state.psword.length>=6){
+		if(this.state.email !== '' && this.state.psword !== '' && this.state.psword.length>=6){
 			console.log(`${this.state.email}:${this.state.psword}`);
 			axios.post(`${process.env.REACT_APP_API_URL}/api/register`, null, {auth: {username: this.state.email,
 																					password: this.state.psword}})
@@ -116,11 +119,13 @@ class Login extends Component {
 	}
 	forgotPassword = () => {
 		//reset variables
-		this.state.failedLogin = false;
-		this.state.noEmail= false;
-		this.state.wrongPassword= false;
-		this.state.userForgotPassword = false;
-		this.state.takenEmail= false;
+		this.setState({
+			failedLogin: false,
+			noEmail: false,
+			wrongPassword: false,
+			userForgotPassword: false,
+			takenEmail: false,
+		});
 
 		if(!this.state.email){
 			this.setState({noEmail: true});
@@ -157,7 +162,7 @@ class Login extends Component {
 								<label for="formGroupExampleInput2">Password</label>
 								<input type="password" className="form-control" id="password" placeholder="Password (at least 6 characters)" onChange={this.PasswordChangeHandler}/>
 								<small id="passwordHelpBlock" className="form-text text-muted">
-									<a href="#" onClick={this.forgotPassword.bind(this)}>Forgot Password?</a>
+									<button onClick={this.forgotPassword.bind(this)} className="forgotPassword">Forgot Password?</button>
 								</small>
 							</div>
 						</div>

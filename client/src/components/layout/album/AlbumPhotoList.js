@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Gallery from "react-photo-gallery";
 
 import arrayMove from "array-move";
@@ -6,12 +6,9 @@ import { SortableContainer, SortableElement } from "react-sortable-hoc";
 
 import { getImagesfromAlbum } from '../../api/api'
 
-import tmpimglist from '../photolist/tmpimglist'
-
 import Photo from "./Photo";
 
 import ALBUMIFY from './ALBUMIFY';
-import axios from 'axios';
 
 
 
