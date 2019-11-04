@@ -1,11 +1,7 @@
 import React from "react";
-import { render } from "react-dom";
 import Picky from "react-picky";
 import "./NavDropdown.css";
-import axios from 'axios';
-import { AddImagesToAlbum } from '../../api/api';
-
-import { getAlbumList } from '../../api/api';
+import { getAlbumList, AddImagesToAlbum } from '../../../api/api';
 
 class NavDropdown extends React.Component {
 	constructor(props) {

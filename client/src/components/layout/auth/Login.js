@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import './Login.css'
-import App from '../../app.js'
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 

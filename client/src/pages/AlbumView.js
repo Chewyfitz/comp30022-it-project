@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 //COMPONENTS
 import Navbar from '../components/layout/navbar/Navbar'
-import AlbumPhotoList from '../components/layout/album/AlbumPhotoList'
-import Pagination from '../components/layout/album/Pagination'
+import AlbumPhotoList from '../components/layout/album/albumoverview/AlbumPhotoList'
+import Pagination from '../components/layout/album/albumpreview/Pagination'
 import Sidebar from '../components/layout/navbar/Sidebar'
 
 import "../App.css";

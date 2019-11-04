@@ -3,7 +3,6 @@
 //TO DO put all stuff in navbar
 import React from 'react'
 import "../navbar/Navbar.css"
-import axios from 'axios';
 
 import { reorderImages } from '../../api/api';
 
