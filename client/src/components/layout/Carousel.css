@@ -7,13 +7,13 @@
 .carousel-inner > .carousel-item-next {
     display: flex;
     flex-wrap: nowrap;
-    width: auto;
+    height: auto;
 }
 .carousel-inner:before {
     position:absolute;
     top:0;
     bottom: 0;
-    right: 82%;
+    right: 100%;
     left: 0;
     content:"";
     display:block;
@@ -25,7 +25,7 @@
     top:0;
     bottom:0;
     right: 0;
-    left: 82%;
+    left: 100%;
     content:"";
     display:block;
     background-color:#fff;
@@ -47,9 +47,63 @@
     background-color: blue !important;
 }
 
-.carousel-container{
-    align-self: center !important;
-    width: 50% !important;
+.carousel-control-next-icon{
+    color: black !important;
+    box-shadow: 5px 5px rgba(116, 136, 163, 0.7);
+    border:1px solid #4C734E;
+    background-color: black !important;
     
 }
 
+.carousel-control-next-icon:hover{
+    color: blue !important;
+    box-shadow: 5px 5px rgba(116, 136, 163, 0.7);
+    border:1px solid #4C734E;
+    background-color: blue !important;
+}
+
+.carousel-container{
+    align-self: center !important;
+    width: 100% !important;
+	height: 100%;
+    
+}
+.carousel-image{
+    max-width: 100vw;
+    margin: 0 auto;
+    max-height: 90vh;
+    width: auto;
+    top: 56px;
+    bottom: 0px;
+    height: auto;
+}
+
+.modal-btn {
+	width: 100%;
+	height: 10vh;
+	color: #F4F6F8 !important;
+	background-color:#7488A3 !important;
+}
+
+
+.modal-btn:hover {
+    background-color: #F4F6F8 !important;
+    color:#7488A3 !important;
+}
+	
+
+.submit-btn {
+	width: 50%;
+	color: #F4F6F8 !important;
+	background-color:#7488A3 !important;
+}
+
+
+.submit-btn:hover {
+    background-color: #F4F6F8 !important;
+    color:#7488A3 !important;
+}
+
+.modal-backdrop { 
+	z-index: 0 !important;
+}

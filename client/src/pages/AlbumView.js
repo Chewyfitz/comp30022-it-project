@@ -50,7 +50,7 @@ class AlbumView extends Component {
                 <Sidebar pageWrapId={"page-wrap"} outerContainerId={"App"}/> 
                 <div id="page-wrap">
                     <Navbar pageName={"Album Name"}/>
-                    <Pagination {...this.props} items={this.state.items} changeView={this.changeView} />
+                    <Pagination {...this.props} items={this.state.items} albumId={this.state.albumId} changeView={this.changeView} />
                 </div>
             </div>
         );

@@ -80,7 +80,7 @@ class Pagination extends React.Component {
                 <div className= "album-page-left">
 
                     <div className="album-page-photos">
-                        <PageLayout photolist={leftPagePhotos}/>
+                        <PageLayout photolist={leftPagePhotos} albumId={this.props.albumId}/>
                     </div>
 
                 </div>   
@@ -88,7 +88,7 @@ class Pagination extends React.Component {
                 {/* <ImagePicker images={imageList2.map((image, i) => ({src: image, value: i}))} /> */}
                 <div className=" album-page-right">
                     <div className="album-page-photos">
-                        <PageLayout photolist={rightPagePhotos}/>
+                        <PageLayout photolist={rightPagePhotos} albumId={this.props.albumId}/>
                     </div>
                 </div>
 
