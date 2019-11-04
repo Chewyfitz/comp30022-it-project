@@ -1,6 +1,6 @@
 .main.image_picker{
     width:100%;
-    padding-left: 4em;
+    padding-left: 5em;
     padding-top: 2.5em
 }
 
@@ -53,7 +53,7 @@
 }
 
 .image_picker .selected .checked .icon{
-    background:url(./images/check.png);
+    background:url(../images/check.png);
     background-size:cover;
     height:75px;
     width:75px;
