@@ -2,7 +2,7 @@
 //don't need to save state
 //TO DO put all stuff in navbar
 import React from 'react'
-import "./LoginPageNavbar.css"
+import "./Navbar.css"
 
 //COMPONENTs
 const LoginPageNavbar = (a) => {

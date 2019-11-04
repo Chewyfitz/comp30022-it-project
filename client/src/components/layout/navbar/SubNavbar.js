@@ -5,9 +5,9 @@ import React from 'react'
 import "./Navbar.css"
 
 //COMPONENTs
-import NavDropdown from './NavDropdown';
+import NavDropdown from './navcomponents/NavDropdown';
 // testing
-import UploadButton from './UploadButton';
+import UploadButton from './navcomponents/UploadButton';
 
 const SubNavbar = ({photos, albums}) => { //functional component, equal to arrow function
     return(

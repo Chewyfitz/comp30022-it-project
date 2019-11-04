@@ -9,7 +9,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url(./components/layout/photolist/images/fav.jpg) !important;
+  background-image: url(./components/images/fav.jpg) !important;
   background-size: 100% 100%;
 }
 

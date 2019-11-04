@@ -3,7 +3,7 @@
 //TO DO put all stuff in navbar
 import React from 'react'
 import "./Navbar.css"
-import SignoutButton from '../../auth/SignoutButton'
+import SignoutButton from './navcomponents/SignoutButton'
 
 //COMPONENTs
 const Navbar = (a) => {

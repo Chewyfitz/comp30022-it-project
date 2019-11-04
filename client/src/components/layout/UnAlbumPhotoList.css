@@ -53,7 +53,7 @@
 }
 
 .image_picker .selected .checked .icon{
-    background:url(./images/check.png);
+    background:url(../images/check.png);
     background-size:cover;
     height:75px;
     width:75px;

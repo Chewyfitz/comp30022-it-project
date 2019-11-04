@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import "./Navbar.css"
+import "../Navbar.css"
 
 class UploadButton extends React.Component {
   constructor(props) {
@@ -57,7 +57,6 @@ class UploadButton extends React.Component {
       headers: { 'content-type': 'multipart/form-data'}
     }
     // Set the send values
-    // this.state.user=localStorage.getItem("uid"); // For testing purposes
     //const url = `${process.env.REACT_APP_API_URL}/api/image?user=${this.state.user}`;
   	const url = `${process.env.REACT_APP_API_URL}/api/image?user=${localStorage.getItem("uid")}`;
 

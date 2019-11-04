@@ -4,11 +4,11 @@ import Gallery from "react-photo-gallery";
 import arrayMove from "array-move";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 
-import { getImagesfromAlbum } from '../../api/api'
+import { getImagesfromAlbum } from '../../../api/api'
 
-import Photo from "./Photo";
+import Photo from "./RearrangablePhoto";
 
-import ALBUMIFY from './ALBUMIFY';
+import ALBUMIFY from '../ALBUMIFYButton';
 
 
 
