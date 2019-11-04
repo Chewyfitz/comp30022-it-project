@@ -57,7 +57,7 @@ async function addManyAlbumPosition(userID, albumID, photoInfoList) {
         //Add the appropriate data to be stored in the database
         data[albumPositionFields.photo] = general.getDocRef(general.photosPath(userID), photoInfoList[i].photoID);
         //TODO VALUE CHECK
-        data[albumPositionFields.caption] = photoInfoList[i].caption;
+        data[albumPositionFields.caption] = photoInfoList[i].caption || null;
         promises = general.addDataToDoc(data, general.albumPositionsPath(userID, albumID), (position+i).toString());
     }
     Promise.all(promises).then(resVal => {

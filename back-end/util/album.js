@@ -51,6 +51,8 @@ async function updateAlbumAttributes(user, album, attributes){
     var name_success = true;
     var template_success = true;
     var view_success = true;
+    var caption_success = true;
+    var permutation_success = true;
     if('albumName' in attributes){
         // update name
         name_success = await database.updateAlbumName(user, album, attributes.albumName);
@@ -69,7 +71,10 @@ async function updateAlbumAttributes(user, album, attributes){
             caption_success = await database.updateAlbumPositionCaption(user, album, attributes.position, decodeURI(attributes.caption));
         }
     }
-    return name_success && template_success && view_success && caption_success;
+    if('permutation' in attributes){
+        permutation_success = await database.updateAlbumPositionOrder(user, album, JSON.parse(JSON.parse(attributes.permutation)));
+    }
+    return name_success && template_success && view_success && caption_success && permutation_success;
 }
 
 async function addImageToAlbum(image, album, user, caption = ''){
@@ -92,6 +97,15 @@ async function deleteAlbumPosition(user, album, position){
     return await database.deleteAlbumPosition(user, album, position);
 }
 
+async function deleteManyAlbumPositions(user, album, positions){
+    var promises = []
+    console.log(positions);
+    for( i in positions ){
+        // promises.push(database.deleteAlbumPosition(user, album, positions[i]));
+    }
+    return await Promise.all(promises);
+}
+
 module.exports = {
     // CREATE
     createAlbum,
@@ -106,4 +120,5 @@ module.exports = {
     // DELETE
     deleteAlbum,
     deleteAlbumPosition,
+    deleteManyAlbumPositions,
 }
