@@ -1,108 +1,81 @@
 import React, { Component } from 'react';
-import makeAlbumList from './photolist/tmpimglist';
-import { UpdateCaption } from '../api/api';
 
-import './Carousel.css'
-import Carousel from 'react-bootstrap/carousel'
-//import ReactBootstrapStyle from '@bit/react-bootstrap.react-bootstrap.internal.style-links';
+//import './Carousel.css'
 
-class AlbumCarousel extends Component {
-	constructor(props){
-		super(props);
-		this.state = { imageList: this.props.imageList, 
-					   autoscroll: null,
-					   index: 0,
-					   pauseOnHover: false,
-					   caption: "",
-					   albumName: this.props.albumId}
+//import images from local
+import img1 from './photolist/temp_images/1.png'
+import img2 from './photolist/temp_images/2.png'
+import img3 from './photolist/temp_images/3.png'
 
-		this.setState({imageList: this.props.imageList});
-		console.log(this.state.imageList);
-		console.log(this.props.imageList);
-		console.log(this.state);
-		console.log("carousel props = ", this.props);
-	}
-	CaptionChangeHandler = (event) => {
-		this.setState({caption: event.target.value});
-	}
-	editImageCaption = () => {
-		UpdateCaption(document.getElementsByClassName("carousel-item active")[0].firstChild.id, this.state.albumName, this.state.caption).then(res => {
-			window.location.reload();
-		});
-	}
-	toggleAutoscroll = () => {
-    if (!this.state.autoscroll) {
-      this.setState({autoscroll: 2500});
-      this.setState({index: this.getNextIndex()});
-	  console.log(this.state.imageList);
-	  console.log(this.props.imageList);
-    } else {
-      this.setState({autoscroll: null});
-      this.setState({index: this.state.index});
-    }
-  };
 
-  getNextIndex = () => {
-    if (this.state.index === this.props.imageList.length) {
-      return 0;
-    }
-    return this.state.index + 1;
-  };
+
+//import axios from 'axios'
+const imageList = [img1, img2, img3]
+//import "../PhotoPreview.css";
+
+class Carousel extends Component {
   render() {
-	return (
-	<>
-		<Carousel id="myCarousel" 
-		className="carousel-container" 
-		interval={this.state.autoscroll}
-		activeIndex={this.state.index}
-        onSelect={nextIndex => this.setState({ index: nextIndex })}		
-		pauseOnHover={this.state.pauseOnHover}>
-			{this.state.imageList.length>0 && this.state.imageList.map((image, index) => {
-				//var classname = index===0? "carousel-item active" : "carousel-item";
+    return (
+    
+    
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 text-center">
 
-				return (
-					<Carousel.Item key={index}>
-						<img src={image.src} className = "d-block carousel-image" id={image.key}/>
-						<Carousel.Caption>
-							<p>{image.title}</p>
-						</Carousel.Caption>
-					</Carousel.Item>
-				)
-			}
-					
-			)}
-			
-		  </Carousel>
-		  <div className="d-flex justify-content-center">
-				
-				<button type="button" className="btn modal-btn" data-toggle="modal" data-target="#myModal">Edit Caption</button>
+                    <div id="carousel_test" className="carousel slide" data-ride="carousel">
+                        <ol className="carousel-indicators">
+                            <li data-target="#carouselExampleIndicators" data-slide-to="0" className="active"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                        </ol>
+                        <div className="carousel-inner" role="listbox">
+                            <div className="carousel-item active">
+                                <img src={img1} alt="First slide"/>
+                                <div className="carousel-caption">
+                                    <h3>First Slide</h3>
+                                    <p>A beautiful sunset on a beach</p>
+                                </div>
+                            </div>
+                            <div className="carousel-item">
+                                <img src={img2} alt="Second slide"/>
+                                <div className="carousel-caption">
+                                    <h3>Second Slide</h3>
+                                    <p>Sunset with beautiful shades of Red</p>
+                                </div>
+                            </div>
+                            <div className="carousel-item">
+                                <img src={img3} alt="Third slide"/>
+                                <div className="carousel-caption">
+                                    <h3>Third Slide</h3>
+                                    <p>Sun going down amidst the cloudy sky</p>
+                                </div>
+                            </div>
+                            {/* <div className="carousel-item">
+                                <img src={img4} alt="Third slide"/>
+                                <div className="carousel-caption">
+                                    <h3>Fourth Slide</h3>
+                                    <p>Sunset on a lake</p>
+                                </div>
+                            </div> */}
+                        </div>
+                    </div>
+                    
+                    <a className="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev" nClick="prev">
+                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span className="sr-only">Previous</span>
+                    </a>
+                    <a className="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span className="sr-only">Next</span>
+                    </a>
 
-					
-					<div id="myModal" className="modal fade" role="dialog">
-					  <div className="modal-dialog">
-
-						
-						<div className="modal-content">
-						  <div className="modal-header">
-							<h4 className="modal-title">Edit Caption</h4>
-							<button type="button" className="close" data-dismiss="modal">&times;</button>
-						  </div>
-						  <div className="modal-body">
-							<input type="text" className="form-control" id="caption" placeholder="Enter New Caption" onChange={this.CaptionChangeHandler}/>
-							<button type="button" className="btn submit-btn" onClick={this.editImageCaption.bind(this)}>Submit New Caption</button>
-						  </div>
-						  <div className="modal-footer">
-							<button type="button" className="btn my-btn" data-dismiss="modal">Close</button>
-						  </div>
-						</div>
-
-					  </div>
-					</div>
-			
-				
-			</div>
-			</>
-	);
+                </div>
+            </div>
+            
+        </div>
+                                
+    );
   }
 }
-export default AlbumCarousel;
+export default Carousel;

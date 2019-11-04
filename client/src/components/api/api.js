@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const url = `${process.env.REACT_APP_API_URL}/api`;
-
 // Get all the images from a specified album
 export async function getImagesfromAlbum(albumId, userId) {
 	
@@ -18,8 +17,7 @@ export async function getImagesfromAlbum(albumId, userId) {
 			images.push({
 				src: photos[photo].reference,
 				imageId: photos[photo].photoID,
-				albumPos: photo,
-				title: photos[photo].caption
+				albumPos: photo
 			});
         }
 		return images
@@ -35,7 +33,7 @@ export async function getImagesfromAlbum(albumId, userId) {
 export async function getAlbumList(){
 	// Get the albums
 	console.log(`Getting Albums`);
-	return await axios.get(`${url}/album/`,{ params: {
+	return await axios.get(`${process.env.REACT_APP_API_URL}/api/album/`,{ params: {
 		user: localStorage.getItem("uid")
 	}}).then(res => { // then print response status
 		console.log(`response: ${res.data}`);
@@ -57,7 +55,7 @@ export async function CreateNewAlbum(albumName, photos) {
 	if(albumName){
 		// Create the album
 		albumId = 
-			axios.post(`${url}/album/`, null, { params: {
+			axios.post(`${process.env.REACT_APP_API_URL}/api/album/`, null, { params: {
 				albumName: albumName,
 				user: localStorage.getItem("uid"),
 			}}).then(async res => {
@@ -78,7 +76,6 @@ export async function AddImagesToAlbum(photos, albumId, remove=true, removeAlbum
 	}
 	if(!photos){ // How can we move photos if we don't know which ones?
 		throw "no photos given.";
-
 	}
 
 	// sort the photos in descending order of position so none of them change.
@@ -110,6 +107,7 @@ export async function AddImagesToAlbum(photos, albumId, remove=true, removeAlbum
 		await putreq;
 		await delreq;
 	}
+
 	return;
 }
 
@@ -133,21 +131,3 @@ export async function reorderImages(albumId, subset_permutation){
 
 	return await updatereq;
 }
-
-
-export async function UpdateCaption(photoPos, albumName, caption){
-	console.log("photoPos", photoPos, "albumName", albumName, "caption", caption);
-	var newRes = axios({method: "patch",
-		url: `${url}/album/${albumName}`,
-		params: {user: localStorage.getItem("uid"),
-				position: photoPos,
-				caption: caption}
-		}).then(async (res) => {
-			console.log(res);
-			return res
-		});
-	var res = await newRes;
-	
-	return res
-}
-
