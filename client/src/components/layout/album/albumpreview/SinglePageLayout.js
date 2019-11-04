@@ -19,7 +19,7 @@ function PageLayout({photolist}) {
     };
 
     return (
-    <div>
+    <div className="AlbumPreview">
         <Gallery photos={photos} onClick={openLightbox} />
         <ModalGateway>
         {viewerIsOpen ? (

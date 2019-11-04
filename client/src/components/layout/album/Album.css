@@ -2,7 +2,7 @@
     top:100px !important;
 }
 
-.react-photo-gallery--gallery > div > img {
+.AlbumPreview > .react-photo-gallery--gallery > div > img {
     width: 49%;
     height: 50%;
 }
