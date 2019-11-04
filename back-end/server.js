@@ -28,6 +28,9 @@ const app = express();
 
 // Middleware
 const bodyParser = require('body-parser');
+const cors = require('cors');
+
+app.use(cors());
 app.use(bodyParser.json());
 
 const MainRouter = express.Router();
@@ -36,6 +39,7 @@ const MainRouter = express.Router();
 MainRouter.use('/image', require('./routes/image'));
 MainRouter.use('/album', require('./routes/album'));
 MainRouter.use('/user', require('./routes/user'));
+MainRouter.use('/', require('./routes/auth'));
 
 // Not yet Implemented:
 /* MainRouter.use('/register', require('./routes/signup')); */
@@ -50,3 +54,4 @@ app.use('/api', MainRouter);
 // launch our backend into a port
 app.listen(API_PORT, () => console.log('LISTENING ON PORT '+API_PORT));
 
+module.exports = app;

@@ -15,113 +15,205 @@ const albumPages = require('./database/album_pages');
 const categories = require('./database/categoies');
 const tags = require('./database/tags');
 
-async function getAlbumPhotos(userID, albumID, start=undefined, end=undefined) {
-    if(start == undefined){
+
+/**
+ * Retrieves the Photo IDs, image references and captions of the Photos that are
+ * in the range of specified positions within an Album of a User. - BETTER FOR
+ * GETTING A LARGE AMOUNT OF DOCS
+ *
+ * @param {String} userID - The owner of the album
+ * @param {String} albumID - The album to get photos from
+ * @param {Number} start - !SHOULD BE NON NEGATIVE INT! The first position of the
+ *          range you want to get the photos from (inclusive). If left blank the
+ *          the range will start from the first photo in the album
+ * @param {Number} end - !SHOULD BE NON NEGATIVE INT! The last position of the
+ *          range you want to get the photos from (inclusive). If left blank the
+ *          range will end at the last photo in the album
+ *
+ * @return {Object.<Object>} - Basically a dictionary of dictionaries of the
+ *          form AlbumPosition:Field:Value where field is either photoID,
+ *          reference, or caption.
+ * */
+async function getAllAlbumPhotos(userID, albumID, start=undefined, end=undefined) {
+    //Initialisation
+    let data = {};
+    let promises = [];
+    //Gets all the documents in the Album
+    let allDocsQuery = await query.getAllDocsInCollection(general.albumPositionsPath(userID, albumID));
+    //If no start has been given, start from the very start
+    if (start === undefined) {
         start = 0;
     }
-    if(end == undefined){
-        end = await query.getNumDocsInCollection(general.albumPositionsPath(userID,albumID)) - 1;
+    //If no end has been given, end at the very end
+    if (end === undefined) {
+        end = allDocsQuery.length - 1;
     }
-//    console.log(start, end);
+    //For each of the albumPositions it gets the caption and, retrieves the image
+    //reference from the referenced Photos doc
+    allDocsQuery.forEach(albumPositionsDoc => {
+        //If the position of the album is in the range of interest
+        if(start <= albumPositionsDoc.id && albumPositionsDoc.id <= end) {
+            //STORE ALL THE PROMISES OF GETTING PHOTO DOCS SO WE HAVE SOMETHING TO WAIT ON!
+            promises.push(
+                //Get the Photos Doc that is referenced
+                (albumPositionsDoc.data()[albumPositions.albumPositionFields.photo]).get()
+                    .then(photosDoc => {
+                        //Initialise the internal dictionary
+                        data[albumPositionsDoc.id] = {};
+                        //Store the caption from the AlbumPositions Doc
+                        data[albumPositionsDoc.id].caption = albumPositionsDoc.data()[albumPositions.albumPositionFields.caption];
+                        //Store the Image Reference from the Photos Doc
+                        data[albumPositionsDoc.id].reference = photosDoc.data()[photos.photoFields.reference];
+                        //Store the Photo Document ID for future reference by the front end
+                        data[albumPositionsDoc.id].photoID = photosDoc.id;
+                    })
+            );
+        }
+    });
+    //Wait for all the promises to be resolved because data will on have its
+    //final value after they have all been resoled
+    await Promise.all(promises);
+    //TODO rejection handling?
+    return data;
+
+}
+
+/**
+ * Retrieves the Photo IDs, image references and captions of the Photos that are
+ * in the range of specified positions within an Album of a User. - BETTER FOR
+ * GETTING A 'SMALL' AMOUNT OF DOCS
+ *
+ * @param {String} userID - The owner of the album
+ * @param {String} albumID - The album to get photos from
+ * @param {Number} start - !SHOULD BE NON NEGATIVE INT! The first position of the
+ *          range you want to get the photos from (inclusive). If left blank the
+ *          the range will start from the first photo in the album
+ * @param {Number} end - !SHOULD BE NON NEGATIVE INT! The last position of the
+ *          range you want to get the photos from (inclusive). If left blank the
+ *          range will end at the last photo in the album
+ *
+ * @return {Object.<Object>} - Basically a dictionary of dictionaries of the
+ *          form AlbumPosition:Field:Value where field is either photoID,
+ *          reference, or caption.
+ * */
+async function getSomeAlbumPhotos(userID, albumID, start=undefined, end=undefined) {
+    //If no start has been given, start from the very start
+    if (start == undefined) {
+        start = 0;
+    }
+    //If no end has been given, end at the very end
+    if (end == undefined) {
+        end = await query.getNumDocsInCollection(general.albumPositionsPath(userID, albumID)) - 1;
+    }
+    //A lot of initialisation
     let data = {};
     let albumPositionsDocPromises = [];
-    let albumPositionsDoc = undefined;
-    let photosDocRef = undefined;
+    let albumPositionsDoc;
+    let photosDocRef;
     let photosDocPromises = [];
-    let photoDoc = undefined;
-//    console.log("--FIRST LOOP--");
-    for(i=start; i<=end; i++){
+    let photoDoc;
+    //Retrieve all the albumPositions docs we interested in from the data base
+    for (i = start; i <= end; i++) {
+        //Not using albumPositions.js for more speed
+        //THESE ARE JUST PROMISES AT THIS POINT THEY START RESOLVING AS SOON AS
+        //THEY'RE MADE
         albumPositionsDocPromises.push(general.db.collection(general.albumPositionsPath(userID, albumID)).doc(i.toString()).get());
     }
-//    console.log(albumPositionsDocPromises);
-//    console.log("--SECOND LOOP--");
-    for(i=0; i<=end-start; i++){
-//        console.log(i);
+    //From all the albumPositions docs, store the caption and get the Photos doc
+    //referenced in its data
+    for (i = 0; i <= end - start; i++) {
+        //Wait for the promise to resolve when we need it
+        //ALL OTHER PROMISES STILL RESOLVE WHILE WE WAIT
         albumPositionsDoc = await albumPositionsDocPromises[i];
-//        console.log(albumPositionsDoc);
-        if(albumPositionsDoc.exists){
+        //If the document exists get the needed stuff
+        if (albumPositionsDoc.exists) {
+            data[i + start] = {};
+            data[i + start].caption = albumPositionsDoc.data()[albumPositions.albumPositionFields.caption];
             photosDocRef = albumPositionsDoc.data()[albumPositions.albumPositionFields.photo];
-//            console.log(photoDocRef);
+            //Not using photos.js for more speed
+            //THESE ARE JUST PROMISES AT THIS POINT THEY START RESOLVING AS SOON
+            //AS THEY'RE MADE
             photosDocPromises.push(photosDocRef.get());
+        //If this document doesn't exist, then neither will the consecutive ones
         } else {
-//            console.log("Error: " + albumPositionsDoc);
-            end = i-1;
+            console.log("The Album does not have a(n) " + i + "th position");
+            console.log("Reassigning end = " + (i-1));
+            end = i - 1;
             break
         }
     }
-//    console.log(photosDocPromises);
-//    console.log("--THIRD LOOP--");
-    for(i=0; i<=end-start; i++){
-//        console.log(i);
+    //From all the Photos docs, store the Image reference
+    for (i = 0; i <= end - start; i++) {
+        //Wait for the promise to resolve when we need it
+        //ALL OTHER PROMISES STILL RESOLVE WHILE WE WAIT
         photoDoc = await photosDocPromises[i];
-//        console.log(photoDoc);
-        if(photoDoc.exists) {
-            data[i+start] = photoDoc.data()[photos.photoFields.reference];
+        //If the document exists, get the image reference from its data
+        if (photoDoc.exists) {
+            data[i + start].reference = photoDoc.data()[photos.photoFields.reference];
+            data[i + start].photoID = photoDoc.id;
+        //TODO error handling for non existent Photos doc
+        } else {
+            continue;
         }
     }
-//    console.log(data);
     return await data;
-
 }
 
-async function fasterPrototypeThatDoesntWork(userID, albumID){
-    let albumPhotos = {};
-    let allDocs = await query.getAllDocsInCollection(general.albumPositionsPath(userID, albumID));
-    await allDocs.forEach(async value => {
-        photoDocRef = await value.data()[albumPositions.albumPositionFields.photo];
-//        console.log(photoDocRef);
-        photoDoc = await photoDocRef.get();
-        photoAddress = photoDoc.data()[photos.photoFields.reference];
-        console.log(photoAddress);
-        albumPhotos[value.id] = photoAddress;
-        console.log(albumPhotos);
-    });
-    albumPhotos = Promise.all();
-    return await albumPhotos;
-
-}
 
 /**Exports the functions that should be exposed to the rest of the system*/
 module.exports = {
-    //
+    //The Fields stored in each Collections Documents
     UserFields: users.userFields,
     PhotoFields: photos.photoFields,
     AlbumFields: albums.albumFields,
     AlbumPageFields: albumPages.albumPageFields,
     AlbumPositionFields: albumPositions.albumPositionFields,
-    //
+    //The functions to add a Document to a Collection
     addUser: users.addUser,
     addPhoto: photos.addPhoto,
     addAlbum: albums.addAlbum,
     addAlbumPosition: albumPositions.addAlbumPosition,
+    addManyAlbumPosition: albumPositions.addManyAlbumPosition,
     addAlbumPage: albumPages.addAlbumPage,
-    //
-    checkUserPassword: users.checkUserPassword,
-    //
+    //The functions to Delete a Document from a Collection
+    deleteUser: users.deleteUser,
+    deletePhoto: photos.deletePhoto,
+    deleteAlbum: albums.deleteAlbum,
+    deleteAlbumPage: albumPages.deleteAlbumPage,
+    deleteAlbumPosition: albumPositions.deleteAlbumPosition,
+    //The functions to retrieve data from a Document in a Collection
+    getUserEmail: users.getUserEmail,
     getPhotoData: photos.getPhotoData,
     getPhotoDateTime: photos.getPhotoDateTime,
     getPhotoDescription: photos.getPhotoDescription,
+    getPhotoDimensions: photos.getPhotoDimensions,
     getPhotoReference: photos.getPhotoReference,
+    getAllPhotoData: photos.getAllPhotoData,
     getAlbumData: albums.getAlbumData,
     getAlbumName: albums.getAlbumName,
     getAlbumTemplate: albums.getAlbumTemplate,
     getAlbumView: albums.getAlbumView,
+    getAllAlbumNames: albums.getAllAlbumNames,
     getAlbumPageData: albumPages.getAlbumPageData,
     getAlbumPageTemplate: albumPages.getAlbumPageTemplate,
     getAlbumPositionData: albumPositions.getAlbumPositionData,
     getAlbumPositionCaption: albumPositions.getAlbumPositionCaption,
     getAlbumPositionPhotoDocRef: albumPositions.getAlbumPositionPhotoDocRef,
-    //
-    updateUserPassword: users.updateUserPassword,
+    //The functions to retrieve data from Collections
+    getAllAlbumPhotos,
+    getSomeAlbumPhotos,
+    //The functions to update the data of a Document in a Collection
+    updateUserEmail: users.updateUserEmail,
     updatePhotoDateTime: photos.updatePhotoDateTime,
     updatePhotoDescription: photos.updatePhotoDescription,
+    updatePhotoDimensions: photos.updatePhotoDimensions,
     updatePhotoReference: photos.updatePhotoReference,
     updateAlbumName: albums.updateAlbumName,
     updateAlbumTemplate: albums.updateAlbumTemplate,
     updateAlbumView: albums.updateAlbumView,
     updateAlbumPageTemplate: albumPages.updateAlbumPageTemplate,
     updateAlbumPositionCaption: albumPositions.updateAlbumPositionCaption,
+    updateAlbumPositionOrder: albumPositions.updateAlbumPositionOrder,
     updateAlbumPositionPhoto: albumPositions.updateAlbumPositionPhoto,
 
-    getAlbumPhotos: getAlbumPhotos,
 };

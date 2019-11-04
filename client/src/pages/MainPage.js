@@ -3,25 +3,46 @@ import React, { Component } from 'react';
 //COMPONENTS
 import Navbar from '../components/layout/navbar/Navbar'
 import SubNavbar from '../components/layout/navbar/SubNavbar'
-import PhotoList from '../components/layout/photolist/PhotoList'
+import UnAlbumPhotoList from '../components/layout/UnAlbumPhotoList'
 import Sidebar from '../components/layout/navbar/Sidebar'
-import PhotoUpload from '../components/layout/navbar/PhotoUpload'
 
 import "../App.css";
 
 class MainPage extends Component {
-  render() {
-    return (
-        <div className="mainpage">
-            <Sidebar pageWrapId={"page-wrap"} outerContainerId={"App"}/> 
-            <div id="page-wrap">
-                <Navbar pageName={"Main Page"}/>
-                <SubNavbar />
-                <PhotoList />
-                <PhotoUpload />
-            </div>
-        </div>
-    );
-  }
+	constructor(props){
+		super(props)
+		this.state = { 
+			CurrentPhotoList: [],
+		}
+	}
+
+	getCurrentPhotoList = () => {
+		return this.state.CurrentPhotoList;
+	}
+
+	updatePhotoList = (childData) => {
+		this.setState({CurrentPhotoList: childData})
+		console.log("callback called");
+		console.log(childData);
+		console.log(this.state);
+	}
+
+	render() {
+		return (
+			<div className="mainpage">
+				<Sidebar 
+					pageWrapId={"page-wrap"} 
+					outerContainerId={"App"}
+					photos = {this.getCurrentPhotoList}
+				/> 
+				<div id="page-wrap">
+					<Navbar pageName={"Main Page"}/>
+					<SubNavbar photos={this.getCurrentPhotoList} albums={this.state.AlbumList}/>
+					<UnAlbumPhotoList parentCallback = {this.updatePhotoList}/>
+				</div>
+			</div>
+			
+		);
+	}
 }
 export default MainPage;
