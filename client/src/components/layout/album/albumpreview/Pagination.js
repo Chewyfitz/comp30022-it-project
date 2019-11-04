@@ -5,8 +5,6 @@ import PageLayout from './SinglePageLayout'
 
 //import axios from 'axios'
 
-const albumAPI = require('../../../api/api');
-
 class Pagination extends React.Component {
     constructor(props) {
         super(props);

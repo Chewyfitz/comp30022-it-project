@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { slide as Menu } from "react-burger-menu";
 
-import axios from 'axios';
-
 const api = require('../../api/api');
 
 class Sidebar extends Component {

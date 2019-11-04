@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import axios from 'axios';
 import "../Navbar.css"
 
@@ -57,9 +57,8 @@ class UploadButton extends React.Component {
       headers: { 'content-type': 'multipart/form-data'}
     }
     // Set the send values
-    this.state.user=localStorage.getItem("uid"); // For testing purposes
     //const url = `${process.env.REACT_APP_API_URL}/api/image?user=${this.state.user}`;
-  	const url = `${process.env.REACT_APP_API_URL}/api/image?user=${this.state.user}`;
+  	const url = `${process.env.REACT_APP_API_URL}/api/image?user=${localStorage.getItem("uid")}`;
 
     // Send the files
     var files = this.state.selectedFile;
@@ -98,7 +97,6 @@ class UploadButton extends React.Component {
           id="uploadfile" 
           accept="image/*" 
           multiple className="custom-file-input" 
-          id="uploadfile" 
           aria-describedby="uploadfile"/>
         {/* Label - changes to show which files have been selected */}
         <label 

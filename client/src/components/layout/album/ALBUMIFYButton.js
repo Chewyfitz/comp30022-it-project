@@ -15,7 +15,7 @@ function handleClick(albumId, oldphotolist, newphotolist, onclick) {
     //TO DO change src to id (albumposition) then SEND to front end
 
     for (var i=0 ; i<oldphotolist.length ; i++){
-        if(oldphotolist[i].photoID != newphotolist[i].photoID){
+        if(oldphotolist[i].photoID !== newphotolist[i].photoID){
             toSend[oldphotolist[i].photoID] = newphotolist[i].photoID; 
         }
         
@@ -39,9 +39,9 @@ const ALBUMIFY = ({albumId, oldItems, newItems, onclick}) => { //functional comp
     return(
         <nav className="navbar navbar-expand-sm navbar-dark fixed-top2" style={{backgroundColor:'#F4F6F8'}}>
             {/*Sub navbar*/}
-            <a href='#' className="btn btn-default btn-block ALBUMIFY-text" onClick={() => handleClick(albumId, oldphotolist, newphotolist, onclick)}>
+            <p className="btn btn-default btn-block ALBUMIFY-text" onClick={() => handleClick(albumId, oldphotolist, newphotolist, onclick)}>
                 ALBUMIFY
-            </a>
+            </p>
         </nav>
     )
 }

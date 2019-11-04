@@ -72,15 +72,16 @@ export async function CreateNewAlbum(albumName, photos) {
 
 export async function AddImagesToAlbum(photos, albumId, remove=true, removeAlbum='un') {
 	if(!albumId){ // How else do we know where to put them?
-		throw "album ID not defined!";
+		throw new Error("album ID not defined!");
 	}
 	if(!photos){ // How can we move photos if we don't know which ones?
-		throw "no photos given.";
+		throw new Error("no photos given.");
 	}
 
 	// sort the photos in descending order of position so none of them change.
 	photos.sort((a, b) => (a.albumPos < b.albumPos) ? 1 : -1);
 
+	var delreq;
 	// Now do some magic
 	for(var i in photos){
 		// PUT the image in the new album
@@ -94,7 +95,7 @@ export async function AddImagesToAlbum(photos, albumId, remove=true, removeAlbum
 		if(remove){
 			// then once it's been put in the new album,
 			// DELETE it from the old album (un - to be generalised)
-			var delreq = axios.delete(`${url}/album/${removeAlbum}`, { params:
+			delreq = axios.delete(`${url}/album/${removeAlbum}`, { params:
 				{
 					user: localStorage.getItem("uid"),
 					position: photos[i].albumPos.toString()
@@ -102,7 +103,7 @@ export async function AddImagesToAlbum(photos, albumId, remove=true, removeAlbum
 			});
 		} else {
 			// Give it any value so it doesn't wait
-			var delreq = 0;
+			delreq = 0;
 		}
 		await putreq;
 		await delreq;

@@ -33,9 +33,7 @@ class NavDropdown extends React.Component {
 
 	uploadToAlbum() {
 		if(this.props.photoList().length>0){
-			console.log(`${process.env.REACT_APP_API_URL}/api/album/album=${this.state.arrayValue[i]}`);
 			var promises = []
-			console.log(this.state.arrayValue);
 			promises.push(AddImagesToAlbum(this.props.photoList(), this.state.arrayValue[0].albumId));
 			for(var i=1; i<this.state.arrayValue.length; i++){
 				promises.push(AddImagesToAlbum(this.props.photoList(), this.state.arrayValue[i].albumId, false));
