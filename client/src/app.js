@@ -14,6 +14,7 @@ import LoginPage from './pages/LoginPage'
 import PrivateRoute from './components/auth/PrivateRoute'
 import LoginPageRoute from './components/auth/LoginPageRoute'
 import AlbumOverview from './pages/AlbumOverview'
+import AlbumView from './pages/AlbumView'
 
 import "./App.css";
 
@@ -27,29 +28,18 @@ class App extends Component {
 
         <BrowserRouter>
           <Switch>
-            <PrivateRoute exact path='/'> 
-              <MainPage />
-            </PrivateRoute> 
+            <PrivateRoute exact path='/' component={MainPage}/>
             
-            <PrivateRoute exact path='/search'> 
-              <SearchPage />
-            </PrivateRoute> 
+            <PrivateRoute exact path='/search' component={SearchPage} />
             
-            <PrivateRoute path='/album'> 
-              <AlbumOverview />
-            </PrivateRoute> 
-            
-            <PrivateRoute path='/albumify'>
-              <AlbumPreview />
-            </PrivateRoute>
+            <PrivateRoute path='/album/:albumId/:view' component={AlbumView} /> 
 
-            <PrivateRoute path='/photo'> 
-              <PhotoPreview />
-            </PrivateRoute>
+            <PrivateRoute exact path='/photo' component={PhotoPreview} /> 
                   
             <LoginPageRoute exact path='/login'>
               <LoginPage />
             </LoginPageRoute>
+
           </Switch>       
         </BrowserRouter>
       </div>

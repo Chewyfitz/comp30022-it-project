@@ -71,12 +71,26 @@
 .carousel-image{
     max-width: 100vw;
     margin: 0 auto;
-    max-height: calc(90vh - 56px);
+    max-height: 90vh;
     width: auto;
     top: 56px;
     bottom: 0px;
     height: auto;
 }
+
+.modal-btn {
+	width: 100%;
+	height: 10vh;
+	color: #F4F6F8 !important;
+	background-color:#7488A3 !important;
+}
+
+
+.modal-btn:hover {
+    background-color: #F4F6F8 !important;
+    color:#7488A3 !important;
+}
+	
 
 .submit-btn {
 	width: 50%;
@@ -88,4 +102,8 @@
 .submit-btn:hover {
     background-color: #F4F6F8 !important;
     color:#7488A3 !important;
+}
+
+.modal-backdrop { 
+	z-index: 0 !important;
 }

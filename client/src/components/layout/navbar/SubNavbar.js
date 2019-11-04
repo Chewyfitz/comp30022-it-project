@@ -9,7 +9,7 @@ import NavDropdown from './NavDropdown';
 // testing
 import UploadButton from './UploadButton';
 
-const SubNavbar = ({photos, albums, renderDeleteCallback}) => { //functional component, equal to arrow function
+const SubNavbar = ({photos, albums}) => { //functional component, equal to arrow function
     return(
 
         <nav className="navbar navbar-expand-sm navbar-dark fixed-top2" style={{backgroundColor:'#F4F6F8'}}>
@@ -29,7 +29,7 @@ const SubNavbar = ({photos, albums, renderDeleteCallback}) => { //functional com
                                 Add to Album
                             </button>
                             <div className="dropdown-menu">
-                                <NavDropdown photoList={photos} albums={albums} renderDeleteCallback={renderDeleteCallback}/>
+                                <NavDropdown photoList={photos} albums={albums}/>
                             </div>                            
                         </li>
 

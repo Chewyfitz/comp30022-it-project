@@ -9,18 +9,18 @@ import Carousel from 'react-bootstrap/carousel'
 class AlbumCarousel extends Component {
 	constructor(props){
 		super(props);
-		this.state = { imageList: [], 
-					   autoscroll: 2500,
+		this.state = { imageList: this.props.imageList, 
+					   autoscroll: null,
 					   index: 0,
 					   pauseOnHover: false,
 					   caption: "",
-					   albumName: window.location.pathname.slice(7)}
-		
-		makeAlbumList(this.state.albumName).then(res => {
-			this.setState({imageList: res});
-			console.log("from the then", this.state.imageList);
-			console.log(this.state.imageList.length);
-		});
+					   albumName: this.props.albumId}
+
+		this.setState({imageList: this.props.imageList});
+		console.log(this.state.imageList);
+		console.log(this.props.imageList);
+		console.log(this.state);
+		console.log("carousel props = ", this.props);
 	}
 	CaptionChangeHandler = (event) => {
 		this.setState({caption: event.target.value});
@@ -34,6 +34,8 @@ class AlbumCarousel extends Component {
     if (!this.state.autoscroll) {
       this.setState({autoscroll: 2500});
       this.setState({index: this.getNextIndex()});
+	  console.log(this.state.imageList);
+	  console.log(this.props.imageList);
     } else {
       this.setState({autoscroll: null});
       this.setState({index: this.state.index});
@@ -41,7 +43,7 @@ class AlbumCarousel extends Component {
   };
 
   getNextIndex = () => {
-    if (this.state.index === this.state.imageList.length) {
+    if (this.state.index === this.props.imageList.length) {
       return 0;
     }
     return this.state.index + 1;
@@ -60,9 +62,9 @@ class AlbumCarousel extends Component {
 
 				return (
 					<Carousel.Item key={index}>
-						<img src={image.src.src} className = "d-block carousel-image" id={image.src.albumPos}/>
+						<img src={image.src} className = "d-block carousel-image" id={image.key}/>
 						<Carousel.Caption>
-							<p>{image.src.caption}</p>
+							<p>{image.title}</p>
 						</Carousel.Caption>
 					</Carousel.Item>
 				)
@@ -73,32 +75,31 @@ class AlbumCarousel extends Component {
 		  </Carousel>
 		  <div className="d-flex justify-content-center">
 				
-				<button type="button" class="btn my-btn" data-toggle="modal" data-target="#myModal">Edit Caption</button>
+				<button type="button" className="btn modal-btn" data-toggle="modal" data-target="#myModal">Edit Caption</button>
 
 					
-					<div id="myModal" class="modal fade" role="dialog">
-					  <div class="modal-dialog">
+					<div id="myModal" className="modal fade" role="dialog">
+					  <div className="modal-dialog">
 
 						
-						<div class="modal-content">
-						  <div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Edit Caption</h4>
+						<div className="modal-content">
+						  <div className="modal-header">
+							<h4 className="modal-title">Edit Caption</h4>
+							<button type="button" className="close" data-dismiss="modal">&times;</button>
 						  </div>
-						  <div class="modal-body">
+						  <div className="modal-body">
 							<input type="text" className="form-control" id="caption" placeholder="Enter New Caption" onChange={this.CaptionChangeHandler}/>
 							<button type="button" className="btn submit-btn" onClick={this.editImageCaption.bind(this)}>Submit New Caption</button>
 						  </div>
-						  <div class="modal-footer">
-							<button type="button" class="btn my-btn" data-dismiss="modal">Close</button>
+						  <div className="modal-footer">
+							<button type="button" className="btn my-btn" data-dismiss="modal">Close</button>
 						  </div>
 						</div>
 
 					  </div>
 					</div>
 			
-				<button type="button" className="btn my-btn carousel" href="#" onClick={this.toggleAutoscroll.bind(this)}>Toggle Autoscroll{this.state.autoscroll?" (scrolling)":" (paused)"}</button>
-
+				
 			</div>
 			</>
 	);

@@ -43,30 +43,10 @@ class UnAlbumPhotoList extends Component {
 	this.props.parentCallback(tempList)
   }
   
-  
-  removeFromState() {
-	  if(this.props.renderDelete == true) {
-		  var newList = [];
-		  for(var imageIndex in this.state.imageList){
-			  var keepValue=true;
-			for(var removeIndex in this.state.arrayImage){
-				if(this.state.arrayImage[removeIndex].value==imageIndex){
-					keepValue=false;
-				}
-			}
-			if(keepValue==true){
-				newList.push(this.state.imageList[imageIndex]);
-			}
-		  }
-		  this.setState({imageList: newList});
-
-	  }
-  }
-  
   render() {
     return (
       <div className='main image_picker'>
-	  {this.removeFromState()}
+        
         <ImagePicker 
           multiple={true}
           images={this.state.imageList.map((image, i) => ({src: image.src, value: i}))}
