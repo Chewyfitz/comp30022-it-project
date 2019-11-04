@@ -1,0 +1,48 @@
+.loginPage {
+	text-align: center;
+}
+.logincontainer {
+	padding: 8%;
+	
+}
+
+button.forgotPassword {
+	background: none!important;
+	border: none;
+	padding: 0!important;
+	color: #007bff; 
+	text-decoration: none;
+}
+button.forgotPassword:hover {
+	color: #0056b3; 
+	text-decoration: underline;
+}
+
+.midText {
+	position: relative;
+    top: 6px;
+}
+
+.my-btn {
+	width: 20%;
+	color: #F4F6F8 !important;
+	background-color:#7488A3 !important;
+}
+
+
+.my-btn:hover {
+    background-color: #F4F6F8 !important;
+    color:#7488A3 !important;
+}
+
+.loginAlert {
+	width: 50%;
+	align-items: center;
+}
+
+.goodAlert {
+	background-color: #F4F6F8 !important;
+    color:#7488A3 !important;
+}
+
+

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 //COMPONENTS
 import Navbar from '../components/layout/navbar/Navbar'
-import AlbumPhotoList from '../components/layout/album/AlbumPhotoList'
-import Pagination from '../components/layout/album/Pagination'
+import AlbumPhotoList from '../components/layout/album/albumoverview/AlbumPhotoList'
+import Pagination from '../components/layout/album/albumpreview/Pagination'
 import Sidebar from '../components/layout/navbar/Sidebar'
 
 import "../App.css";
@@ -50,14 +50,14 @@ class AlbumView extends Component {
                 <Sidebar pageWrapId={"page-wrap"} outerContainerId={"App"}/> 
                 <div id="page-wrap">
                     <Navbar pageName={"Album Name"}/>
-                    <Pagination {...this.props} items={this.state.items} albumId={this.state.albumId} changeView={this.changeView} />
+                    <Pagination {...this.props} items={this.state.items} changeView={this.changeView} />
                 </div>
             </div>
         );
     }
 
     render(){
-        if(this.state.view == 1) {
+        if(this.state.view === 1) {
             return this.renderPreview();
         } else {
             return this.renderOverview();
